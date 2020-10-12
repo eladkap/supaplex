@@ -68,6 +68,7 @@ const TILE_BASE = 'B';
 const TILE_WALL = 'W';
 const TILE_ZONK = 'Z';
 const TILE_INFOTRON = 'I';
+const TILE_EXIT = 'E';
 const TILE_BUG = 'b';
 
 /* Stats settings */
@@ -88,5 +89,7 @@ const GAME_OVER = 6;
 const READY_DELAY_MS = 2000;
 
 const LEVEL_FILE_PATH = 'levels/levels.txt';
+
+const SPACE_KEY = 32;
 
 const DEBUG_FLAG = true;

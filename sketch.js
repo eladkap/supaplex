@@ -7,6 +7,7 @@ var enemies;
 var exit;
 
 var gameStatus;
+var spaceKeyIsHold = false;
 
 var tileMap;
 var stats;
@@ -40,6 +41,8 @@ async function draw() {
   DrawInfotrons();
   DrawZonks();
   DrawBases();
+  DrawBugs();
+  DrawExit();
   murphy.Draw();
   murphy.Update();
 
@@ -75,7 +78,6 @@ function DrawGameSignature() {
 function ResetRound() {
   ConsoleLog('Reset round');
   gameStatus = GAME_PLAY;
-  currentFruit.Reset();
   SetWallsColor(BLUE);
   murphy.Stop();
   murphy.SetOriginalPosition();
@@ -104,10 +106,22 @@ function DrawZonks() {
     zonk.Draw();
   }
 }
+
 function DrawBases() {
   for (let base of bases) {
     base.Draw();
   }
+}
+
+function DrawBugs() {
+  for (let bug of bugs) {
+    bug.Draw();
+    bug.Update();
+  }
+}
+
+function DrawExit() {
+  exit.Draw();
 }
 
 // function MoveGhosts() {
@@ -168,8 +182,12 @@ function SetTiles() {
       } else if (maze.GetValue(i, j) == TILE_INFOTRON) {
         let infotron = new Infotron(i, j, TILE_SIZE, RED, INFOTRON_SYMBOL);
         infotrons.push(infotron);
+      } else if (maze.GetValue(i, j) == TILE_BUG) {
+        let bug = new Bug(i, j, TILE_SIZE, YELLOW, BUG_SYMBOL);
+        bugs.push(bug);
+      } else if (maze.GetValue(i, j) == TILE_EXIT) {
+        exit = new Exit(i, j, TILE_SIZE, ORANGE, EXIT_SYMBOL);
       } else if (maze.GetValue(i, j) == TILE_MURPHY) {
-        console.log('Murphy was created.');
         murphy = new Murphy(
           i,
           j,
@@ -200,15 +218,9 @@ function SetLifeTile() {
 
 function Busted() {
   ConsoleLog('Busted');
-  stats.decreaseLives();
   SetWallsColor(DARK_BLUE);
-  if (stats.lives < 0) {
-    gameStatus = GAME_OVER;
-    DisplayGameOver();
-  } else {
-    gameStatus = GAME_BUSTED;
-    DisplayBusted();
-  }
+  gameStatus = GAME_BUSTED;
+  DisplayBusted();
   noLoop();
 }
 
@@ -303,10 +315,7 @@ function SetNextLevel() {
   // stats.SetNextLevel();
   // ResetMaze();
   gameStatus = GAME_READY;
-  // currentFruit = fruits[currLevelIndex];
   // loop();
-  // currentFruit.SetVisible(false);
-  // currentFruit.Reset();
 }
 
 function finishGame() {
@@ -338,14 +347,6 @@ function CheckMurphyEatInfotron() {
 // function SetGhostsVulnerable() {
 //   for (let ghost of ghosts) {
 //     ghost.SetVulnerable(true);
-//   }
-// }
-
-// function CheckMurphyEatFruit() {
-//   if (murphy.Collide(currentFruit)) {
-//     stats.increaseScore(currentFruit.Points);
-//     currentFruit.SetVisible(false);
-//     currentFruit.Reset();
 //   }
 // }
 
@@ -386,19 +387,57 @@ function CheckMurphyEatInfotron() {
 //   }
 // }
 
+function MurphyCollectTile(direction) {
+  let location = murphy.Collect(direction);
+  if (location != null) {
+    for (let i = bases.length - 1; i >= 0; i--) {
+      let base = bases[i];
+      if (base.Row == location[0] && base.Col == location[1]) {
+        bases.splice(i, 1);
+      }
+    }
+    for (let i = infotrons.length - 1; i >= 0; i--) {
+      let infotron = infotrons[i];
+      if (infotron.Row == location[0] && infotron.Col == location[1]) {
+        infotrons.splice(i, 1);
+        stats.DecrementInfotrons();
+      }
+    }
+  }
+}
+
 //#region Keyboard Events
 function CheckKeyIsDown() {
   if (gameStatus == GAME_PLAY) {
-    if (keyIsDown(RIGHT_ARROW)) {
-      murphy.GoRight();
-    } else if (keyIsDown(LEFT_ARROW)) {
-      murphy.GoLeft();
-    } else if (keyIsDown(UP_ARROW)) {
-      murphy.GoUp();
-    } else if (keyIsDown(DOWN_ARROW)) {
-      murphy.GoDown();
+    if (keyIsDown(SPACE_KEY)) {
+      spaceKeyIsHold = true;
+    }
+    if (spaceKeyIsHold) {
+      if (keyIsDown(RIGHT_ARROW)) {
+        MurphyCollectTile('R');
+      } else if (keyIsDown(LEFT_ARROW)) {
+        MurphyCollectTile('L');
+      } else if (keyIsDown(UP_ARROW)) {
+        MurphyCollectTile('U');
+      } else if (keyIsDown(DOWN_ARROW)) {
+        MurphyCollectTile('D');
+      }
+    } else {
+      if (keyIsDown(RIGHT_ARROW)) {
+        murphy.GoRight();
+      } else if (keyIsDown(LEFT_ARROW)) {
+        murphy.GoLeft();
+      } else if (keyIsDown(UP_ARROW)) {
+        murphy.GoUp();
+      } else if (keyIsDown(DOWN_ARROW)) {
+        murphy.GoDown();
+      }
     }
   }
+}
+
+function keyReleased() {
+  spaceKeyIsHold = false;
 }
 
 function keyPressed() {
@@ -411,14 +450,18 @@ function keyPressed() {
   if (gameStatus == GAME_LEVEL_COMPLETED && keyCode == ENTER) {
     SetNextLevel();
   }
-  if (gameStatus == GAME_PLAY && keyCode === ESCAPE) {
+  if (gameStatus == GAME_PLAY && key === 'p') {
     PauseGame();
     return;
   }
-  if (gameStatus == GAME_PAUSED && keyCode === ESCAPE) {
+  if (gameStatus == GAME_PLAY && keyCode == ESCAPE) {
+    murphy.Destroy();
+    Busted();
+  }
+  if (gameStatus == GAME_PAUSED && key === 'p') {
     ResumeGame();
   }
-  if (gameStatus == GAME_PLAY) {
+  if (gameStatus == GAME_PLAY && !spaceKeyIsHold) {
     if (keyCode === RIGHT_ARROW) {
       murphy.GoRight();
     } else if (keyCode === LEFT_ARROW) {

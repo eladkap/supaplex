@@ -11,4 +11,6 @@ class Bug extends Tile {
       text(this.symbol, this.pos.x, this.pos.y + this.width * 0.7);
     }
   }
+
+  Update() {}
 }

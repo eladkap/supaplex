@@ -24,4 +24,27 @@ class Murphy extends Entity {
   DecrementLives() {
     this.lives--;
   }
+
+  Collect(direction) {
+    if (direction == 'R' && this.CanGoRight()) {
+      this.maze.SetValue(this.row, this.col + 1, TILE_EMPTY);
+      return [this.row, this.col + 1];
+    }
+    if (direction == 'L' && this.CanGoLeft()) {
+      this.maze.SetValue(this.row, this.col - 1, TILE_EMPTY);
+      return [this.row, this.col - 1];
+    }
+    if (direction == 'U' && this.CanGoUp()) {
+      this.maze.SetValue(this.row - 1, this.col, TILE_EMPTY);
+      return [this.row - 1, this.col];
+    }
+    if (direction == 'D' && this.CanGoDown()) {
+      this.maze.SetValue(this.row + 1, this.col, TILE_EMPTY);
+      return [this.row + 1, this.col];
+    }
+    return null;
+  }
+
+  Destroy() {}
+  // todo: implement an explosion
 }
