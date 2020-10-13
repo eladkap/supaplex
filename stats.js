@@ -7,12 +7,22 @@ class Stats {
     this.infotrons = infotrons;
     this.infotronsRemained = infotrons;
     this.levelNum = 1;
-    this.timer = 0;
+    this.timerSeconds = 0;
+    this.timerMinutes = 0;
+    this.timerHours = 0;
   }
 
   Update() {
     if (frameCount % FPS == 0) {
-      this.timer++;
+      this.timerSeconds++;
+      if (this.timerSeconds == 60) {
+        this.timerSeconds = 0;
+        this.timerMinutes++;
+        if (this.timerMinutes == 60) {
+          this.timerMinutes = 0;
+          this.timerHours++;
+        }
+      }
     }
   }
 
@@ -28,6 +38,10 @@ class Stats {
     this.levelNum++;
   }
 
+  get Time() {
+    return `${this.timerHours}:${this.timerMinutes}:${this.timerSeconds}`;
+  }
+
   Draw() {
     noStroke();
     textSize(36);
@@ -35,7 +49,7 @@ class Stats {
     textStyle(NORMAL);
     fill(WHITE);
     text(
-      `Level: ${this.levelNum}\t\t${INFOTRON_SYMBOL}: ${this.infotronsRemained}\t\t Time: ${this.timer}`,
+      `Level: ${this.levelNum}\t\t${INFOTRON_SYMBOL}: ${this.infotronsRemained}\t\t Time: ${this.Time}`,
       this.x,
       this.y
     );
