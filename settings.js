@@ -87,6 +87,7 @@ const GAME_FINISHED = 5;
 const GAME_OVER = 6;
 
 const READY_DELAY_MS = 2000;
+const BUG_DURATION_SEC = 2;
 
 const LEVEL_FILE_PATH = 'levels/levels.txt';
 

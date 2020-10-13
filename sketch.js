@@ -58,6 +58,7 @@ async function draw() {
 
   CheckMurphyEatBase();
   CheckMurphyEatInfotron();
+  CheckMurphyCollidesBug();
 
   CheckKeyIsDown();
 
@@ -79,6 +80,7 @@ function ResetRound() {
   ConsoleLog('Reset round');
   gameStatus = GAME_PLAY;
   SetWallsColor(BLUE);
+  stats.Reset();
   murphy.Stop();
   murphy.SetOriginalPosition();
   // for (let ghost of ghosts) {
@@ -340,6 +342,18 @@ function CheckMurphyEatInfotron() {
     if (murphy.Collide(infotrons[i])) {
       let infotron = infotrons.splice(i, 1)[0];
       stats.DecrementInfotrons();
+    }
+  }
+}
+
+function CheckMurphyCollidesBug() {
+  for (let i = bugs.length - 1; i >= 0; i--) {
+    if (murphy.Collide(bugs[i])) {
+      if (bugs[i].Activated) {
+        Busted();
+      } else {
+        let bug = bugs.splice(i, 1)[0];
+      }
     }
   }
 }

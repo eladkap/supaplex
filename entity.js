@@ -192,7 +192,7 @@ class Entity extends Tile {
 
   Collide(entity) {
     var d = dist(this.pos.x, this.pos.y, entity.pos.x, entity.pos.y);
-    return d < (this.radius + entity.radius) / 4 && entity.Visible;
+    return d < (this.radius + entity.radius) / 4;
   }
   //#endregion
 }
