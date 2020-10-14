@@ -49,7 +49,6 @@ class Entity extends Tile {
       this.lerpUnit = LERP_UNIT_NORMAL;
     }
     this.ChangeDirection();
-    // this.CheckTunnel();
   }
 
   Update() {
@@ -83,7 +82,7 @@ class Entity extends Tile {
   CanGoLeft() {
     return (
       this.col > 0 &&
-      this.maze.GetValue(this.row, this.col - 1) != TILE_WALL &&
+      this.maze.GetValue(this.row, this.col - 1) == TILE_EMPTY &&
       !this.isLerping
     );
   }
@@ -91,7 +90,7 @@ class Entity extends Tile {
   CanGoRight() {
     return (
       this.col + 1 < this.maze.Cols &&
-      this.maze.GetValue(this.row, this.col + 1) != TILE_WALL &&
+      this.maze.GetValue(this.row, this.col + 1) == TILE_EMPTY &&
       !this.isLerping
     );
   }
@@ -99,7 +98,7 @@ class Entity extends Tile {
   CanGoUp() {
     return (
       this.row > 0 &&
-      this.maze.GetValue(this.row - 1, this.col) != TILE_WALL &&
+      this.maze.GetValue(this.row - 1, this.col) == TILE_EMPTY &&
       !this.isLerping
     );
   }
@@ -107,7 +106,7 @@ class Entity extends Tile {
   CanGoDown() {
     return (
       this.row + 1 < this.maze.Rows &&
-      this.maze.GetValue(this.row + 1, this.col) != TILE_WALL &&
+      this.maze.GetValue(this.row + 1, this.col) == TILE_EMPTY &&
       !this.isLerping
     );
   }
@@ -123,7 +122,7 @@ class Entity extends Tile {
       case 'U':
         this.GoUp();
         break;
-      default:
+      case 'D':
         this.GoDown();
         break;
     }

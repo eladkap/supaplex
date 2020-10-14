@@ -79,6 +79,7 @@ function DrawGameSignature() {
 function ResetRound() {
   ConsoleLog('Reset round');
   gameStatus = GAME_PLAY;
+  ResetMaze();
   SetWallsColor(BLUE);
   stats.Reset();
   murphy.Stop();
@@ -101,11 +102,15 @@ function DrawWalls() {
 function DrawInfotrons() {
   for (let infotron of infotrons) {
     infotron.Draw();
+    infotron.GoDown();
+    infotron.Update();
   }
 }
 function DrawZonks() {
   for (let zonk of zonks) {
     zonk.Draw();
+    zonk.GoDown();
+    zonk.Update();
   }
 }
 
@@ -179,10 +184,28 @@ function SetTiles() {
         let base = new Base(i, j, TILE_SIZE, GREEN, BASE_SYMBOL);
         bases.push(base);
       } else if (maze.GetValue(i, j) == TILE_ZONK) {
-        let zonk = new Zonk(i, j, TILE_SIZE, GRAY3, ZONK_SYMBOL);
+        let zonk = new Zonk(
+          i,
+          j,
+          TILE_SIZE,
+          GRAY3,
+          ZONK_SYMBOL,
+          MURPHY_SPEED,
+          maze,
+          TILE_ZONK
+        );
         zonks.push(zonk);
       } else if (maze.GetValue(i, j) == TILE_INFOTRON) {
-        let infotron = new Infotron(i, j, TILE_SIZE, RED, INFOTRON_SYMBOL);
+        let infotron = new Infotron(
+          i,
+          j,
+          TILE_SIZE,
+          RED,
+          INFOTRON_SYMBOL,
+          MURPHY_SPEED,
+          maze,
+          TILE_INFOTRON
+        );
         infotrons.push(infotron);
       } else if (maze.GetValue(i, j) == TILE_BUG) {
         let bug = new Bug(i, j, TILE_SIZE, YELLOW, BUG_SYMBOL);
@@ -303,9 +326,12 @@ function ResumeGame() {
   ConsoleLog('Game resumed');
   gameStatus = GAME_PLAY;
   SetWallsColor(BLUE);
-  // for (let ghost of ghosts) {
-  //   ghost.SetRandomDirection();
-  // }
+  for (let zonk of zonks) {
+    zonk.GoDown();
+  }
+  for (let infotron of infotrons) {
+    infotron.GoDown();
+  }
   loop();
 }
 

@@ -45,6 +45,38 @@ class Murphy extends Entity {
     return null;
   }
 
+  CanGoLeft() {
+    return (
+      this.col > 0 &&
+      this.maze.GetValue(this.row, this.col - 1) != TILE_WALL &&
+      !this.isLerping
+    );
+  }
+
+  CanGoRight() {
+    return (
+      this.col + 1 < this.maze.Cols &&
+      this.maze.GetValue(this.row, this.col + 1) != TILE_WALL &&
+      !this.isLerping
+    );
+  }
+
+  CanGoUp() {
+    return (
+      this.row > 0 &&
+      this.maze.GetValue(this.row - 1, this.col) != TILE_WALL &&
+      !this.isLerping
+    );
+  }
+
+  CanGoDown() {
+    return (
+      this.row + 1 < this.maze.Rows &&
+      this.maze.GetValue(this.row + 1, this.col) != TILE_WALL &&
+      !this.isLerping
+    );
+  }
+
   Destroy() {}
   // todo: implement an explosion
 }

@@ -1,6 +1,6 @@
-class Zonk extends Tile {
-  constructor(row, col, width, color, symbol) {
-    super(row, col, width, color, symbol);
+class Zonk extends Entity {
+  constructor(row, col, width, color, symbol, speed, maze, tileType) {
+    super(row, col, width, color, symbol, speed, maze, tileType);
   }
 
   Draw() {
@@ -10,5 +10,9 @@ class Zonk extends Tile {
       textSize(this.width * 0.6);
       text(this.symbol, this.pos.x, this.pos.y + this.width * 0.7);
     }
+  }
+
+  ChangeDirection() {
+    this.GoDown();
   }
 }

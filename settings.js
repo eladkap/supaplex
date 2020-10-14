@@ -1,5 +1,5 @@
 /* Screen settings */
-const SCREEN_WIDTH = 1400;
+const SCREEN_WIDTH = 1800;
 const SCREEN_HEIGHT = 960;
 
 const FPS = 30;
