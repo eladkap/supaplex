@@ -12,7 +12,7 @@ class Murphy extends Entity {
     if (this.visible) {
       noStroke();
       fill(this.color);
-      textSize(this.width * 0.6);
+      textSize(this.width * 0.75);
       text(this.symbol, this.pos.x, this.pos.y + this.width * 0.7);
     }
   }
@@ -87,7 +87,7 @@ class Murphy extends Entity {
 
   CanPushRight() {
     return (
-      this.col - 2 >= 0 &&
+      this.col + 2 < this.maze.Cols &&
       this.maze.GetValue(this.row, this.col + 1) == TILE_ZONK &&
       this.maze.GetValue(this.row, this.col + 2) == TILE_EMPTY
     );
@@ -100,8 +100,6 @@ class Murphy extends Entity {
       this.maze.GetValue(this.row, this.col - 2) == TILE_EMPTY
     );
   }
-
-  PushLeft() {}
 
   Destroy() {}
   // todo: implement an explosion

@@ -403,18 +403,6 @@ function CheckTileFallOnMurphy() {
   }
 }
 
-function CheckMurphyPushTileLeft() {
-  for (let zonk of zonks) {
-    if (zonk.Row == murphy.Row && zonk.Col == murphy.Col - 1) {
-    }
-  }
-}
-
-function CheckMurphyPushTileRight() {
-  for (let zonk of zonks) {
-  }
-}
-
 async function CheckMurphyEnemyCollision() {
   for (let enemy of enemies) {
     if (murphy.Collide(enemy)) {
@@ -445,7 +433,7 @@ function MurphyCollectTile(direction) {
 
 function MurphyPushRight() {
   for (let zonk of zonks) {
-    if (zonk.Row == murphy.Row && zonk.col == murphy.col + 1) {
+    if (zonk.pos.y == murphy.pos.y && zonk.pos.x - murphy.pos.x <= TILE_SIZE) {
       zonk.GoRight();
       murphy.GoRight();
     }
@@ -454,7 +442,7 @@ function MurphyPushRight() {
 
 function MurphyPushLeft() {
   for (let zonk of zonks) {
-    if (zonk.Row == murphy.Row && zonk.col == murphy.col - 1) {
+    if (zonk.pos.y == murphy.pos.y && murphy.pos.x - zonk.pos.x <= TILE_SIZE) {
       zonk.GoLeft();
       murphy.GoLeft();
     }
