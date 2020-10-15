@@ -48,7 +48,9 @@ class Murphy extends Entity {
   CanGoLeft() {
     return (
       this.col > 0 &&
-      this.maze.GetValue(this.row, this.col - 1) != TILE_WALL &&
+      ![TILE_WALL, TILE_ZONK].includes(
+        this.maze.GetValue(this.row, this.col - 1)
+      ) &&
       !this.isLerping
     );
   }
@@ -56,7 +58,9 @@ class Murphy extends Entity {
   CanGoRight() {
     return (
       this.col + 1 < this.maze.Cols &&
-      this.maze.GetValue(this.row, this.col + 1) != TILE_WALL &&
+      ![TILE_WALL, TILE_ZONK].includes(
+        this.maze.GetValue(this.row, this.col + 1)
+      ) &&
       !this.isLerping
     );
   }
@@ -64,7 +68,9 @@ class Murphy extends Entity {
   CanGoUp() {
     return (
       this.row > 0 &&
-      this.maze.GetValue(this.row - 1, this.col) != TILE_WALL &&
+      ![TILE_WALL, TILE_ZONK].includes(
+        this.maze.GetValue(this.row - 1, this.col)
+      ) &&
       !this.isLerping
     );
   }
@@ -72,10 +78,30 @@ class Murphy extends Entity {
   CanGoDown() {
     return (
       this.row + 1 < this.maze.Rows &&
-      this.maze.GetValue(this.row + 1, this.col) != TILE_WALL &&
+      ![TILE_WALL, TILE_ZONK].includes(
+        this.maze.GetValue(this.row + 1, this.col)
+      ) &&
       !this.isLerping
     );
   }
+
+  CanPushRight() {
+    return (
+      this.col - 2 >= 0 &&
+      this.maze.GetValue(this.row, this.col + 1) == TILE_ZONK &&
+      this.maze.GetValue(this.row, this.col + 2) == TILE_EMPTY
+    );
+  }
+
+  CanPushLeft() {
+    return (
+      this.col - 2 >= 0 &&
+      this.maze.GetValue(this.row, this.col - 1) == TILE_ZONK &&
+      this.maze.GetValue(this.row, this.col - 2) == TILE_EMPTY
+    );
+  }
+
+  PushLeft() {}
 
   Destroy() {}
   // todo: implement an explosion

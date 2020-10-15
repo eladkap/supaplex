@@ -4,6 +4,8 @@ Entity represents moving object
 class Entity extends Tile {
   constructor(row, col, width, color, symbol, speed, maze, tileType) {
     super(row, col, width, color, symbol);
+    this.prevRow = null;
+    this.prevCol = null;
     this.originalRow = row;
     this.originalCol = col;
     this.speed = speed;
@@ -105,7 +107,7 @@ class Entity extends Tile {
 
   CanGoDown() {
     return (
-      this.row + 1 < this.maze.Rows &&
+      this.row > 0 &&
       this.maze.GetValue(this.row + 1, this.col) == TILE_EMPTY &&
       !this.isLerping
     );
@@ -122,25 +124,9 @@ class Entity extends Tile {
       case 'U':
         this.GoUp();
         break;
-      case 'D':
+      default:
         this.GoDown();
         break;
-    }
-  }
-
-  CheckTunnel() {
-    // Go left inside tunnel
-    if (this.tileType == TILE_MURPHY && this.col == 0) {
-      this.maze.SetValue(this.row, this.col, TILE_EMPTY);
-      this.maze.SetValue(this.row, this.maze.Cols - 1, this.tileType);
-      this.SetPosition(this.row, this.maze.Cols - 1);
-    }
-
-    // Go right inside tunnel
-    else if (this.tileType == TILE_MURPHY && this.col == this.maze.Cols - 1) {
-      this.maze.SetValue(this.row, this.col, TILE_EMPTY);
-      this.maze.SetValue(this.row, 0, this.tileType);
-      this.SetPosition(this.row, 0);
     }
   }
 
@@ -149,6 +135,7 @@ class Entity extends Tile {
       this.direction.set(-1, 0);
       this.isLerping = true;
       this.maze.SetValue(this.row, this.col, TILE_EMPTY);
+      this.prevCol = this.col;
       this.col--;
       this.maze.SetValue(this.row, this.col, this.tileType);
     }
@@ -159,6 +146,7 @@ class Entity extends Tile {
       this.direction.set(1, 0);
       this.isLerping = true;
       this.maze.SetValue(this.row, this.col, TILE_EMPTY);
+      this.prevCol = this.col;
       this.col++;
       this.maze.SetValue(this.row, this.col, this.tileType);
     }
@@ -169,6 +157,7 @@ class Entity extends Tile {
       this.direction.set(0, -1);
       this.isLerping = true;
       this.maze.SetValue(this.row, this.col, TILE_EMPTY);
+      this.prevRow = this.row;
       this.row--;
       this.maze.SetValue(this.row, this.col, this.tileType);
     }
@@ -179,6 +168,7 @@ class Entity extends Tile {
       this.direction.set(0, 1);
       this.isLerping = true;
       this.maze.SetValue(this.row, this.col, TILE_EMPTY);
+      this.prevRow = this.row;
       this.row++;
       this.maze.SetValue(this.row, this.col, this.tileType);
     }
@@ -189,9 +179,13 @@ class Entity extends Tile {
     this.lerpingCount = 0;
   }
 
+  IsFalling() {
+    return this.isLerping;
+  }
+
   Collide(entity) {
     var d = dist(this.pos.x, this.pos.y, entity.pos.x, entity.pos.y);
-    return d < (this.radius + entity.radius) / 4;
+    return d < (this.radius + entity.radius) / 2;
   }
   //#endregion
 }
