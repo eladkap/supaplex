@@ -2,8 +2,18 @@
 Entity represents moving object
 */
 class Entity extends Tile {
-  constructor(row, col, width, color, symbol, speed, maze, tileType) {
-    super(row, col, width, color, symbol);
+  constructor(
+    row,
+    col,
+    width,
+    forecolor,
+    backcolor,
+    symbol,
+    speed,
+    maze,
+    tileType
+  ) {
+    super(row, col, width, forecolor, backcolor, symbol);
     this.prevRow = null;
     this.prevCol = null;
     this.originalRow = row;

@@ -35,7 +35,7 @@ function setup() {
 
 async function draw() {
   background(BLACK);
-  DrawMaze();
+  // DrawMaze();
   stats.Draw();
   stats.Update();
   DrawWalls();
@@ -43,6 +43,7 @@ async function draw() {
   murphy.Update();
   MoveInfotrons();
   MoveZonks();
+  MoveEnemies();
   DrawBases();
   DrawBugs();
   DrawExit();
@@ -64,11 +65,13 @@ async function draw() {
   CheckMurphyEatBase();
   CheckMurphyEatInfotron();
   CheckMurphyCollidesBug();
-  CheckTileFallOnMurphy();
+  // CheckTileFallOnMurphy();
 
   CheckKeyIsDown();
 
   // DrawGameSignature();
+
+  DisplayMessage('(' + murphy.Col + ',' + murphy.Row + ')', 50, 50, WHITE, 24);
 }
 //#endregion
 
@@ -101,7 +104,6 @@ function ResetRound() {
 
   for (let enemy of enemies) {
     enemy.SetOriginalPosition();
-    enemy.Reset();
     enemy.Stop();
   }
   loop();
@@ -192,47 +194,80 @@ function SetTiles() {
 
   for (let i = 0; i < maze.Rows; i++) {
     for (let j = 0; j < maze.Cols; j++) {
-      if (maze.GetValue(i, j) == TILE_WALL) {
-        let wall = new Wall(i, j, TILE_SIZE, BLUE, WALL_SYMBOL);
+      let mazeVal = maze.GetValue(i, j);
+      if (mazeVal == TILE_WALL) {
+        let wall = new Wall(i, j, TILE_SIZE, BLUE, BLACK, WALL_SYMBOL);
         walls.push(wall);
-      } else if (maze.GetValue(i, j) == TILE_BASE) {
-        let base = new Base(i, j, TILE_SIZE, GREEN, BASE_SYMBOL);
+      } else if (mazeVal == TILE_FRAME) {
+        let wall = new Wall(i, j, TILE_SIZE, GRAY1, BLACK, FRAME_SYMBOL);
+        walls.push(wall);
+      } else if (mazeVal == TILE_BASE) {
+        let base = new Base(i, j, TILE_SIZE, GREEN, BLACK, BASE_SYMBOL);
         bases.push(base);
-      } else if (maze.GetValue(i, j) == TILE_ZONK) {
+      } else if (mazeVal == TILE_ZONK) {
         let zonk = new Zonk(
           i,
           j,
           TILE_SIZE,
           GRAY3,
+          BLACK,
           ZONK_SYMBOL,
           MURPHY_SPEED,
           maze,
           TILE_ZONK
         );
         zonks.push(zonk);
-      } else if (maze.GetValue(i, j) == TILE_INFOTRON) {
+      } else if (mazeVal == TILE_INFOTRON) {
         let infotron = new Infotron(
           i,
           j,
           TILE_SIZE,
           RED,
+          BLACK,
           INFOTRON_SYMBOL,
           MURPHY_SPEED,
           maze,
           TILE_INFOTRON
         );
         infotrons.push(infotron);
-      } else if (maze.GetValue(i, j) == TILE_BUG) {
-        let bug = new Bug(i, j, TILE_SIZE, YELLOW, BUG_SYMBOL);
+      } else if (mazeVal == TILE_BUG) {
+        let bug = new Bug(i, j, TILE_SIZE, YELLOW, GREEN, BUG_SYMBOL);
         bugs.push(bug);
-      } else if (maze.GetValue(i, j) == TILE_EXIT) {
-        exit = new Exit(i, j, TILE_SIZE, ORANGE, EXIT_SYMBOL);
-      } else if (maze.GetValue(i, j) == TILE_MURPHY) {
+      } else if (mazeVal == TILE_EXIT) {
+        exit = new Exit(i, j, TILE_SIZE, WHITE, RED, EXIT_SYMBOL);
+      } else if (mazeVal == TILE_SNIKSNAK) {
+        let snikSnak = new SnikSnak(
+          i,
+          j,
+          TILE_SIZE,
+          YELLOW,
+          BLACK,
+          SNIKSNAK_SYMBOL,
+          MURPHY_SPEED,
+          maze,
+          TILE_SNIKSNAK
+        );
+        enemies.push(snikSnak);
+      } else if (mazeVal == TILE_ELECTRON) {
+        let electron = new Electron(
+          i,
+          j,
+          TILE_SIZE,
+          YELLOW,
+          BLACK,
+          ELECTRON_SYMBOL,
+          MURPHY_SPEED,
+          maze,
+          TILE_ELECTRON
+        );
+        enemies.push(electron);
+      } else if (mazeVal == TILE_MURPHY) {
         murphy = new Murphy(
           i,
           j,
           TILE_SIZE,
           YELLOW,
+          BLACK,
           MURPHY_SYMBOL,
           MURPHY_SPEED,
           maze,
@@ -285,8 +320,8 @@ function DisplayMessage(msg, x, y, col, font_size) {
 }
 
 function DisplayReady() {
-  let msg_x = (MAZE_X + SCREEN_WIDTH) * 0.3;
-  let msg_y = SCREEN_HEIGHT * 0.71;
+  let msg_x = (MAZE_X + TILE_SIZE * MAZE_ROWS) * 0.5;
+  let msg_y = SCREEN_HEIGHT * 0.8;
   DisplayMessage(
     'Press SPACE to start',
     msg_x,
@@ -338,6 +373,9 @@ function ResumeGame() {
   }
   for (let infotron of infotrons) {
     infotron.GoDown();
+  }
+  for (let enemy of enemies) {
+    enemy.SetRandomDirection();
   }
   loop();
 }
@@ -394,9 +432,9 @@ function CheckMurphyCollidesBug() {
 // todo: fix this function
 function CheckTileFallOnMurphy() {
   for (let zonk of zonks) {
-    if (zonk.Collide(murphy) && zonk.isLerping) {
-      Busted();
-    }
+    // if (zonk.Collide(murphy) && zonk.isLerping) {
+    //   Busted();
+    // }
     // if (zonk.col == murphy.col && zonk.Row == murphy.Row) {
     //   Busted();
     // }
@@ -433,18 +471,20 @@ function MurphyCollectTile(direction) {
 
 function MurphyPushRight() {
   for (let zonk of zonks) {
-    if (zonk.pos.y == murphy.pos.y && zonk.pos.x - murphy.pos.x <= TILE_SIZE) {
+    if (zonk.pos.y == murphy.pos.y && zonk.pos.x - murphy.pos.x == TILE_SIZE) {
       zonk.GoRight();
       murphy.GoRight();
+      return;
     }
   }
 }
 
 function MurphyPushLeft() {
   for (let zonk of zonks) {
-    if (zonk.pos.y == murphy.pos.y && murphy.pos.x - zonk.pos.x <= TILE_SIZE) {
+    if (zonk.pos.y == murphy.pos.y && murphy.pos.x - zonk.pos.x == TILE_SIZE) {
       zonk.GoLeft();
       murphy.GoLeft();
+      return;
     }
   }
 }

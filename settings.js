@@ -1,14 +1,20 @@
 /* Screen settings */
-const SCREEN_WIDTH = 1800;
-const SCREEN_HEIGHT = 960;
+const SCREEN_WIDTH = 1024;
+const SCREEN_HEIGHT = 768;
 
 const FPS = 30;
 
 const TILE_SIZE = 50;
 
 /* Maze settings */
-const MAZE_X = 100;
+const MAZE_X = 0;
 const MAZE_Y = 100;
+
+const MAZE_ROWS = 24;
+const MAZE_COLS = 60;
+
+const CAMERA_ROWS = 12;
+const CAMERA_COLS = 20;
 
 // LERP settings - Linear Interpolation - Animation movement unit
 const LERP_UNIT_NORMAL = 0.2;
@@ -25,10 +31,10 @@ const GRAY1 = [100, 100, 100];
 const GRAY2 = [150, 150, 150];
 const GRAY3 = [200, 200, 200];
 const RED = [220, 0, 0];
-const ORANGE = [255, 150, 50];
+const ORANGE = [250, 150, 50];
 const PINK = [250, 100, 150];
 const YELLOW = [255, 255, 0];
-const GREEN = [0, 250, 0];
+const GREEN = [0, 100, 0];
 const AQUA = [100, 255, 255];
 const BLUE = [0, 0, 250];
 const PURPLE = [200, 0, 250];
@@ -54,26 +60,32 @@ const MESSAGE_FONT_SIZE2 = 24;
 
 /* Tile Symbols */
 const MURPHY_SYMBOL = '🙂';
+const FRAME_SYMBOL = '🔲';
 const WALL_SYMBOL = '🟫';
 const INFOTRON_SYMBOL = '💎';
-const ZONK_SYMBOL = '🏐';
+const ZONK_SYMBOL = '🌑';
 const BUG_SYMBOL = '⚡️';
 const BASE_SYMBOL = '🟩';
-const EXIT_SYMBOL = '🏁';
-//🙂
+const ELECTRON_SYMBOL = '💫'; // '⭐️'
+const SNIKSNAK_SYMBOL = '☀️'; //'☀️✂️'
+const EXIT_SYMBOL = 'E';
+const EXPLOSION_SYMBOL = '💥';
 
 const TILE_MURPHY = 'M';
+const TILE_FRAME = 'F';
 const TILE_EMPTY = '_';
 const TILE_BASE = 'B';
 const TILE_WALL = 'W';
 const TILE_ZONK = 'Z';
 const TILE_INFOTRON = 'I';
+const TILE_ELECTRON = 'e';
+const TILE_SNIKSNAK = 'S';
 const TILE_EXIT = 'E';
 const TILE_BUG = 'b';
 
 /* Stats settings */
 const STATS_POS_X = SCREEN_WIDTH * 0.1;
-const STATS_POS_Y = SCREEN_HEIGHT * 0.9;
+const STATS_POS_Y = SCREEN_HEIGHT * 0.1;
 const STATS_WIDTH = 100;
 const STATS_HEIGHT = 200;
 

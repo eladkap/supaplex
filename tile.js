@@ -1,11 +1,12 @@
 class Tile {
-  constructor(row, col, width, color, symbol) {
+  constructor(row, col, width, forecolor, backcolor, symbol) {
     this.row = row;
     this.col = col;
     this.pos = createVector(MAZE_X + col * width, MAZE_Y + row * width);
     this.width = width;
     this.radius = width / 2;
-    this.color = color;
+    this.forecolor = forecolor;
+    this.backcolor = backcolor;
     this.symbol = symbol;
     this.visible = true;
   }
@@ -49,8 +50,20 @@ class Tile {
   //#endregion
 
   //#region Methods
+
+  Draw() {
+    strokeWeight(0.1);
+    stroke(GRAY3);
+    fill(this.forecolor);
+    rect(this.pos.x, this.pos.y, this.width, this.width);
+  }
+
   SetColor(color) {
     this.color = color;
+  }
+
+  SetSymbol(symbol) {
+    this.symbol = symbol;
   }
 
   SetVisible(value) {

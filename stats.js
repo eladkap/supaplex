@@ -7,6 +7,7 @@ class Stats {
     this.infotrons = infotrons;
     this.infotronsRemained = infotrons;
     this.levelNum = 1;
+    this.levelTitle = 'Level 1';
     this.timerSeconds = 0;
     this.timerMinutes = 0;
     this.timerHours = 0;
@@ -49,7 +50,7 @@ class Stats {
     textStyle(NORMAL);
     fill(WHITE);
     text(
-      `Level: ${this.levelNum}\t\t${INFOTRON_SYMBOL}: ${this.infotronsRemained}\t\t Time: ${this.Time}`,
+      `Level: ${this.levelNum}\t\t--${this.levelTitle}--\t\t${INFOTRON_SYMBOL}: ${this.infotronsRemained}\t\t Time: ${this.Time}`,
       this.x,
       this.y
     );

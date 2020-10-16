@@ -1,6 +1,17 @@
 class Murphy extends Entity {
-  constructor(row, col, width, color, symbol, speed, maze, tileType, lives) {
-    super(row, col, width, color, symbol, speed, maze, tileType);
+  constructor(
+    row,
+    col,
+    width,
+    forecolor,
+    backcolor,
+    symbol,
+    speed,
+    maze,
+    tileType,
+    lives
+  ) {
+    super(row, col, width, forecolor, backcolor, symbol, speed, maze, tileType);
     this.lives = lives;
   }
 
@@ -11,9 +22,13 @@ class Murphy extends Entity {
   Draw() {
     if (this.visible) {
       noStroke();
-      fill(this.color);
-      textSize(this.width * 0.75);
-      text(this.symbol, this.pos.x, this.pos.y + this.width * 0.7);
+      fill(this.forecolor);
+      textSize(this.width * 0.9);
+      text(
+        this.symbol,
+        this.pos.x - this.width * 0.1,
+        this.pos.y + this.width * 0.8
+      );
     }
   }
 
@@ -48,7 +63,7 @@ class Murphy extends Entity {
   CanGoLeft() {
     return (
       this.col > 0 &&
-      ![TILE_WALL, TILE_ZONK].includes(
+      ![TILE_WALL, TILE_FRAME, TILE_ZONK].includes(
         this.maze.GetValue(this.row, this.col - 1)
       ) &&
       !this.isLerping
@@ -58,7 +73,7 @@ class Murphy extends Entity {
   CanGoRight() {
     return (
       this.col + 1 < this.maze.Cols &&
-      ![TILE_WALL, TILE_ZONK].includes(
+      ![TILE_WALL, TILE_FRAME, TILE_ZONK].includes(
         this.maze.GetValue(this.row, this.col + 1)
       ) &&
       !this.isLerping
@@ -68,7 +83,7 @@ class Murphy extends Entity {
   CanGoUp() {
     return (
       this.row > 0 &&
-      ![TILE_WALL, TILE_ZONK].includes(
+      ![TILE_WALL, TILE_FRAME, TILE_ZONK].includes(
         this.maze.GetValue(this.row - 1, this.col)
       ) &&
       !this.isLerping
@@ -78,7 +93,7 @@ class Murphy extends Entity {
   CanGoDown() {
     return (
       this.row + 1 < this.maze.Rows &&
-      ![TILE_WALL, TILE_ZONK].includes(
+      ![TILE_WALL, TILE_FRAME, TILE_ZONK].includes(
         this.maze.GetValue(this.row + 1, this.col)
       ) &&
       !this.isLerping
