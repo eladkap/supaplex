@@ -13,6 +13,7 @@ var gravity = true;
 var tileMap;
 var stats;
 var maze;
+var cam;
 
 //#region Main Functions
 function LoadTileMap() {
@@ -39,14 +40,14 @@ async function draw() {
   stats.Draw();
   stats.Update();
   DrawWalls();
-  murphy.Draw();
-  murphy.Update();
+  MoveMurphy();
   MoveInfotrons();
   MoveZonks();
   MoveEnemies();
   DrawBases();
   DrawBugs();
   DrawExit();
+  cam.Update(murphy);
 
   // if (gravity) {
   //   murphy.GoDown();
@@ -113,7 +114,14 @@ function ResetRound() {
 function DrawWalls() {
   for (let wall of walls) {
     wall.Draw();
+    cam.Apply(wall);
   }
+}
+
+function MoveMurphy() {
+  murphy.Draw();
+  murphy.Update();
+  cam.Apply(murphy);
 }
 
 function MoveInfotrons() {
@@ -121,6 +129,7 @@ function MoveInfotrons() {
     infotron.Draw();
     infotron.Update();
     infotron.GoDown();
+    cam.Apply(infotron);
   }
 }
 
@@ -129,12 +138,14 @@ function MoveZonks() {
     zonk.GoDown();
     zonk.Draw();
     zonk.Update();
+    cam.Apply(zonk);
   }
 }
 
 function DrawBases() {
   for (let base of bases) {
     base.Draw();
+    cam.Apply(base);
   }
 }
 
@@ -142,17 +153,20 @@ function DrawBugs() {
   for (let bug of bugs) {
     bug.Draw();
     bug.Update();
+    cam.Apply(bug);
   }
 }
 
 function DrawExit() {
   exit.Draw();
+  cam.Apply(exit);
 }
 
 function MoveEnemies() {
   for (let enemy of enemies) {
     enemy.Draw();
     enemy.Update();
+    cam.Apply(enemy);
   }
 }
 
@@ -177,6 +191,7 @@ function setStats() {
 function SetMaze(tileMap) {
   maze = new Maze(tileMap);
   maze.Create(tileMap);
+  cam = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 function ResetMaze() {
@@ -320,8 +335,8 @@ function DisplayMessage(msg, x, y, col, font_size) {
 }
 
 function DisplayReady() {
-  let msg_x = (MAZE_X + TILE_SIZE * MAZE_ROWS) * 0.5;
-  let msg_y = SCREEN_HEIGHT * 0.8;
+  let msg_x = SCREEN_WIDTH * 0.4;
+  let msg_y = SCREEN_HEIGHT * 0.05;
   DisplayMessage(
     'Press SPACE to start',
     msg_x,
@@ -335,7 +350,7 @@ function DisplayBusted() {
   let msg_x = (MAZE_X + SCREEN_WIDTH) * 0.32;
   let msg_y = SCREEN_HEIGHT * 0.58;
   let msg = 'Busted!';
-  DisplayMessage(msg, msg_x, msg_y, RED, MESSAGE_FONT_SIZE);
+  DisplayMessage(msg, msg_x, msg_y, RED, MESSAGE_FONT_SIZE1);
   msg_x = (MAZE_X + SCREEN_WIDTH) * 0.3;
   msg_y = SCREEN_HEIGHT * 0.71;
   msg = 'Press SPACE to restart.';

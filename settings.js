@@ -13,9 +13,6 @@ const MAZE_Y = 100;
 const MAZE_ROWS = 24;
 const MAZE_COLS = 60;
 
-const CAMERA_ROWS = 12;
-const CAMERA_COLS = 20;
-
 // LERP settings - Linear Interpolation - Animation movement unit
 const LERP_UNIT_NORMAL = 0.2;
 const LERP_UNIT_SLOW = 0.1;
@@ -55,8 +52,9 @@ const INFOTRONS = 10;
 /* Fonts */
 const POINTS_FONT_SIZE = 20;
 const FONT_FAMILY = 'College';
-const MESSAGE_FONT_SIZE = 64;
-const MESSAGE_FONT_SIZE2 = 24;
+const MESSAGE_FONT_SIZE1 = 64;
+const MESSAGE_FONT_SIZE2 = 32;
+const MESSAGE_FONT_SIZE3 = 24;
 
 /* Tile Symbols */
 const MURPHY_SYMBOL = '🙂';

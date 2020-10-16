@@ -4,6 +4,8 @@ class Maze {
     this.rows = tileMap.length;
     this.cols = line.length;
     this.matrix = new Array(this.rows);
+    this.width = this.cols * TILE_SIZE;
+    this.height = this.rows * TILE_SIZE;
     for (let i = 0; i < this.rows; i++) {
       this.matrix[i] = new Array(this.cols);
       for (let j = 0; j < this.cols; j++) {
@@ -21,11 +23,11 @@ class Maze {
   }
 
   get Width() {
-    return this.cols * TILE_SIZE;
+    return this.width;
   }
 
   get Height() {
-    return this.rows * TILE_SIZE;
+    return this.height;
   }
 
   Create(tileMap) {
