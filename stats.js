@@ -29,6 +29,9 @@ class Stats {
 
   Reset() {
     this.infotronsRemained = this.infotrons;
+    this.timerSeconds = 0;
+    this.timerMinutes = 0;
+    this.timerHours = 0;
   }
 
   DecrementInfotrons() {

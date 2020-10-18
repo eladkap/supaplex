@@ -33,6 +33,7 @@ class Game {
     this.SetMaze(this.tileMap);
     this.SetTiles();
     this.SetStats();
+    this.SetCamera();
     this.state = GAME_READY;
   }
 
@@ -41,17 +42,23 @@ class Game {
     this.stats.Update();
     this.murphy.Draw();
     this.murphy.Update();
+    this.cam.Update(this.murphy);
+    this.cam.Apply(this.murphy);
+    // if (gravity) {
+    //   murphy.GoDown();
+    // }
     for (let tile of this.tiles) {
       tile.Draw();
       tile.Update();
-      // this.cam.Apply(tile);
+      this.cam.Apply(tile);
     }
     this.MoveFallingElements();
     this.MoveEnemies();
   }
 
   Reset() {
-    game.SetState(GAME_PLAY);
+    this.SetState(GAME_PLAY);
+    this.stats.Reset();
     this.ResetMaze();
     this.SetWallsColor(BLUE);
     this.stats.Reset();
@@ -94,7 +101,7 @@ class Game {
   ResetMaze() {
     this.maze.Create(tileMap);
     this.SetTiles();
-    game.state = GAME_READY;
+    this.state = GAME_READY;
   }
 
   SetTiles() {
@@ -299,29 +306,29 @@ class Game {
     }
   }
 
-  CheckMurphyEnemyCollision() {
+  CheckMurphyCollidesEnemy() {
     let types = [SnikSnak, Electron];
     for (let tile of this.tiles) {
       for (let type of types) {
         if (tile instanceof type) {
           if (this.murphy.Collide(tile)) {
-            Busted();
-            return;
+            return true;
           }
         }
       }
     }
+    return false;
   }
 
   MurphyPushLeft() {
     for (let tile of this.tiles) {
       if (tile instanceof Zonk) {
         if (
-          tile.pos.y == game.murphy.pos.y &&
-          game.murphy.pos.x - tile.pos.x == TILE_SIZE
+          tile.pos.y == this.murphy.pos.y &&
+          this.murphy.pos.x - tile.pos.x == TILE_SIZE
         ) {
           tile.GoLeft();
-          game.murphy.GoLeft();
+          this.murphy.GoLeft();
           return;
         }
       }
@@ -332,11 +339,11 @@ class Game {
     for (let tile of this.tiles) {
       if (tile instanceof Zonk) {
         if (
-          tile.pos.y == game.murphy.pos.y &&
-          tile.pos.x - game.murphy.pos.x == TILE_SIZE
+          tile.pos.y == this.murphy.pos.y &&
+          tile.pos.x - this.murphy.pos.x == TILE_SIZE
         ) {
           tile.GoRight();
-          game.murphy.GoRight();
+          this.murphy.GoRight();
           return;
         }
       }

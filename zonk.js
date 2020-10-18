@@ -26,16 +26,6 @@ class Zonk extends Entity {
     }
   }
 
-  // CanGoDown() {
-  //   return (
-  //     this.row > 0 &&
-  //     ![TILE_WALL, TILE_MURPHY, TILE_BASE].includes(
-  //       this.maze.GetValue(this.row + 1, this.col)
-  //     ) &&
-  //     !this.isLerping
-  //   );
-  // }
-
   ChangeDirection() {
     this.GoDown();
     this.isMoving = true;
