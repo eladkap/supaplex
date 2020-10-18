@@ -2,7 +2,7 @@ class Tile {
   constructor(row, col, width, forecolor, backcolor, symbol) {
     this.row = row;
     this.col = col;
-    this.pos = createVector(MAZE_X + col * width, MAZE_Y + row * width);
+    this.pos = createVector(MAZE_POS_X + col * width, MAZE_POS_Y + row * width);
     this.width = width;
     this.radius = width / 2;
     this.forecolor = forecolor;
@@ -58,6 +58,8 @@ class Tile {
     rect(this.pos.x, this.pos.y, this.width, this.width);
   }
 
+  Update() {}
+
   SetColor(color) {
     this.color = color;
   }
@@ -73,8 +75,8 @@ class Tile {
   SetPosition(row, col) {
     this.row = row;
     this.col = col;
-    let x = MAZE_X + col * this.width;
-    let y = MAZE_Y + row * this.width;
+    let x = MAZE_POS_X + col * this.width;
+    let y = MAZE_POS_Y + row * this.width;
     this.pos.set(x, y);
   }
 

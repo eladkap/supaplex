@@ -1,19 +1,23 @@
-var murphy;
-var walls;
-var infotrons;
-var zonks;
-var bases;
-var enemies;
-var exit;
-
-var gameStatus;
-var spaceKeyIsHold = false;
-var gravity = true;
-
+var game;
 var tileMap;
-var stats;
-var maze;
-var cam;
+var spaceKeyIsHold;
+// var murphy;
+// var tiles;
+// var walls;
+// var infotrons;
+// var zonks;
+// var bases;
+// var enemies;
+// var exit;
+
+// var gameStatus;
+// var spaceKeyIsHold = false;
+// var gravity = true;
+
+// var tileMap;
+// var stats;
+// var maze;
+// var cam;
 
 //#region Main Functions
 function LoadTileMap() {
@@ -27,52 +31,56 @@ function preload() {
 function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   frameRate(FPS);
-  SetMaze(tileMap);
-  SetTiles();
-  setStats();
-  gameStatus = GAME_READY;
+  game = new Game(tileMap);
+  game.Setup();
   noLoop();
 }
 
 async function draw() {
   background(BLACK);
+  game.Update();
   // DrawMaze();
-  stats.Draw();
-  stats.Update();
-  DrawWalls();
-  MoveMurphy();
-  MoveInfotrons();
-  MoveZonks();
-  MoveEnemies();
-  DrawBases();
-  DrawBugs();
-  DrawExit();
-  cam.Update(murphy);
+  // stats.Draw();
+  // stats.Update();
+  // DrawWalls();
+  // MoveMurphy();
+  // MoveInfotrons();
+  // MoveZonks();
+  // MoveEnemies();
+  // DrawBases();
+  // DrawBugs();
+  // DrawExit();
+  // cam.Update(murphy);
 
   // if (gravity) {
   //   murphy.GoDown();
   // }
 
-  if (gameStatus == GAME_READY) {
+  if (game.State == GAME_READY) {
     DisplayReady();
   }
-  if (gameStatus == GAME_PAUSED) {
+  if (game.Stat == GAME_PAUSED) {
     DisplayPause();
   }
-  if (gameStatus == GAME_BUSTED) {
+  if (game.Stat == GAME_BUSTED) {
     DisplayBusted();
   }
+  game.CheckMurphyEatElement();
+  if (game.CheckMurphyCollidesBug()) {
+    Busted();
+  }
+  game.CheckMurphyEnemyCollision();
 
-  CheckMurphyEatBase();
-  CheckMurphyEatInfotron();
-  CheckMurphyCollidesBug();
+  // game.CheckMurphyEatBase();
+  // game.CheckMurphyEatInfotron();
+  // if (game.CheckMurphyCollidesBug()) {
+  // Busted();
+  // }
   // CheckTileFallOnMurphy();
 
   CheckKeyIsDown();
 
   // DrawGameSignature();
-
-  DisplayMessage('(' + murphy.Col + ',' + murphy.Row + ')', 50, 50, WHITE, 24);
 }
 //#endregion
 
@@ -88,25 +96,7 @@ function DrawGameSignature() {
 
 function ResetRound() {
   ConsoleLog('Reset round');
-  gameStatus = GAME_PLAY;
-  ResetMaze();
-  SetWallsColor(BLUE);
-  stats.Reset();
-  murphy.Stop();
-  murphy.SetOriginalPosition();
-
-  for (let zonk of zonks) {
-    zonk.Stop();
-  }
-
-  for (let infotron of infotrons) {
-    infotron.Stop();
-  }
-
-  for (let enemy of enemies) {
-    enemy.SetOriginalPosition();
-    enemy.Stop();
-  }
+  game.Reset();
   loop();
 }
 
@@ -114,14 +104,14 @@ function ResetRound() {
 function DrawWalls() {
   for (let wall of walls) {
     wall.Draw();
-    cam.Apply(wall);
+    // cam.Apply(wall);
   }
 }
 
 function MoveMurphy() {
   murphy.Draw();
   murphy.Update();
-  cam.Apply(murphy);
+  // cam.Apply(murphy);
 }
 
 function MoveInfotrons() {
@@ -129,7 +119,7 @@ function MoveInfotrons() {
     infotron.Draw();
     infotron.Update();
     infotron.GoDown();
-    cam.Apply(infotron);
+    // cam.Apply(infotron);
   }
 }
 
@@ -138,14 +128,14 @@ function MoveZonks() {
     zonk.GoDown();
     zonk.Draw();
     zonk.Update();
-    cam.Apply(zonk);
+    // cam.Apply(zonk);
   }
 }
 
 function DrawBases() {
   for (let base of bases) {
     base.Draw();
-    cam.Apply(base);
+    // cam.Apply(base);
   }
 }
 
@@ -153,20 +143,20 @@ function DrawBugs() {
   for (let bug of bugs) {
     bug.Draw();
     bug.Update();
-    cam.Apply(bug);
+    // cam.Apply(bug);
   }
 }
 
 function DrawExit() {
   exit.Draw();
-  cam.Apply(exit);
+  // cam.Apply(exit);
 }
 
 function MoveEnemies() {
   for (let enemy of enemies) {
     enemy.Draw();
     enemy.Update();
-    cam.Apply(enemy);
+    // cam.Apply(enemy);
   }
 }
 
@@ -191,11 +181,11 @@ function setStats() {
 function SetMaze(tileMap) {
   maze = new Maze(tileMap);
   maze.Create(tileMap);
-  cam = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT);
+  cam = new Camera(MAZE_POS_X, MAZE_POS_Y, MAZE_WIDTH, MAZE_HEIGHT);
 }
 
 function ResetMaze() {
-  maze.Create(tileMap);
+  game.maze.Create(tileMap);
   SetTiles();
 }
 
@@ -300,8 +290,8 @@ function SetLifeTile() {
 
 function Busted() {
   ConsoleLog('Busted');
-  SetWallsColor(DARK_BLUE);
-  gameStatus = GAME_BUSTED;
+  game.SetWallsColor(DARK_BLUE);
+  game.SetState(GAME_BUSTED);
   DisplayBusted();
   noLoop();
 }
@@ -309,15 +299,15 @@ function Busted() {
 function LevelCompleted() {
   ConsoleLog('Level completed.');
   DisplayLevelCompleted();
-  gameStatus = GAME_LEVEL_COMPLETED;
+  game.SetState(GAME_LEVEL_COMPLETED);
   noLoop();
 }
 
-function SetWallsColor(color) {
-  for (let wall of walls) {
-    wall.SetColor(color);
-  }
-}
+// function SetWallsColor(color) {
+//   for (let wall of walls) {
+//     wall.SetColor(color);
+//   }
+// }
 
 function DisplayLevelCompleted() {
   let msg_x = SCREEN_WIDTH * 0.3;
@@ -347,11 +337,11 @@ function DisplayReady() {
 }
 
 function DisplayBusted() {
-  let msg_x = (MAZE_X + SCREEN_WIDTH) * 0.32;
+  let msg_x = (MAZE_POS_X + SCREEN_WIDTH) * 0.32;
   let msg_y = SCREEN_HEIGHT * 0.58;
   let msg = 'Busted!';
   DisplayMessage(msg, msg_x, msg_y, RED, MESSAGE_FONT_SIZE1);
-  msg_x = (MAZE_X + SCREEN_WIDTH) * 0.3;
+  msg_x = (MAZE_POS_X + SCREEN_WIDTH) * 0.3;
   msg_y = SCREEN_HEIGHT * 0.71;
   msg = 'Press SPACE to restart.';
   DisplayMessage(msg, msg_x, msg_y, WHITE, MESSAGE_FONT_SIZE2);
@@ -373,25 +363,29 @@ function DisplayPause() {
 
 function PauseGame() {
   ConsoleLog('Game paused.');
-  gameStatus = GAME_PAUSED;
-  SetWallsColor(DARK_BLUE);
+  game.SetState(GAME_PAUSED);
+  game.SetWallsColor(DARK_BLUE);
   DisplayPause();
   noLoop();
 }
 
 function ResumeGame() {
   ConsoleLog('Game resumed');
-  gameStatus = GAME_PLAY;
-  SetWallsColor(BLUE);
-  for (let zonk of zonks) {
-    zonk.GoDown();
-  }
-  for (let infotron of infotrons) {
-    infotron.GoDown();
-  }
-  for (let enemy of enemies) {
-    enemy.SetRandomDirection();
-  }
+  game.Resume();
+  // game.SetState(GAME_PLAY);
+  // game.SetWallsColor(BLUE);
+  // game.MoveFallingElements();
+  // game.MoveEnemies();
+
+  // for (let zonk of zonks) {
+  //   zonk.GoDown();
+  // }
+  // for (let infotron of infotrons) {
+  //   infotron.GoDown();
+  // }
+  // for (let enemy of enemies) {
+  //   enemy.SetRandomDirection();
+  // }
   loop();
 }
 
@@ -401,8 +395,8 @@ function SetNextLevel() {
   //   currLevelIndex = fruits.length - 1;
   // }
   // stats.SetNextLevel();
-  // ResetMaze();
-  gameStatus = GAME_READY;
+  game.Reset();
+  // game.SetState(GAME_READY);
   // loop();
 }
 
@@ -410,39 +404,19 @@ function finishGame() {
   let msg_x = SCREEN_WIDTH / 2 - 100;
   let msg_y = SCREEN_HEIGHT / 2;
   let msg = 'Game Finished';
-  gameStatus = GAME_FINISHED;
+  game.SetState(GAME_FINISHED);
   DisplayMessage(msg, msg_x, msg_y, GREEN, MESSAGE_FONT_SIZE2);
   noLoop();
 }
 
-function CheckMurphyEatBase() {
-  for (let i = bases.length - 1; i >= 0; i--) {
-    if (murphy.Collide(bases[i])) {
-      let base = bases.splice(i, 1)[0];
-    }
-  }
-}
-
-function CheckMurphyEatInfotron() {
-  for (let i = infotrons.length - 1; i >= 0; i--) {
-    if (murphy.Collide(infotrons[i])) {
-      let infotron = infotrons.splice(i, 1)[0];
-      stats.DecrementInfotrons();
-    }
-  }
-}
-
-function CheckMurphyCollidesBug() {
-  for (let i = bugs.length - 1; i >= 0; i--) {
-    if (murphy.Collide(bugs[i])) {
-      if (bugs[i].Activated) {
-        Busted();
-      } else {
-        let bug = bugs.splice(i, 1)[0];
-      }
-    }
-  }
-}
+// function CheckMurphyEatInfotron() {
+//   for (let i = infotrons.length - 1; i >= 0; i--) {
+//     if (murphy.Collide(infotrons[i])) {
+//       let infotron = infotrons.splice(i, 1)[0];
+//       stats.DecrementInfotrons();
+//     }
+//   }
+// }
 
 // todo: fix this function
 function CheckTileFallOnMurphy() {
@@ -456,85 +430,76 @@ function CheckTileFallOnMurphy() {
   }
 }
 
-async function CheckMurphyEnemyCollision() {
-  for (let enemy of enemies) {
-    if (murphy.Collide(enemy)) {
-      Busted();
-      return;
-    }
-  }
-}
+// function MurphyCollectTile(direction) {
+//   let location = murphy.Collect(direction);
+//   if (location != null) {
+//     for (let i = game.tiles.length - 1; i >= 0; i--) {
+//       let base = bases[i];
+//       if (base.Row == location[0] && base.Col == location[1]) {
+//         bases.splice(i, 1);
+//       }
+//     }
+//     for (let i = infotrons.length - 1; i >= 0; i--) {
+//       let infotron = infotrons[i];
+//       if (infotron.Row == location[0] && infotron.Col == location[1]) {
+//         infotrons.splice(i, 1);
+//         stats.DecrementInfotrons();
+//       }
+//     }
+//   }
+// }
 
-function MurphyCollectTile(direction) {
-  let location = murphy.Collect(direction);
-  if (location != null) {
-    for (let i = bases.length - 1; i >= 0; i--) {
-      let base = bases[i];
-      if (base.Row == location[0] && base.Col == location[1]) {
-        bases.splice(i, 1);
-      }
-    }
-    for (let i = infotrons.length - 1; i >= 0; i--) {
-      let infotron = infotrons[i];
-      if (infotron.Row == location[0] && infotron.Col == location[1]) {
-        infotrons.splice(i, 1);
-        stats.DecrementInfotrons();
-      }
-    }
-  }
-}
+// function MurphyPushRight() {
+//   for (let zonk of zonks) {
+//     if (zonk.pos.y == murphy.pos.y && zonk.pos.x - murphy.pos.x == TILE_SIZE) {
+//       zonk.GoRight();
+//       murphy.GoRight();
+//       return;
+//     }
+//   }
+// }
 
-function MurphyPushRight() {
-  for (let zonk of zonks) {
-    if (zonk.pos.y == murphy.pos.y && zonk.pos.x - murphy.pos.x == TILE_SIZE) {
-      zonk.GoRight();
-      murphy.GoRight();
-      return;
-    }
-  }
-}
-
-function MurphyPushLeft() {
-  for (let zonk of zonks) {
-    if (zonk.pos.y == murphy.pos.y && murphy.pos.x - zonk.pos.x == TILE_SIZE) {
-      zonk.GoLeft();
-      murphy.GoLeft();
-      return;
-    }
-  }
-}
+// function MurphyPushLeft() {
+//   for (let zonk of zonks) {
+//     if (zonk.pos.y == murphy.pos.y && murphy.pos.x - zonk.pos.x == TILE_SIZE) {
+//       zonk.GoLeft();
+//       game.Murphy.GoLeft();
+//       return;
+//     }
+//   }
+// }
 
 function MoveMurphyRight() {
-  if (murphy.CanPushRight()) {
-    MurphyPushRight();
+  if (game.Murphy.CanPushRight()) {
+    game.MurphyPushRight();
   } else {
-    murphy.GoRight();
+    game.Murphy.GoRight();
   }
 }
 
 function MoveMurphyLeft() {
-  if (murphy.CanPushLeft()) {
-    MurphyPushLeft();
+  if (game.Murphy.CanPushLeft()) {
+    game.MurphyPushLeft();
   } else {
-    murphy.GoLeft();
+    game.Murphy.GoLeft();
   }
 }
 
 //#region Keyboard Events
 function CheckKeyIsDown() {
-  if (gameStatus == GAME_PLAY) {
+  if (game.State == GAME_PLAY) {
     if (keyIsDown(SPACE_KEY)) {
       spaceKeyIsHold = true;
     }
     if (spaceKeyIsHold) {
       if (keyIsDown(RIGHT_ARROW)) {
-        MurphyCollectTile('R');
+        game.MurphyCollectTile('R');
       } else if (keyIsDown(LEFT_ARROW)) {
-        MurphyCollectTile('L');
+        game.MurphyCollectTile('L');
       } else if (keyIsDown(UP_ARROW)) {
-        MurphyCollectTile('U');
+        game.MurphyCollectTile('U');
       } else if (keyIsDown(DOWN_ARROW)) {
-        MurphyCollectTile('D');
+        game.MurphyCollectTile('D');
       }
     } else {
       if (keyIsDown(RIGHT_ARROW)) {
@@ -542,9 +507,9 @@ function CheckKeyIsDown() {
       } else if (keyIsDown(LEFT_ARROW)) {
         MoveMurphyLeft();
       } else if (keyIsDown(UP_ARROW)) {
-        murphy.GoUp();
+        game.Murphy.GoUp();
       } else if (keyIsDown(DOWN_ARROW)) {
-        murphy.GoDown();
+        game.Murphy.GoDown();
       }
     }
   }
@@ -555,35 +520,35 @@ function keyReleased() {
 }
 
 function keyPressed() {
-  if (gameStatus == GAME_READY && key == ' ') {
+  if (game.State == GAME_READY && key == ' ') {
     ResumeGame();
   }
-  if (gameStatus == GAME_BUSTED && key == ' ') {
+  if (game.State == GAME_BUSTED && key == ' ') {
     ResetRound();
   }
-  if (gameStatus == GAME_LEVEL_COMPLETED && keyCode == ENTER) {
+  if (game.State == GAME_LEVEL_COMPLETED && keyCode == ENTER) {
     SetNextLevel();
   }
-  if (gameStatus == GAME_PLAY && key === 'p') {
+  if (game.State == GAME_PLAY && key === 'p') {
     PauseGame();
     return;
   }
-  if (gameStatus == GAME_PLAY && keyCode == ESCAPE) {
-    murphy.Destroy();
+  if (game.State == GAME_PLAY && keyCode == ESCAPE) {
+    game.Murphy.Destroy();
     Busted();
   }
-  if (gameStatus == GAME_PAUSED && key === 'p') {
+  if (game.State == GAME_PAUSED && key === 'p') {
     ResumeGame();
   }
-  if (gameStatus == GAME_PLAY && !spaceKeyIsHold) {
+  if (game.State == GAME_PLAY && !spaceKeyIsHold) {
     if (keyCode === RIGHT_ARROW) {
       MoveMurphyRight();
     } else if (keyCode === LEFT_ARROW) {
       MoveMurphyLeft();
     } else if (keyCode === UP_ARROW) {
-      murphy.GoUp();
+      game.Murphy.GoUp();
     } else if (keyCode === DOWN_ARROW) {
-      murphy.GoDown();
+      game.Murphy.GoDown();
     }
   }
 }

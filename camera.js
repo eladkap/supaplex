@@ -1,8 +1,16 @@
 class Camera {
-  constructor(width, height) {
-    this.pos = createVector(0, 0);
+  constructor(x, y, width, height) {
+    this.pos = createVector(x, y);
     this.width = width;
     this.height = height;
+  }
+
+  get Width() {
+    return this.width;
+  }
+
+  get Height() {
+    return this.height;
   }
 
   Apply(tile) {
@@ -14,8 +22,8 @@ class Camera {
     let y = -target.pos.y + int(SCREEN_HEIGHT / 2);
     x = Math.min(0, x);
     y = Math.min(0, y);
-    // x = Math.max(-(this.width - SCREEN_WIDTH), x);
-    // y = Math.max(-(this.height - SCREEN_HEIGHT), x);
+    x = Math.max(-(this.width - MAZE_WIDTH), x);
+    y = Math.max(-(this.height - MAZE_HEIGHT), y);
     this.pos.set(x, y);
   }
 }
