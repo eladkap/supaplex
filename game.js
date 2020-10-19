@@ -30,27 +30,26 @@ class Game {
   //#endregion
 
   Setup() {
-    this.Setmap(this.tileMap);
+    this.SetMap(this.tileMap);
     this.SetTiles();
     this.SetStats();
     this.SetCamera();
     this.state = GAME_READY;
+    this.Update();
   }
 
   Update() {
     this.stats.Draw();
     this.stats.Update();
-    this.murphy.Draw();
-    this.murphy.Update();
     this.cam.Update(this.murphy);
-    this.cam.Apply(this.murphy);
+    this.murphy.Draw(this.cam.pos);
+    this.murphy.Update();
     // if (gravity) {
     //   murphy.GoDown();
     // }
     for (let tile of this.tiles) {
-      tile.Draw();
+      tile.Draw(this.cam.pos);
       tile.Update();
-      this.cam.Apply(tile);
     }
     this.MoveFallingElements();
     this.MoveEnemies();
@@ -59,7 +58,7 @@ class Game {
   Reset() {
     this.SetState(GAME_PLAY);
     this.stats.Reset();
-    this.Resetmap();
+    this.ResetMap();
     this.SetWallsColor(BLUE);
     this.stats.Reset();
     this.murphy.Stop();
@@ -89,16 +88,16 @@ class Game {
     );
   }
 
-  Setmap(tileMap) {
+  SetMap(tileMap) {
     this.map = new Map(tileMap);
     this.map.Create(tileMap);
   }
 
   SetCamera() {
-    this.cam = new Camera(MAP_POS_X, MAP_POS_Y, MAP_WIDTH, MAP_HEIGHT);
+    this.cam = new Camera(MAP_POS_X, MAP_POS_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
   }
 
-  Resetmap() {
+  ResetMap() {
     this.map.Create(tileMap);
     this.SetTiles();
     this.state = GAME_READY;

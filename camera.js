@@ -14,17 +14,13 @@ class Camera {
     return this.height;
   }
 
-  Apply(tile) {
-    tile.pos.add(this.pos);
-  }
-
   Update(target) {
-    let x = -target.pos.x + int(SCREEN_WIDTH / 2);
-    let y = -target.pos.y + int(SCREEN_HEIGHT / 2);
-    x = Math.min(this.topLeft.x, x);
-    y = Math.min(this.topLeft.y, y);
-    x = Math.max(-(this.width - SCREEN_WIDTH), x);
-    y = Math.max(-(this.height - SCREEN_HEIGHT), y);
+    let x = -target.pos.x + int(this.width / 2);
+    let y = -target.pos.y + int(this.height / 2);
+    x = Math.min(0, x);
+    y = Math.min(0, y);
+    x = Math.max(this.width - MAP_WIDTH, x);
+    y = Math.max(this.height - MAP_HEIGHT - this.topLeft.y, y);
     this.pos.set(x, y);
   }
 }

@@ -3,18 +3,18 @@ class Exit extends Tile {
     super(row, col, width, forecolor, backcolor, symbol);
   }
 
-  Draw() {
+  Draw(refPos) {
     strokeWeight(0.1);
     stroke(GRAY3);
     fill(this.backcolor);
-    rect(this.pos.x, this.pos.y, this.width, this.width);
+    rect(this.pos.x + refPos.x, this.pos.y + refPos.y, this.width, this.width);
     textSize(this.width);
     textFont(FONT_FAMILY);
     fill(this.forecolor);
     text(
       this.symbol,
-      this.pos.x + this.width * 0.2,
-      this.pos.y + this.width * 0.8
+      this.pos.x + refPos.x + this.width * 0.2,
+      this.pos.y + refPos.y + this.width * 0.8
     );
   }
 }

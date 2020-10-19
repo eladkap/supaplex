@@ -13,15 +13,15 @@ class Infotron extends Entity {
     super(row, col, width, forecolor, backcolor, symbol, speed, maze, tileType);
   }
 
-  Draw() {
+  Draw(refPos) {
     if (this.visible) {
       noStroke();
       fill(this.forecolor);
       textSize(this.width * 0.9);
       text(
         this.symbol,
-        this.pos.x - this.width * 0.1,
-        this.pos.y + this.width * 0.8
+        this.pos.x + refPos.x - this.width * 0.1,
+        this.pos.y + refPos.y + this.width * 0.8
       );
     }
   }

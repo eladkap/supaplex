@@ -51,11 +51,11 @@ class Tile {
 
   //#region Methods
 
-  Draw() {
+  Draw(refPos) {
     strokeWeight(0.1);
     stroke(GRAY3);
     fill(this.forecolor);
-    rect(this.pos.x, this.pos.y, this.width, this.width);
+    rect(this.pos.x + refPos.x, this.pos.y + refPos.y, this.width, this.width);
   }
 
   Update() {}
@@ -75,21 +75,21 @@ class Tile {
   SetPosition(row, col) {
     this.row = row;
     this.col = col;
-    let x = MAZE_POS_X + col * this.width;
-    let y = MAZE_POS_Y + row * this.width;
+    let x = MAP_POS_X + col * this.width;
+    let y = MAP_POS_Y + row * this.width;
     this.pos.set(x, y);
   }
 
   SetRandomPosition() {
-    let row = int(random(0, MAZE_COLS));
-    let col = int(random(0, MAZE_ROWS));
+    let row = int(random(0, MAP_COLS));
+    let col = int(random(0, MAP_ROWS));
     this.SetPosition(row, col);
   }
 
   UpdatePosition() {
     this.pos.set(
-      MAZE_X + this.col * this.width,
-      MAZE_Y + this.row * this.width
+      MAP_POS_X + this.col * this.width,
+      MAP_POS_Y + this.row * this.width
     );
   }
 }

@@ -13,19 +13,6 @@ class Electron extends Entity {
     super(row, col, width, forecolor, backcolor, symbol, speed, map, tileType);
   }
 
-  Draw() {
-    if (this.visible) {
-      noStroke();
-      fill(this.forecolor);
-      textSize(this.width * 0.9);
-      text(
-        this.symbol,
-        this.pos.x - this.width * 0.1,
-        this.pos.y + this.width * 0.8
-      );
-    }
-  }
-
   SetRandomDirection() {
     let possibleDirections = this.GetPossibleDirections();
     let chosenDirection = random(possibleDirections);

@@ -19,7 +19,7 @@ function setup() {
   noLoop();
 }
 
-async function draw() {
+function draw() {
   background(BLACK);
   game.Update();
 
@@ -40,6 +40,26 @@ async function draw() {
   if (game.CheckMurphyCollidesEnemy()) {
     Busted();
   }
+
+  DisplayMessage(
+    `CAM: ${Math.round(game.cam.pos.x / TILE_SIZE)},${Math.round(
+      game.cam.pos.y / TILE_SIZE
+    )}`,
+    50,
+    50,
+    WHITE,
+    24
+  );
+
+  DisplayMessage(
+    `MURPHY: ${Math.round(game.murphy.pos.x / TILE_SIZE)},${Math.round(
+      game.murphy.pos.y / TILE_SIZE
+    )}`,
+    200,
+    50,
+    WHITE,
+    24
+  );
 
   // CheckTileFallOnMurphy();
 

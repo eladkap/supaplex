@@ -17,16 +17,20 @@ class Bug extends Tile {
     this.activated = value;
   }
 
-  Draw() {
+  Draw(refPos) {
     strokeWeight(0.1);
     stroke(GRAY3);
     fill(this.backcolor);
-    rect(this.pos.x, this.pos.y, this.width, this.width);
+    rect(this.pos.x + refPos.x, this.pos.y + refPos.y, this.width, this.width);
     if (this.visible) {
       textSize(this.width * 0.7);
       textFont(FONT_FAMILY);
       fill(this.forecolor);
-      text(this.symbol, this.pos.x, this.pos.y + this.width * 0.7);
+      text(
+        this.symbol,
+        this.pos.x + refPos.x,
+        this.pos.y + refPos.y + this.width * 0.7
+      );
     }
   }
 
