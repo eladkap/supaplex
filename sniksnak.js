@@ -7,10 +7,10 @@ class SnikSnak extends Entity {
     backcolor,
     symbol,
     speed,
-    maze,
+    map,
     tileType
   ) {
-    super(row, col, width, forecolor, backcolor, symbol, speed, maze, tileType);
+    super(row, col, width, forecolor, backcolor, symbol, speed, map, tileType);
   }
 
   Draw() {

@@ -6,15 +6,15 @@ const FPS = 30;
 
 const TILE_SIZE = 50;
 
-/* Maze settings */
-const MAZE_POS_X = 0;
-const MAZE_POS_Y = 100;
+/* Map settings */
+const MAP_POS_X = 0;
+const MAP_POS_Y = 100;
 
-const MAZE_ROWS = 24;
-const MAZE_COLS = 60;
+const MAP_ROWS = 24;
+const MAP_COLS = 60;
 
-const MAZE_WIDTH = MAZE_COLS * TILE_SIZE;
-const MAZE_HEIGHT = MAZE_ROWS * TILE_SIZE;
+const MAP_WIDTH = MAP_COLS * TILE_SIZE;
+const MAP_HEIGHT = MAP_ROWS * TILE_SIZE;
 
 // LERP settings - Linear Interpolation - Animation movement unit
 const LERP_UNIT_NORMAL = 0.2;

@@ -52,7 +52,7 @@ async function draw() {
 function DrawGameSignature() {
   DisplayMessage(
     'Deveolped by Elad Kapuza 2020',
-    MAZE_POS_X,
+    MAP_POS_X,
     SCREEN_HEIGHT + STATS_HEIGHT - TILE_SIZE / 2,
     WHITE,
     MESSAGE_FONT_SIZE2
@@ -65,11 +65,11 @@ function ResetRound() {
   loop();
 }
 
-function DrawMaze() {
+function DrawMap() {
   strokeWeight(1);
   stroke(NAVY);
   noFill();
-  rect(MAZE_POS_X, MAZE_POS_Y, maze.Width, maze.Height);
+  rect(MAP_POS_X, MAP_POS_Y, map.Width, map.Height);
 }
 
 function SetLifeTile() {
@@ -119,25 +119,25 @@ function DisplayReady() {
 }
 
 function DisplayBusted() {
-  let msg_x = (MAZE_POS_X + SCREEN_WIDTH) * 0.32;
+  let msg_x = (MAP_POS_X + SCREEN_WIDTH) * 0.32;
   let msg_y = SCREEN_HEIGHT * 0.58;
   let msg = 'Busted!';
   DisplayMessage(msg, msg_x, msg_y, RED, MESSAGE_FONT_SIZE1);
-  msg_x = (MAZE_POS_X + SCREEN_WIDTH) * 0.3;
+  msg_x = (MAP_POS_X + SCREEN_WIDTH) * 0.3;
   msg_y = SCREEN_HEIGHT * 0.71;
   msg = 'Press SPACE to restart.';
   DisplayMessage(msg, msg_x, msg_y, WHITE, MESSAGE_FONT_SIZE2);
 }
 
 function DisplayGameOver() {
-  let msg_x = (MAZE_POS_X + SCREEN_WIDTH) * 0.3;
+  let msg_x = (MAP_POS_X + SCREEN_WIDTH) * 0.3;
   let msg_y = SCREEN_HEIGHT * 0.58;
   let msg = 'GAME OVER';
   DisplayMessage(msg, msg_x, msg_y, RED, MESSAGE_FONT_SIZE);
 }
 
 function DisplayPause() {
-  let msg_x = (MAZE_POS_X + SCREEN_WIDTH) * 0.28;
+  let msg_x = (MAP_POS_X + SCREEN_WIDTH) * 0.28;
   let msg_y = SCREEN_HEIGHT * 0.7;
   let msg = 'Game Paused';
   DisplayMessage(msg, msg_x, msg_y, WHITE, MESSAGE_FONT_SIZE);

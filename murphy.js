@@ -7,11 +7,11 @@ class Murphy extends Entity {
     backcolor,
     symbol,
     speed,
-    maze,
+    map,
     tileType,
     lives
   ) {
-    super(row, col, width, forecolor, backcolor, symbol, speed, maze, tileType);
+    super(row, col, width, forecolor, backcolor, symbol, speed, map, tileType);
     this.lives = lives;
   }
 
@@ -42,19 +42,19 @@ class Murphy extends Entity {
 
   Collect(direction) {
     if (direction == 'R' && this.CanGoRight()) {
-      this.maze.SetValue(this.row, this.col + 1, TILE_EMPTY);
+      this.map.SetValue(this.row, this.col + 1, TILE_EMPTY);
       return [this.row, this.col + 1];
     }
     if (direction == 'L' && this.CanGoLeft()) {
-      this.maze.SetValue(this.row, this.col - 1, TILE_EMPTY);
+      this.map.SetValue(this.row, this.col - 1, TILE_EMPTY);
       return [this.row, this.col - 1];
     }
     if (direction == 'U' && this.CanGoUp()) {
-      this.maze.SetValue(this.row - 1, this.col, TILE_EMPTY);
+      this.map.SetValue(this.row - 1, this.col, TILE_EMPTY);
       return [this.row - 1, this.col];
     }
     if (direction == 'D' && this.CanGoDown()) {
-      this.maze.SetValue(this.row + 1, this.col, TILE_EMPTY);
+      this.map.SetValue(this.row + 1, this.col, TILE_EMPTY);
       return [this.row + 1, this.col];
     }
     return null;
@@ -64,7 +64,7 @@ class Murphy extends Entity {
     return (
       this.col > 0 &&
       ![TILE_WALL, TILE_FRAME, TILE_ZONK].includes(
-        this.maze.GetValue(this.row, this.col - 1)
+        this.map.GetValue(this.row, this.col - 1)
       ) &&
       !this.isLerping
     );
@@ -72,9 +72,9 @@ class Murphy extends Entity {
 
   CanGoRight() {
     return (
-      this.col + 1 < this.maze.Cols &&
+      this.col + 1 < this.map.Cols &&
       ![TILE_WALL, TILE_FRAME, TILE_ZONK].includes(
-        this.maze.GetValue(this.row, this.col + 1)
+        this.map.GetValue(this.row, this.col + 1)
       ) &&
       !this.isLerping
     );
@@ -84,7 +84,7 @@ class Murphy extends Entity {
     return (
       this.row > 0 &&
       ![TILE_WALL, TILE_FRAME, TILE_ZONK].includes(
-        this.maze.GetValue(this.row - 1, this.col)
+        this.map.GetValue(this.row - 1, this.col)
       ) &&
       !this.isLerping
     );
@@ -92,9 +92,9 @@ class Murphy extends Entity {
 
   CanGoDown() {
     return (
-      this.row + 1 < this.maze.Rows &&
+      this.row + 1 < this.map.Rows &&
       ![TILE_WALL, TILE_FRAME, TILE_ZONK].includes(
-        this.maze.GetValue(this.row + 1, this.col)
+        this.map.GetValue(this.row + 1, this.col)
       ) &&
       !this.isLerping
     );
@@ -102,17 +102,17 @@ class Murphy extends Entity {
 
   CanPushRight() {
     return (
-      this.col + 2 < this.maze.Cols &&
-      this.maze.GetValue(this.row, this.col + 1) == TILE_ZONK &&
-      this.maze.GetValue(this.row, this.col + 2) == TILE_EMPTY
+      this.col + 2 < this.map.Cols &&
+      this.map.GetValue(this.row, this.col + 1) == TILE_ZONK &&
+      this.map.GetValue(this.row, this.col + 2) == TILE_EMPTY
     );
   }
 
   CanPushLeft() {
     return (
       this.col - 2 >= 0 &&
-      this.maze.GetValue(this.row, this.col - 1) == TILE_ZONK &&
-      this.maze.GetValue(this.row, this.col - 2) == TILE_EMPTY
+      this.map.GetValue(this.row, this.col - 1) == TILE_ZONK &&
+      this.map.GetValue(this.row, this.col - 2) == TILE_EMPTY
     );
   }
 

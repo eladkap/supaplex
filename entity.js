@@ -10,7 +10,7 @@ class Entity extends Tile {
     backcolor,
     symbol,
     speed,
-    maze,
+    map,
     tileType
   ) {
     super(row, col, width, forecolor, backcolor, symbol);
@@ -20,7 +20,7 @@ class Entity extends Tile {
     this.originalCol = col;
     this.speed = speed;
     this.direction = createVector(0, 0);
-    this.maze = maze;
+    this.map = map;
     this.tileType = tileType;
     this.lerpingCount = 0;
     this.isLerping = false;
@@ -94,15 +94,15 @@ class Entity extends Tile {
   CanGoLeft() {
     return (
       this.col > 0 &&
-      this.maze.GetValue(this.row, this.col - 1) == TILE_EMPTY &&
+      this.map.GetValue(this.row, this.col - 1) == TILE_EMPTY &&
       !this.isLerping
     );
   }
 
   CanGoRight() {
     return (
-      this.col + 1 < this.maze.Cols &&
-      this.maze.GetValue(this.row, this.col + 1) == TILE_EMPTY &&
+      this.col + 1 < this.map.Cols &&
+      this.map.GetValue(this.row, this.col + 1) == TILE_EMPTY &&
       !this.isLerping
     );
   }
@@ -110,7 +110,7 @@ class Entity extends Tile {
   CanGoUp() {
     return (
       this.row > 0 &&
-      this.maze.GetValue(this.row - 1, this.col) == TILE_EMPTY &&
+      this.map.GetValue(this.row - 1, this.col) == TILE_EMPTY &&
       !this.isLerping
     );
   }
@@ -118,7 +118,7 @@ class Entity extends Tile {
   CanGoDown() {
     return (
       this.row > 0 &&
-      this.maze.GetValue(this.row + 1, this.col) == TILE_EMPTY &&
+      this.map.GetValue(this.row + 1, this.col) == TILE_EMPTY &&
       !this.isLerping
     );
   }
@@ -144,10 +144,10 @@ class Entity extends Tile {
     if (this.CanGoLeft()) {
       this.direction.set(-1, 0);
       this.isLerping = true;
-      this.maze.SetValue(this.row, this.col, TILE_EMPTY);
+      this.map.SetValue(this.row, this.col, TILE_EMPTY);
       this.prevCol = this.col;
       this.col--;
-      this.maze.SetValue(this.row, this.col, this.tileType);
+      this.map.SetValue(this.row, this.col, this.tileType);
     }
   }
 
@@ -155,10 +155,10 @@ class Entity extends Tile {
     if (this.CanGoRight()) {
       this.direction.set(1, 0);
       this.isLerping = true;
-      this.maze.SetValue(this.row, this.col, TILE_EMPTY);
+      this.map.SetValue(this.row, this.col, TILE_EMPTY);
       this.prevCol = this.col;
       this.col++;
-      this.maze.SetValue(this.row, this.col, this.tileType);
+      this.map.SetValue(this.row, this.col, this.tileType);
     }
   }
 
@@ -166,10 +166,10 @@ class Entity extends Tile {
     if (this.CanGoUp()) {
       this.direction.set(0, -1);
       this.isLerping = true;
-      this.maze.SetValue(this.row, this.col, TILE_EMPTY);
+      this.map.SetValue(this.row, this.col, TILE_EMPTY);
       this.prevRow = this.row;
       this.row--;
-      this.maze.SetValue(this.row, this.col, this.tileType);
+      this.map.SetValue(this.row, this.col, this.tileType);
     }
   }
 
@@ -177,10 +177,10 @@ class Entity extends Tile {
     if (this.CanGoDown()) {
       this.direction.set(0, 1);
       this.isLerping = true;
-      this.maze.SetValue(this.row, this.col, TILE_EMPTY);
+      this.map.SetValue(this.row, this.col, TILE_EMPTY);
       this.prevRow = this.row;
       this.row++;
-      this.maze.SetValue(this.row, this.col, this.tileType);
+      this.map.SetValue(this.row, this.col, this.tileType);
     }
   }
 

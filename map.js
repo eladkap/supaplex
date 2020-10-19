@@ -1,4 +1,4 @@
-class Maze {
+class Map {
   constructor(tileMap) {
     let line = tileMap[0].split(' ');
     this.rows = tileMap.length;

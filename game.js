@@ -6,7 +6,7 @@ class Game {
     this.state = GAME_READY;
     this.gravity = false;
     this.stats = null;
-    this.maze = null;
+    this.map = null;
     this.cam = null;
   }
 
@@ -23,14 +23,14 @@ class Game {
     return this.state;
   }
 
-  get Maze() {
-    return this.maze;
+  get Map() {
+    return this.map;
   }
 
   //#endregion
 
   Setup() {
-    this.SetMaze(this.tileMap);
+    this.Setmap(this.tileMap);
     this.SetTiles();
     this.SetStats();
     this.SetCamera();
@@ -59,7 +59,7 @@ class Game {
   Reset() {
     this.SetState(GAME_PLAY);
     this.stats.Reset();
-    this.ResetMaze();
+    this.Resetmap();
     this.SetWallsColor(BLUE);
     this.stats.Reset();
     this.murphy.Stop();
@@ -89,34 +89,34 @@ class Game {
     );
   }
 
-  SetMaze(tileMap) {
-    this.maze = new Maze(tileMap);
-    this.maze.Create(tileMap);
+  Setmap(tileMap) {
+    this.map = new Map(tileMap);
+    this.map.Create(tileMap);
   }
 
   SetCamera() {
-    this.cam = new Camera(MAZE_POS_X, MAZE_POS_Y, MAZE_WIDTH, MAZE_HEIGHT);
+    this.cam = new Camera(MAP_POS_X, MAP_POS_Y, MAP_WIDTH, MAP_HEIGHT);
   }
 
-  ResetMaze() {
-    this.maze.Create(tileMap);
+  Resetmap() {
+    this.map.Create(tileMap);
     this.SetTiles();
     this.state = GAME_READY;
   }
 
   SetTiles() {
-    for (let i = 0; i < this.maze.Rows; i++) {
-      for (let j = 0; j < this.maze.Cols; j++) {
-        let mazeVal = this.maze.GetValue(i, j);
-        if (mazeVal == TILE_WALL) {
+    for (let i = 0; i < this.map.Rows; i++) {
+      for (let j = 0; j < this.map.Cols; j++) {
+        let mapVal = this.map.GetValue(i, j);
+        if (mapVal == TILE_WALL) {
           this.tiles.push(new Wall(i, j, TILE_SIZE, BLUE, BLACK, WALL_SYMBOL));
-        } else if (mazeVal == TILE_FRAME) {
+        } else if (mapVal == TILE_FRAME) {
           this.tiles.push(
             new Wall(i, j, TILE_SIZE, GRAY1, BLACK, FRAME_SYMBOL)
           );
-        } else if (mazeVal == TILE_BASE) {
+        } else if (mapVal == TILE_BASE) {
           this.tiles.push(new Base(i, j, TILE_SIZE, GREEN, BLACK, BASE_SYMBOL));
-        } else if (mazeVal == TILE_ZONK) {
+        } else if (mapVal == TILE_ZONK) {
           this.tiles.push(
             new Zonk(
               i,
@@ -126,11 +126,11 @@ class Game {
               BLACK,
               ZONK_SYMBOL,
               MURPHY_SPEED,
-              this.maze,
+              this.map,
               TILE_ZONK
             )
           );
-        } else if (mazeVal == TILE_INFOTRON) {
+        } else if (mapVal == TILE_INFOTRON) {
           this.tiles.push(
             new Infotron(
               i,
@@ -140,15 +140,15 @@ class Game {
               BLACK,
               INFOTRON_SYMBOL,
               MURPHY_SPEED,
-              this.maze,
+              this.map,
               TILE_INFOTRON
             )
           );
-        } else if (mazeVal == TILE_BUG) {
+        } else if (mapVal == TILE_BUG) {
           this.tiles.push(new Bug(i, j, TILE_SIZE, YELLOW, GREEN, BUG_SYMBOL));
-        } else if (mazeVal == TILE_EXIT) {
+        } else if (mapVal == TILE_EXIT) {
           this.tiles.push(new Exit(i, j, TILE_SIZE, WHITE, RED, EXIT_SYMBOL));
-        } else if (mazeVal == TILE_SNIKSNAK) {
+        } else if (mapVal == TILE_SNIKSNAK) {
           this.tiles.push(
             new SnikSnak(
               i,
@@ -158,11 +158,11 @@ class Game {
               BLACK,
               SNIKSNAK_SYMBOL,
               MURPHY_SPEED,
-              this.maze,
+              this.map,
               TILE_SNIKSNAK
             )
           );
-        } else if (mazeVal == TILE_ELECTRON) {
+        } else if (mapVal == TILE_ELECTRON) {
           this.tiles.push(
             new Electron(
               i,
@@ -172,11 +172,11 @@ class Game {
               BLACK,
               ELECTRON_SYMBOL,
               MURPHY_SPEED,
-              this.maze,
+              this.map,
               TILE_ELECTRON
             )
           );
-        } else if (mazeVal == TILE_MURPHY) {
+        } else if (mapVal == TILE_MURPHY) {
           this.murphy = new Murphy(
             i,
             j,
@@ -185,7 +185,7 @@ class Game {
             BLACK,
             MURPHY_SYMBOL,
             MURPHY_SPEED,
-            this.maze,
+            this.map,
             TILE_MURPHY,
             MAX_LIVES
           );
