@@ -7,22 +7,27 @@ class Zonk extends Entity {
     backcolor,
     symbol,
     speed,
-    maze,
+    map,
     tileType
   ) {
-    super(row, col, width, forecolor, backcolor, symbol, speed, maze, tileType);
+    super(row, col, width, forecolor, backcolor, symbol, speed, map, tileType);
+    this.angle = 0;
   }
 
   Draw(refPos) {
     if (this.visible) {
-      noStroke();
-      fill(this.forecolor);
-      textSize(this.width * 0.9);
-      text(
-        this.symbol,
-        this.pos.x + refPos.x - this.width * 0.1,
-        this.pos.y + refPos.y + this.width * 0.8
+      // push();
+      // translate(this.pos.x + refPos.x, this.pos.y + refPos.y);
+      // this.angle += 0.2;
+      // rotate(this.angle);
+      image(
+        zonkImage,
+        this.pos.x + refPos.x + this.width / 2,
+        this.pos.y + refPos.y + this.width / 2,
+        this.width,
+        this.width
       );
+      // pop();
     }
   }
 

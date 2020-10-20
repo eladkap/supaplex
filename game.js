@@ -35,12 +35,9 @@ class Game {
     this.SetStats();
     this.SetCamera();
     this.state = GAME_READY;
-    this.Update();
   }
 
   Update() {
-    this.stats.Draw();
-    this.stats.Update();
     this.cam.Update(this.murphy);
     this.murphy.Draw(this.cam.pos);
     this.murphy.Update();
@@ -53,6 +50,8 @@ class Game {
     }
     this.MoveFallingElements();
     this.MoveEnemies();
+    this.stats.Draw();
+    this.stats.Update();
   }
 
   Reset() {
@@ -188,18 +187,24 @@ class Game {
             TILE_MURPHY,
             MAX_LIVES
           );
-          // this.tiles.push(this.murphy);
         }
       }
     }
   }
 
-  CheckMurphyEatElement() {
+  CheckMurphyEatBase() {
     for (let i = this.tiles.length - 1; i >= 0; i--) {
       if (this.murphy.Collide(this.tiles[i])) {
         if (this.tiles[i] instanceof Base) {
           let base = this.tiles.splice(i, 1)[0];
         }
+      }
+    }
+  }
+
+  CheckMurphyEatInfotron() {
+    for (let i = this.tiles.length - 1; i >= 0; i--) {
+      if (this.murphy.Collide(this.tiles[i])) {
         if (this.tiles[i] instanceof Infotron) {
           let infotron = this.tiles.splice(i, 1)[0];
           this.stats.DecrementInfotrons();
@@ -227,18 +232,6 @@ class Game {
       if (tile instanceof Wall) {
         tile.SetColor(color);
       }
-    }
-  }
-
-  MoveElements() {
-    for (let zonk of this.zonks) {
-      zonk.GoDown();
-    }
-  }
-
-  MoveInfotrons() {
-    for (let infotron of this.infotrons) {
-      infotron.GoDown();
     }
   }
 
@@ -293,6 +286,7 @@ class Game {
           let base = this.tiles[i];
           if (base.Row == location[0] && base.Col == location[1]) {
             this.tiles.splice(i, 1);
+            return;
           }
         } else if (this.tiles[i] instanceof Infotron) {
           let infotron = this.tiles[i];

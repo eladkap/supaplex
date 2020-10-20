@@ -21,6 +21,7 @@ class Entity extends Tile {
     this.speed = speed;
     this.direction = createVector(0, 0);
     this.map = map;
+    // this.map = this.NormalizeMap();
     this.tileType = tileType;
     this.lerpingCount = 0;
     this.isLerping = false;
@@ -55,6 +56,10 @@ class Entity extends Tile {
         this.pos.y + refPos.y + this.width * 0.8
       );
     }
+  }
+
+  NormalizeMap() {
+    this.map = this.map.Copy().Normalize();
   }
 
   ChangeDirection() {}

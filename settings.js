@@ -27,12 +27,14 @@ const LERP_MODE_SLOW = 2;
 const BLACK = [0, 0, 0];
 const BLACK1 = [20, 20, 20];
 const WHITE = [255, 255, 255];
+const GRAY0 = [50, 50, 50];
 const GRAY1 = [100, 100, 100];
 const GRAY2 = [150, 150, 150];
 const GRAY3 = [200, 200, 200];
 const RED = [220, 0, 0];
 const ORANGE = [250, 150, 50];
 const PINK = [250, 100, 150];
+const BROWN = [200, 200, 0];
 const YELLOW = [255, 255, 0];
 const GREEN = [0, 100, 0];
 const AQUA = [100, 255, 255];
@@ -84,6 +86,20 @@ const TILE_SNIKSNAK = 'S';
 const TILE_EXIT = 'E';
 const TILE_BUG = 'b';
 
+const TILE_DICTIONARY = {
+  0: '_',
+  1: 'Z',
+  2: 'B',
+  3: 'M',
+  4: 'I',
+  5: 'W',
+  6: 'F',
+  7: 'E',
+  11: 'S',
+  18: 'e',
+  19: 'b',
+};
+
 /* Stats settings */
 const STATS_POS_X = SCREEN_WIDTH * 0.1;
 const STATS_POS_Y = SCREEN_HEIGHT * 0.1;
@@ -103,6 +119,9 @@ const READY_DELAY_MS = 2000;
 const BUG_DURATION_SEC = 2;
 
 const LEVEL_FILE_PATH = 'levels/levels.txt';
+const LEVELS_DATA_FILE_PATH = 'levels/LEVELS.DAT';
+
+const LEVEL_NUMBER = 111;
 
 const SPACE_KEY = 32;
 

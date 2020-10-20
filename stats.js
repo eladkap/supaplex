@@ -43,7 +43,12 @@ class Stats {
   }
 
   get Time() {
-    return `${this.timerHours}:${this.timerMinutes}:${this.timerSeconds}`;
+    let hh = this.timerHours > 9 ? this.timerHours : '0' + this.timerHours;
+    let mm =
+      this.timerMinutes > 9 ? this.timerMinutes : '0' + this.timerMinutes;
+    let ss =
+      this.timerSeconds > 9 ? this.timerSeconds : '0' + this.timerSeconds;
+    return `${hh}:${mm}:${ss}`;
   }
 
   Draw() {

@@ -1,5 +1,6 @@
 class Map {
   constructor(tileMap) {
+    this.tileMap = tileMap;
     let line = tileMap[0].split(' ');
     this.rows = tileMap.length;
     this.cols = line.length;
@@ -45,5 +46,18 @@ class Map {
 
   SetValue(i, j, value) {
     this.matrix[i][j] = value;
+  }
+
+  Copy() {
+    let map = new Map(this.tileMap);
+    return map;
+  }
+
+  Normalize() {
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < this.cols; j++) {
+        this.matrix[i][j] = this.matrix[i][j] == TILE_EMPTY ? 0 : 1;
+      }
+    }
   }
 }

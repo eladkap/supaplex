@@ -1,19 +1,35 @@
 var game;
 var tileMap;
 var spaceKeyIsHold;
+var levels;
+var level;
+var levelsData;
+
+//#region Images
+var zonkImage;
+//#endregion
 
 //#region Main Functions
 function LoadTileMap() {
   tileMap = ReadTextFile('levels/level001.txt');
 }
 
+function LoadImages() {
+  zonkImage = loadImage('img/zonk.png');
+}
+
 function preload() {
-  LoadTileMap();
+  levelsData = LoadLevelsDataFile(LEVELS_DATA_FILE_PATH);
+  // LoadTileMap();
+  LoadImages();
+  ConsoleLog('Game was loaded.');
 }
 
 function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   frameRate(FPS);
+  imageMode(CENTER);
+  tileMap = LoadLevel(levelsData);
   game = new Game(tileMap);
   game.Setup();
   noLoop();
@@ -32,7 +48,10 @@ function draw() {
   if (game.State == GAME_BUSTED) {
     DisplayBusted();
   }
-  // game.CheckMurphyEatElement();
+
+  game.CheckMurphyEatBase();
+  game.CheckMurphyEatInfotron();
+
   if (game.CheckMurphyCollidesBug()) {
     Busted();
   }
@@ -40,26 +59,6 @@ function draw() {
   if (game.CheckMurphyCollidesEnemy()) {
     Busted();
   }
-
-  DisplayMessage(
-    `CAM: ${Math.round(game.cam.pos.x / TILE_SIZE)},${Math.round(
-      game.cam.pos.y / TILE_SIZE
-    )}`,
-    50,
-    50,
-    WHITE,
-    24
-  );
-
-  DisplayMessage(
-    `MURPHY: ${Math.round(game.murphy.pos.x / TILE_SIZE)},${Math.round(
-      game.murphy.pos.y / TILE_SIZE
-    )}`,
-    200,
-    50,
-    WHITE,
-    24
-  );
 
   // CheckTileFallOnMurphy();
 
