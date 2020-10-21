@@ -1,8 +1,9 @@
 class Game {
-  constructor(tileMap) {
+  constructor(level) {
+    this.level = level;
     this.murphy = null;
     this.tiles = [];
-    this.tileMap = tileMap;
+    this.tileMap = level.TileMap;
     this.state = GAME_READY;
     this.gravity = false;
     this.stats = null;
@@ -83,7 +84,9 @@ class Game {
       STATS_POS_Y,
       STATS_WIDTH,
       STATS_HEIGHT,
-      INFOTRONS
+      this.level.Number,
+      this.level.Title,
+      this.level.InfotronsNeeded
     );
   }
 

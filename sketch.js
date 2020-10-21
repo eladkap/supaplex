@@ -1,9 +1,8 @@
 var game;
 var tileMap;
 var spaceKeyIsHold;
-var levels;
-var level;
-var levelsData;
+// var levels;
+var levelDataObj;
 
 //#region Images
 var zonkImage;
@@ -19,8 +18,7 @@ function LoadImages() {
 }
 
 function preload() {
-  levelsData = LoadLevelsDataFile(LEVELS_DATA_FILE_PATH);
-  // LoadTileMap();
+  levelDataObj = LoadLevelsDataFile(LEVELS_DATA_FILE_PATH);
   LoadImages();
   ConsoleLog('Game was loaded.');
 }
@@ -29,8 +27,11 @@ function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   frameRate(FPS);
   imageMode(CENTER);
-  tileMap = LoadLevel(levelsData);
-  game = new Game(tileMap);
+  let chosenLevelIndex = int(window.location.href.split('#')[1]);
+  console.log(chosenLevelIndex);
+  let level = LoadLevel(levelDataObj, chosenLevelIndex);
+  console.log(level);
+  game = new Game(level);
   game.Setup();
   noLoop();
 }

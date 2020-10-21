@@ -121,7 +121,7 @@ const BUG_DURATION_SEC = 2;
 const LEVEL_FILE_PATH = 'levels/levels.txt';
 const LEVELS_DATA_FILE_PATH = 'levels/LEVELS.DAT';
 
-const LEVEL_NUMBER = 111;
+const BYTES_PER_LEVEL = 1536;
 
 const SPACE_KEY = 32;
 

@@ -1,13 +1,13 @@
 class Stats {
-  constructor(x, y, w, h, infotrons) {
+  constructor(x, y, w, h, levelNumer, levelTitle, infotrons) {
     this.x = x;
     this.y = y;
     this.width = w;
     this.height = h;
     this.infotrons = infotrons;
     this.infotronsRemained = infotrons;
-    this.levelNum = 1;
-    this.levelTitle = 'Level 1';
+    this.levelNum = levelNumer;
+    this.levelTitle = levelTitle;
     this.timerSeconds = 0;
     this.timerMinutes = 0;
     this.timerHours = 0;

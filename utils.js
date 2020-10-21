@@ -13,13 +13,11 @@ function ConsoleLog(msg) {
   }
 }
 
-// elad
 function LoadLevelsDataFile(binFile) {
   let data = loadBytes(binFile);
   return data;
 }
 
-// elad
 function ConvertHexTile(hexTile) {
   if (hexTile >= 26) {
     return TILE_FRAME;
@@ -31,11 +29,10 @@ function ConvertHexTile(hexTile) {
   return tileType;
 }
 
-//elad
-function LoadLevel(data) {
-  let levelIndex = LEVEL_NUMBER - 1;
-  let lines = [];
-  let offset = levelIndex * 1536;
+// Return level object
+function LoadLevel(data, levelIndex) {
+  let tileMap = [];
+  let offset = levelIndex * BYTES_PER_LEVEL;
   let index = offset;
   for (let row = 0; row < MAP_ROWS; row++) {
     let rowTiles = [];
@@ -46,7 +43,37 @@ function LoadLevel(data) {
       index++;
     }
     let line = join(rowTiles, ' ');
-    lines.push(line);
+    tileMap.push(line);
   }
-  return lines;
+
+  // Get level title
+  let i = offset + 1446;
+  let title = '';
+  while (i < offset + 1446 + 23) {
+    title += String.fromCharCode(data.bytes[i]);
+    i++;
+  }
+
+  infotronsNeeded = int(data.bytes[offset + 1470]);
+  console.log(infotronsNeeded);
+  gravity = false;
+
+  let level = new Level(
+    levelIndex + 1,
+    title,
+    tileMap,
+    infotronsNeeded,
+    gravity
+  );
+  return level;
+}
+
+// Load all levels
+function LoadLevels(levelsDataObj) {
+  let levels = [];
+  let levelsNum = levelsDataObj.bytes.length / BYTES_PER_LEVEL;
+  for (let i = 0; i < levelsNum; i++) {
+    levels.push(LoadLevel(levelsDataObj, i));
+  }
+  return levels;
 }
