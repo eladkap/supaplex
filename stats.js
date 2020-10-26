@@ -53,7 +53,7 @@ class Stats {
 
   Draw() {
     noStroke();
-    textSize(36);
+    textSize(MESSAGE_FONT_SIZE3);
     textFont(FONT_FAMILY);
     textStyle(NORMAL);
     fill(WHITE);

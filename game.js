@@ -100,12 +100,13 @@ class Game {
   }
 
   ResetMap() {
-    this.map.Create(tileMap);
+    this.map.Create(this.level.tileMap);
     this.SetTiles();
     this.state = GAME_READY;
   }
 
   SetTiles() {
+    this.tiles = [];
     for (let i = 0; i < this.map.Rows; i++) {
       for (let j = 0; j < this.map.Cols; j++) {
         let mapVal = this.map.GetValue(i, j);
@@ -149,6 +150,18 @@ class Game {
           this.tiles.push(new Bug(i, j, TILE_SIZE, YELLOW, GREEN, BUG_SYMBOL));
         } else if (mapVal == TILE_EXIT) {
           this.tiles.push(new Exit(i, j, TILE_SIZE, WHITE, RED, EXIT_SYMBOL));
+        } else if (mapVal == TILE_RIGHT_PORT) {
+          this.tiles.push(new Port(i, j, TILE_SIZE, WHITE, RED, '*', 'right'));
+        } else if (mapVal == TILE_LEFT_PORT) {
+          this.tiles.push(new Port(i, j, TILE_SIZE, WHITE, RED, '*', 'left'));
+        } else if (mapVal == TILE_UP_PORT) {
+          this.tiles.push(new Port(i, j, TILE_SIZE, WHITE, RED, '*', 'up'));
+        } else if (mapVal == TILE_DOWN_PORT) {
+          this.tiles.push(new Port(i, j, TILE_SIZE, WHITE, RED, '*', 'down'));
+        } else if (mapVal == TILE_VER_PORT) {
+          this.tiles.push(new Port(i, j, TILE_SIZE, WHITE, RED, '*', 'dual_v'));
+        } else if (mapVal == TILE_CROSS_PORT) {
+          this.tiles.push(new Port(i, j, TILE_SIZE, WHITE, RED, '*', 'cross'));
         } else if (mapVal == TILE_SNIKSNAK) {
           this.tiles.push(
             new SnikSnak(
@@ -344,5 +357,16 @@ class Game {
         }
       }
     }
+  }
+
+  // for debugging
+  CountElements(type) {
+    let count = 0;
+    for (let tile of this.tiles) {
+      if (tile instanceof type) {
+        count++;
+      }
+    }
+    return count;
   }
 }

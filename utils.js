@@ -37,7 +37,7 @@ function LoadLevel(data, levelIndex) {
   for (let row = 0; row < MAP_ROWS; row++) {
     let rowTiles = [];
     for (let col = 0; col < MAP_COLS; col++) {
-      let hexTile = data.bytes[index].toString(16);
+      let hexTile = data.bytes[index];
       let tileType = ConvertHexTile(hexTile);
       rowTiles.push(tileType);
       index++;
@@ -55,7 +55,6 @@ function LoadLevel(data, levelIndex) {
   }
 
   infotronsNeeded = int(data.bytes[offset + 1470]);
-  console.log(infotronsNeeded);
   gravity = false;
 
   let level = new Level(

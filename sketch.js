@@ -6,15 +6,30 @@ var levelDataObj;
 
 //#region Images
 var zonkImage;
+var rightPortImage;
+var leftPortImage;
+var upPortImage;
+var downPortImage;
+var dualHorPortImage;
+var dualVerPortImage;
+var crossPortImage;
+
 //#endregion
 
 //#region Main Functions
 function LoadTileMap() {
-  tileMap = ReadTextFile('levels/level001.txt');
+  tileMap = ReadTextFile(LEVEL_FILE_PATH);
 }
 
 function LoadImages() {
-  zonkImage = loadImage('img/zonk.png');
+  zonkImage = loadImage(IMAGE_ZONK);
+  rightPortImage = loadImage(IMAGE_RIGHT_PORT);
+  leftPortImage = loadImage(IMAGE_LEFT_PORT);
+  upPortImage = loadImage(IMAGE_UP_PORT);
+  downPortImage = loadImage(IMAGE_DOWN_PORT);
+  dualHorPortImage = loadImage(IMAGE_DUAL_HORIZONTAL_PORT);
+  dualVerPortImage = loadImage(IMAGE_DUAL_VERTICAL_PORT);
+  crossPortImage = loadImage(IMAGE_CROSS_PORT);
 }
 
 function preload() {
@@ -134,7 +149,7 @@ function DisplayReady() {
     msg_x,
     msg_y,
     YELLOW,
-    MESSAGE_FONT_SIZE2
+    MESSAGE_FONT_SIZE3
   );
 }
 
@@ -153,14 +168,14 @@ function DisplayGameOver() {
   let msg_x = (MAP_POS_X + SCREEN_WIDTH) * 0.3;
   let msg_y = SCREEN_HEIGHT * 0.58;
   let msg = 'GAME OVER';
-  DisplayMessage(msg, msg_x, msg_y, RED, MESSAGE_FONT_SIZE);
+  DisplayMessage(msg, msg_x, msg_y, RED, MESSAGE_FONT_SIZE2);
 }
 
 function DisplayPause() {
-  let msg_x = (MAP_POS_X + SCREEN_WIDTH) * 0.28;
+  let msg_x = (MAP_POS_X + SCREEN_WIDTH) * 0.32;
   let msg_y = SCREEN_HEIGHT * 0.7;
   let msg = 'Game Paused';
-  DisplayMessage(msg, msg_x, msg_y, WHITE, MESSAGE_FONT_SIZE);
+  DisplayMessage(msg, msg_x, msg_y, WHITE, MESSAGE_FONT_SIZE1);
 }
 
 function PauseGame() {

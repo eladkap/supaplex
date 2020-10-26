@@ -59,7 +59,7 @@ const POINTS_FONT_SIZE = 20;
 const FONT_FAMILY = 'College';
 const MESSAGE_FONT_SIZE1 = 64;
 const MESSAGE_FONT_SIZE2 = 32;
-const MESSAGE_FONT_SIZE3 = 24;
+const MESSAGE_FONT_SIZE3 = 28;
 
 /* Tile Symbols */
 const MURPHY_SYMBOL = '🙂';
@@ -85,23 +85,37 @@ const TILE_ELECTRON = 'e';
 const TILE_SNIKSNAK = 'S';
 const TILE_EXIT = 'E';
 const TILE_BUG = 'b';
+const TILE_RIGHT_PORT = 'RP';
+const TILE_LEFT_PORT = 'LP';
+const TILE_DOWN_PORT = 'DP';
+const TILE_UP_PORT = 'UP';
+const TILE_VER_PORT = 'VP';
+const TILE_HOR_PORT = 'HP';
+const TILE_CROSS_PORT = 'CP';
 
 const TILE_DICTIONARY = {
-  0: '_',
-  1: 'Z',
-  2: 'B',
-  3: 'M',
-  4: 'I',
-  5: 'W',
-  6: 'F',
-  7: 'E',
-  11: 'S',
-  18: 'e',
-  19: 'b',
+  0: TILE_EMPTY,
+  1: TILE_ZONK,
+  2: TILE_BASE,
+  3: TILE_MURPHY,
+  4: TILE_INFOTRON,
+  5: TILE_WALL,
+  6: TILE_FRAME,
+  7: TILE_EXIT,
+  9: TILE_RIGHT_PORT,
+  10: TILE_DOWN_PORT,
+  11: TILE_LEFT_PORT,
+  12: TILE_UP_PORT,
+  17: TILE_SNIKSNAK,
+  21: TILE_VER_PORT,
+  22: TILE_HOR_PORT,
+  23: TILE_CROSS_PORT,
+  24: TILE_ELECTRON,
+  25: TILE_BUG,
 };
 
 /* Stats settings */
-const STATS_POS_X = SCREEN_WIDTH * 0.1;
+const STATS_POS_X = SCREEN_WIDTH * 0.05;
 const STATS_POS_Y = SCREEN_HEIGHT * 0.1;
 const STATS_WIDTH = 100;
 const STATS_HEIGHT = 200;
@@ -118,8 +132,18 @@ const GAME_OVER = 6;
 const READY_DELAY_MS = 2000;
 const BUG_DURATION_SEC = 2;
 
-const LEVEL_FILE_PATH = 'levels/levels.txt';
-const LEVELS_DATA_FILE_PATH = 'levels/LEVELS.DAT';
+/* Image files */
+const IMAGE_ZONK = 'images/zonk.png';
+const IMAGE_LEFT_PORT = 'images/left_port.png';
+const IMAGE_RIGHT_PORT = 'images/right_port.png';
+const IMAGE_UP_PORT = 'images/up_port.png';
+const IMAGE_DOWN_PORT = 'images/down_port.png';
+const IMAGE_CROSS_PORT = 'images/cross_port.png';
+const IMAGE_DUAL_HORIZONTAL_PORT = 'images/dual_port_horizontal.png';
+const IMAGE_DUAL_VERTICAL_PORT = 'images/dual_port_vertical.png';
+
+const LEVEL_FILE_PATH = 'data/levels.txt';
+const LEVELS_DATA_FILE_PATH = 'data/LEVELS.DAT';
 
 const BYTES_PER_LEVEL = 1536;
 
