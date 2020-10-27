@@ -10,9 +10,10 @@ class Map {
     for (let i = 0; i < this.rows; i++) {
       this.matrix[i] = new Array(this.cols);
       for (let j = 0; j < this.cols; j++) {
-        this.matrix[i][j] = undefined;
+        this.matrix[i][j] = null;
       }
     }
+    this.Create(tileMap);
   }
 
   get Rows() {

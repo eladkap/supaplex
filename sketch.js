@@ -1,6 +1,7 @@
 var game;
 var tileMap;
 var spaceKeyIsHold;
+var lerpSpeed = LERP_UNIT_NORMAL;
 // var levels;
 var levelDataObj;
 
@@ -13,7 +14,6 @@ var downPortImage;
 var dualHorPortImage;
 var dualVerPortImage;
 var crossPortImage;
-
 //#endregion
 
 //#region Main Functions
@@ -65,16 +65,28 @@ function draw() {
     DisplayBusted();
   }
 
-  game.CheckMurphyEatBase();
-  game.CheckMurphyEatInfotron();
-
-  if (game.CheckMurphyCollidesBug()) {
+  if (game.EatTile()) {
     Busted();
   }
 
-  if (game.CheckMurphyCollidesEnemy()) {
+  if (game.CollideEnemy()) {
     Busted();
   }
+
+  // game.CheckMurphyCollidesExit();
+  // game.CheckMurphyEatBase();
+  // game.CheckMurphyEatInfotron();
+
+  // todo: game.CheckMurphyCollidesPort();
+  // todo: checkMurphyCollideTerminal()
+
+  // if (game.CheckMurphyCollidesBug()) {
+  //   Busted();
+  // }
+
+  // if (game.CheckMurphyCollidesEnemy()) {
+  //   Busted();
+  // }
 
   // CheckTileFallOnMurphy();
 
@@ -224,21 +236,45 @@ function CheckTileFallOnMurphy() {
   }
 }
 
-function MoveMurphyRight() {
-  if (game.Murphy.CanPushRight()) {
-    game.MurphyPushRight();
-  } else {
-    game.Murphy.GoRight();
-  }
-}
+// function MoveMurphyRight() {
+// game.Murphy.GoRight();
+// if (game.Murphy.CanPushRight()) {
+//   game.MurphyPushRight();
+// } else if (game.Murphy.CanPassRight()) {
+//   game.MurphyPassRight();
+// } else {
+//   game.Murphy.GoRight();
+// }
+// }
 
-function MoveMurphyLeft() {
-  if (game.Murphy.CanPushLeft()) {
-    game.MurphyPushLeft();
-  } else {
-    game.Murphy.GoLeft();
-  }
-}
+// function MoveMurphyLeft() {
+// game.Murphy.GoLeft();
+// if (game.Murphy.CanPushLeft()) {
+//   game.MurphyPushLeft();
+// } else if (game.Murphy.CanPassLeft()) {
+//   game.MurphyPassLeft();
+// } else {
+//   game.Murphy.GoLeft();
+// }
+// }
+
+// function MoveMurphyUp() {
+// game.Murphy.GoUp();
+// if (game.Murphy.CanPassUp()) {
+//   game.MurphyPushUp();
+// } else {
+//   game.Murphy.GoUp();
+// }
+// }
+
+// function MoveMurphyDown() {
+// game.Murphy.GoDown();
+// if (game.Murphy.CanPassDown()) {
+//   game.MurphyPushDown();
+// } else {
+//   game.Murphy.GoDown();
+// }
+// }
 
 //#region Keyboard Events
 function CheckKeyIsDown() {
@@ -258,13 +294,13 @@ function CheckKeyIsDown() {
       }
     } else {
       if (keyIsDown(RIGHT_ARROW)) {
-        MoveMurphyRight();
+        game.MoveMurphyRight();
       } else if (keyIsDown(LEFT_ARROW)) {
-        MoveMurphyLeft();
+        game.MoveMurphyLeft();
       } else if (keyIsDown(UP_ARROW)) {
-        game.Murphy.GoUp();
+        game.MoveMurphyUp();
       } else if (keyIsDown(DOWN_ARROW)) {
-        game.Murphy.GoDown();
+        game.MoveMurphyDown();
       }
     }
   }
@@ -297,14 +333,26 @@ function keyPressed() {
   }
   if (game.State == GAME_PLAY && !spaceKeyIsHold) {
     if (keyCode === RIGHT_ARROW) {
-      MoveMurphyRight();
+      game.MoveMurphyRight();
     } else if (keyCode === LEFT_ARROW) {
-      MoveMurphyLeft();
+      game.MoveMurphyLeft();
     } else if (keyCode === UP_ARROW) {
-      game.Murphy.GoUp();
+      game.MoveMurphyUp();
     } else if (keyCode === DOWN_ARROW) {
-      game.Murphy.GoDown();
+      game.MoveMurphyDown();
     }
+    // if (key == '1') {
+    //   lerpSpeed = LERP_UNIT_SLOW;
+    //   ConsoleLog('Changed speed to slow');
+    // }
+    // if (key == '2') {
+    //   lerpSpeed = LERP_UNIT_NORMAL;
+    //   ConsoleLog('Changed speed to normal');
+    // }
+    // if (key == '3') {
+    //   lerpSpeed = LERP_UNIT_FAST;
+    //   ConsoleLog('Changed speed to fast');
+    // }
   }
 }
 //#endregion

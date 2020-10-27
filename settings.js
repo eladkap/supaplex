@@ -3,7 +3,6 @@ const SCREEN_WIDTH = 1024;
 const SCREEN_HEIGHT = 768;
 
 const FPS = 30;
-
 const TILE_SIZE = 50;
 
 /* Map settings */
@@ -17,8 +16,9 @@ const MAP_WIDTH = MAP_COLS * TILE_SIZE;
 const MAP_HEIGHT = MAP_ROWS * TILE_SIZE;
 
 // LERP settings - Linear Interpolation - Animation movement unit
-const LERP_UNIT_NORMAL = 0.2;
 const LERP_UNIT_SLOW = 0.1;
+const LERP_UNIT_NORMAL = 0.2;
+const LERP_UNIT_FAST = 0.25;
 
 const LERP_MODE_NORMAL = 1;
 const LERP_MODE_SLOW = 2;
@@ -46,9 +46,6 @@ const DARK_BLUE = [0, 0, 64];
 /* Murphy settings */
 const MURPHY_RADIUS = TILE_SIZE / 2;
 const MURPHY_SPEED = 1 * TILE_SIZE;
-
-const MURHPY_ROW = 15; // todo: should be defined in level txt file
-const MURHPY_COL = 9; // todo: should be defined in level txt file
 
 const MAX_LIVES = 5;
 

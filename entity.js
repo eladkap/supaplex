@@ -26,8 +26,7 @@ class Entity extends Tile {
     this.lerpingCount = 0;
     this.isLerping = false;
     this.vulnerable = false;
-    this.lerpUnit = LERP_UNIT_NORMAL;
-    this.lerpMode = LERP_MODE_NORMAL;
+    this.lerpUnit = lerpSpeed;
   }
 
   //#region Properties
@@ -71,11 +70,7 @@ class Entity extends Tile {
   ResetMovement() {
     this.lerpingCount = 0;
     this.isLerping = false;
-    if (this.lerpMode == LERP_MODE_SLOW) {
-      this.lerpUnit = LERP_UNIT_SLOW;
-    } else {
-      this.lerpUnit = LERP_UNIT_NORMAL;
-    }
+    this.lerpUnit = lerpSpeed;
     this.ChangeDirection();
   }
 
@@ -109,32 +104,32 @@ class Entity extends Tile {
 
   CanGoLeft() {
     return (
-      this.col > 0 &&
-      this.map.GetValue(this.row, this.col - 1) == TILE_EMPTY &&
+      this.col - 1 > 0 &&
+      this.map.GetValue(this.row, this.col - 1) == null &&
       !this.isLerping
     );
   }
 
   CanGoRight() {
     return (
-      this.col + 1 < this.map.Cols &&
-      this.map.GetValue(this.row, this.col + 1) == TILE_EMPTY &&
+      this.col + 1 < this.map.Cols - 1 &&
+      this.map.GetValue(this.row, this.col + 1) == null &&
       !this.isLerping
     );
   }
 
   CanGoUp() {
     return (
-      this.row > 0 &&
-      this.map.GetValue(this.row - 1, this.col) == TILE_EMPTY &&
+      this.row - 1 > 0 &&
+      this.map.GetValue(this.row - 1, this.col) == null &&
       !this.isLerping
     );
   }
 
   CanGoDown() {
     return (
-      this.row > 0 &&
-      this.map.GetValue(this.row + 1, this.col) == TILE_EMPTY &&
+      this.row + 1 < this.map.Rows - 1 &&
+      this.map.GetValue(this.row + 1, this.col) == null &&
       !this.isLerping
     );
   }
@@ -160,10 +155,9 @@ class Entity extends Tile {
     if (this.CanGoLeft()) {
       this.direction.set(-1, 0);
       this.isLerping = true;
-      this.map.SetValue(this.row, this.col, TILE_EMPTY);
-      this.prevCol = this.col;
+      this.map.SetValue(this.row, this.col, null);
       this.col--;
-      this.map.SetValue(this.row, this.col, this.tileType);
+      this.map.SetValue(this.row, this.col, this);
     }
   }
 
@@ -171,10 +165,9 @@ class Entity extends Tile {
     if (this.CanGoRight()) {
       this.direction.set(1, 0);
       this.isLerping = true;
-      this.map.SetValue(this.row, this.col, TILE_EMPTY);
-      this.prevCol = this.col;
+      this.map.SetValue(this.row, this.col, null);
       this.col++;
-      this.map.SetValue(this.row, this.col, this.tileType);
+      this.map.SetValue(this.row, this.col, this);
     }
   }
 
@@ -182,10 +175,9 @@ class Entity extends Tile {
     if (this.CanGoUp()) {
       this.direction.set(0, -1);
       this.isLerping = true;
-      this.map.SetValue(this.row, this.col, TILE_EMPTY);
-      this.prevRow = this.row;
+      this.map.SetValue(this.row, this.col, null);
       this.row--;
-      this.map.SetValue(this.row, this.col, this.tileType);
+      this.map.SetValue(this.row, this.col, this);
     }
   }
 
@@ -193,10 +185,9 @@ class Entity extends Tile {
     if (this.CanGoDown()) {
       this.direction.set(0, 1);
       this.isLerping = true;
-      this.map.SetValue(this.row, this.col, TILE_EMPTY);
-      this.prevRow = this.row;
+      this.map.SetValue(this.row, this.col, null);
       this.row++;
-      this.map.SetValue(this.row, this.col, this.tileType);
+      this.map.SetValue(this.row, this.col, this);
     }
   }
 
