@@ -139,32 +139,60 @@ class Murphy extends Entity {
   CanPushRight() {
     return (
       this.col + 2 < this.map.Cols &&
-      this.map.GetValue(this.row, this.col + 1) == TILE_ZONK &&
-      this.map.GetValue(this.row, this.col + 2) == TILE_EMPTY
+      this.map.GetValue(this.row, this.col + 1) instanceof Zonk &&
+      this.map.GetValue(this.row, this.col + 2) == null
     );
   }
 
   CanPushLeft() {
     return (
       this.col - 2 >= 0 &&
-      this.map.GetValue(this.row, this.col - 1) == TILE_ZONK &&
-      this.map.GetValue(this.row, this.col - 2) == TILE_EMPTY
+      this.map.GetValue(this.row, this.col - 1) instanceof Zonk &&
+      this.map.GetValue(this.row, this.col - 2) == null
     );
   }
 
   CanPassRight() {
     return (
       this.col + 2 < this.map.Cols &&
-      this.map.GetValue(this.row, this.col + 1) == TILE_RIGHT_PORT &&
-      this.map.GetValue(this.row, this.col + 2) == TILE_EMPTY
+      this.map.GetValue(this.row, this.col + 1) instanceof Port &&
+      ['right', 'dual_h', 'cross'].includes(
+        this.map.GetValue(this.row, this.col + 1).type
+      ) &&
+      this.map.GetValue(this.row, this.col + 2) == null
     );
   }
 
   CanPassLeft() {
     return (
       this.col - 2 >= 0 &&
-      this.map.GetValue(this.row, this.col - 1) == TILE_LEFT_PORT &&
-      this.map.GetValue(this.row, this.col - 2) == TILE_EMPTY
+      this.map.GetValue(this.row, this.col - 1) instanceof Port &&
+      ['left', 'dual_h', 'cross'].includes(
+        this.map.GetValue(this.row, this.col + 1).type
+      ) &&
+      this.map.GetValue(this.row, this.col - 2) == null
+    );
+  }
+
+  CanPassUp() {
+    return (
+      this.row - 2 >= 0 &&
+      this.map.GetValue(this.row - 1, this.col) instanceof Port &&
+      ['up', 'dual_v', 'cross'].includes(
+        this.map.GetValue(this.row - 1, this.col).type
+      ) &&
+      this.map.GetValue(this.row - 2, this.col) == null
+    );
+  }
+
+  CanPassDown() {
+    return (
+      this.row + 2 < this.map.Rows &&
+      this.map.GetValue(this.row + 1, this.col) instanceof Port &&
+      ['down', 'dual_v', 'cross'].includes(
+        this.map.GetValue(this.row + 1, this.col).type
+      ) &&
+      this.map.GetValue(this.row + 2, this.col) == null
     );
   }
 

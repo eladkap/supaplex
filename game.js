@@ -154,7 +154,7 @@ class Game {
             BLACK,
             ZONK_SYMBOL,
             MURPHY_SPEED,
-            this.binmap,
+            this.map,
             TILE_ZONK
           );
         } else if (mapVal == TILE_INFOTRON) {
@@ -166,7 +166,7 @@ class Game {
             BLACK,
             INFOTRON_SYMBOL,
             MURPHY_SPEED,
-            this.binmap,
+            this.map,
             TILE_INFOTRON
           );
         } else if (mapVal == TILE_BUG) {
@@ -236,6 +236,16 @@ class Game {
             RED,
             '*',
             'dual_v'
+          );
+        } else if (mapVal == TILE_HOR_PORT) {
+          this.map.matrix[i][j] = new Port(
+            i,
+            j,
+            TILE_SIZE,
+            WHITE,
+            RED,
+            '*',
+            'dual_h'
           );
         } else if (mapVal == TILE_CROSS_PORT) {
           this.map.matrix[i][j] = new Port(
@@ -404,16 +414,40 @@ class Game {
     }
   }
 
+  HandleZonk(tile, direction) {
+    if (direction == 'U' || direction == 'D') {
+      return;
+    }
+    if (direction == 'L') {
+      if (this.murphy.CanPushLeft()) {
+        this.MurphyPushLeft(tile);
+        return;
+      }
+    }
+    if (direction == 'R') {
+      if (this.murphy.CanPushRight()) {
+        this.MurphyPushRight(tile);
+        return;
+      }
+    }
+  }
+
   InteractWithTile(tile, direction) {
     if (tile == null) {
-      return true;
+      this.murphy.GotoDirection(direction);
+      return;
     }
     let className = tile.constructor.name;
     // wall
     if (className == 'Wall') {
-      return false;
+      return;
     }
-    return true;
+    // Zonk
+    if (className == 'Zonk') {
+      this.HandleZonk(tile, direction);
+      return;
+    }
+    this.murphy.GotoDirection(direction);
   }
 
   CollideEnemy() {
@@ -464,30 +498,22 @@ class Game {
 
   MoveMurphyRight() {
     let targetTile = this.map.GetValue(this.murphy.Row, this.murphy.Col + 1);
-    if (this.InteractWithTile(targetTile, 'right')) {
-      this.murphy.GoRight();
-    }
+    this.InteractWithTile(targetTile, 'R');
   }
 
   MoveMurphyLeft() {
     let targetTile = this.map.GetValue(this.murphy.Row, this.murphy.Col - 1);
-    if (this.InteractWithTile(targetTile, 'left')) {
-      this.murphy.GoLeft();
-    }
+    this.InteractWithTile(targetTile, 'L');
   }
 
   MoveMurphyUp() {
     let targetTile = this.map.GetValue(this.murphy.Row - 1, this.murphy.Col);
-    if (this.InteractWithTile(targetTile, 'up')) {
-      this.murphy.GoUp();
-    }
+    this.InteractWithTile(targetTile, 'U');
   }
 
   MoveMurphyDown() {
     let targetTile = this.map.GetValue(this.murphy.Row + 1, this.murphy.Col);
-    if (this.InteractWithTile(targetTile, 'down')) {
-      this.murphy.GoDown();
-    }
+    this.InteractWithTile(targetTile, 'D');
   }
 
   MurphyCollectTile(direction) {
@@ -526,33 +552,25 @@ class Game {
     return false;
   }
 
-  MurphyPushLeft() {
-    for (let tile of this.tiles) {
-      if (tile instanceof Zonk) {
-        if (
-          tile.pos.y == this.murphy.pos.y &&
-          this.murphy.pos.x - tile.pos.x == TILE_SIZE
-        ) {
-          tile.GoLeft();
-          this.murphy.GoLeft();
-          return;
-        }
-      }
+  MurphyPushLeft(tile) {
+    if (
+      tile.pos.y == this.murphy.pos.y &&
+      this.murphy.pos.x - tile.pos.x == TILE_SIZE
+    ) {
+      tile.GoLeft();
+      this.murphy.GoLeft();
+      return;
     }
   }
 
-  MurphyPushRight() {
-    for (let tile of this.tiles) {
-      if (tile instanceof Zonk) {
-        if (
-          tile.pos.y == this.murphy.pos.y &&
-          tile.pos.x - this.murphy.pos.x == TILE_SIZE
-        ) {
-          tile.GoRight();
-          this.murphy.GoRight();
-          return;
-        }
-      }
+  MurphyPushRight(tile) {
+    if (
+      tile.pos.y == this.murphy.pos.y &&
+      tile.pos.x - this.murphy.pos.x == TILE_SIZE
+    ) {
+      tile.GoRight();
+      this.murphy.GoRight();
+      return;
     }
   }
 

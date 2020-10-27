@@ -43,9 +43,7 @@ function setup() {
   frameRate(FPS);
   imageMode(CENTER);
   let chosenLevelIndex = int(window.location.href.split('#')[1]);
-  console.log(chosenLevelIndex);
   let level = LoadLevel(levelDataObj, chosenLevelIndex);
-  console.log(level);
   game = new Game(level);
   game.Setup();
   noLoop();
