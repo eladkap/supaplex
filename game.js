@@ -418,17 +418,33 @@ class Game {
     if (direction == 'U' || direction == 'D') {
       return;
     }
-    if (direction == 'L') {
-      if (this.murphy.CanPushLeft()) {
-        this.MurphyPushLeft(tile);
-        return;
-      }
+    if (direction == 'L' && this.murphy.CanPushLeft()) {
+      this.MurphyPushLeft(tile);
+      return;
     }
-    if (direction == 'R') {
-      if (this.murphy.CanPushRight()) {
-        this.MurphyPushRight(tile);
-        return;
-      }
+    if (direction == 'R' && this.murphy.CanPushRight()) {
+      this.MurphyPushRight(tile);
+      return;
+    }
+  }
+
+  HandlePort(tile, direction) {
+    if (direction == 'L' && this.murphy.CanPassLeft()) {
+      console.log('pass');
+      this.MurphyPassLeft(tile);
+      return;
+    }
+    if (direction == 'R' && this.murphy.CanPassRight()) {
+      this.MurphyPassRight(tile);
+      return;
+    }
+    if (direction == 'U' && this.murphy.CanPassUp()) {
+      this.MurphyPassUp(tile);
+      return;
+    }
+    if (direction == 'D' && this.murphy.CanPassDown()) {
+      this.MurphyPassDown(tile);
+      return;
     }
   }
 
@@ -445,6 +461,11 @@ class Game {
     // Zonk
     if (className == 'Zonk') {
       this.HandleZonk(tile, direction);
+      return;
+    }
+    //Port
+    if (className == 'Port') {
+      this.HandlePort(tile, direction);
       return;
     }
     this.murphy.GotoDirection(direction);
@@ -574,33 +595,47 @@ class Game {
     }
   }
 
-  MurphyPassLeft() {
-    for (let tile of this.tiles) {
-      if (tile instanceof Port) {
-        if (
-          tile.pos.y == this.murphy.pos.y &&
-          this.murphy.pos.x - tile.pos.x == TILE_SIZE
-        ) {
-          this.murphy.GoLeft();
-          this.murphy.GoLeft();
-          return;
-        }
-      }
+  MurphyPassLeft(tile) {
+    if (
+      tile.pos.y == this.murphy.pos.y &&
+      this.murphy.pos.x - tile.pos.x == TILE_SIZE
+    ) {
+      this.murphy.GoLeft();
+      this.murphy.GoLeft();
+      return;
     }
   }
 
-  MurphyPassRight() {
-    for (let tile of this.tiles) {
-      if (tile instanceof Port) {
-        if (
-          tile.pos.y == this.murphy.pos.y &&
-          tile.pos.x - this.murphy.pos.x == TILE_SIZE
-        ) {
-          this.murphy.GoRight();
-          this.murphy.GoRight();
-          return;
-        }
-      }
+  MurphyPassRight(tile) {
+    if (
+      tile.pos.y == this.murphy.pos.y &&
+      tile.pos.x - this.murphy.pos.x == TILE_SIZE
+    ) {
+      this.murphy.GoRight();
+      this.murphy.GoRight();
+      return;
+    }
+  }
+
+  MurphyPassUp(tile) {
+    if (
+      tile.pos.x == this.murphy.pos.x &&
+      this.murphy.pos.y - tile.pos.y == TILE_SIZE
+    ) {
+      this.murphy.GoUp();
+      this.murphy.GoUp();
+      return;
+    }
+  }
+
+  MurphyPassDown(tile) {
+    if (
+      tile.pos.x == this.murphy.pos.x &&
+      tile.pos.y - this.murphy.pos.y == TILE_SIZE
+    ) {
+      this.murphy.GoDown();
+      this.murphy.GoDown();
+      return;
     }
   }
 

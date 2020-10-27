@@ -168,7 +168,7 @@ class Murphy extends Entity {
       this.col - 2 >= 0 &&
       this.map.GetValue(this.row, this.col - 1) instanceof Port &&
       ['left', 'dual_h', 'cross'].includes(
-        this.map.GetValue(this.row, this.col + 1).type
+        this.map.GetValue(this.row, this.col - 1).type
       ) &&
       this.map.GetValue(this.row, this.col - 2) == null
     );
