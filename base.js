@@ -1,5 +1,5 @@
 class Base extends Tile {
-  constructor(row, col, width, forecolor, backcolor, symbol) {
-    super(row, col, width, forecolor, backcolor, symbol);
+  constructor(row, col, width, image, symbol) {
+    super(row, col, width, image, symbol);
   }
 }

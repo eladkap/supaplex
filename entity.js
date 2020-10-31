@@ -2,26 +2,13 @@
 Entity represents moving object
 */
 class Entity extends Tile {
-  constructor(
-    row,
-    col,
-    width,
-    forecolor,
-    backcolor,
-    symbol,
-    speed,
-    map,
-    tileType
-  ) {
-    super(row, col, width, forecolor, backcolor, symbol);
-    this.prevRow = null;
-    this.prevCol = null;
+  constructor(row, col, width, image, symbol, speed, map, tileType) {
+    super(row, col, width, image, symbol);
     this.originalRow = row;
     this.originalCol = col;
     this.speed = speed;
     this.direction = createVector(0, 0);
     this.map = map;
-    // this.map = this.NormalizeMap();
     this.tileType = tileType;
     this.lerpingCount = 0;
     this.isLerping = false;
@@ -47,7 +34,7 @@ class Entity extends Tile {
   Draw(refPos) {
     if (this.visible) {
       noStroke();
-      fill(this.forecolor);
+      // fill(this.forecolor);
       textSize(this.width * 0.9);
       text(
         this.symbol,
@@ -57,11 +44,7 @@ class Entity extends Tile {
     }
   }
 
-  NormalizeMap() {
-    this.map = this.map.Copy().Normalize();
-  }
-
-  ChangeDirection() {}
+  Move() {}
 
   SetOriginalPosition() {
     this.SetPosition(this.originalRow, this.originalCol);
@@ -71,7 +54,7 @@ class Entity extends Tile {
     this.lerpingCount = 0;
     this.isLerping = false;
     this.lerpUnit = lerpSpeed;
-    this.ChangeDirection();
+    this.Move();
   }
 
   Update() {

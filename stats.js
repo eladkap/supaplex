@@ -11,10 +11,20 @@ class Stats {
     this.timerSeconds = 0;
     this.timerMinutes = 0;
     this.timerHours = 0;
+    this.timerOn = false;
+  }
+
+  get Time() {
+    let hh = this.timerHours > 9 ? this.timerHours : '0' + this.timerHours;
+    let mm =
+      this.timerMinutes > 9 ? this.timerMinutes : '0' + this.timerMinutes;
+    let ss =
+      this.timerSeconds > 9 ? this.timerSeconds : '0' + this.timerSeconds;
+    return `${hh}:${mm}:${ss}`;
   }
 
   Update() {
-    if (frameCount % FPS == 0) {
+    if (this.timerOn && frameCount % FPS == 0) {
       this.timerSeconds++;
       if (this.timerSeconds == 60) {
         this.timerSeconds = 0;
@@ -32,6 +42,7 @@ class Stats {
     this.timerSeconds = 0;
     this.timerMinutes = 0;
     this.timerHours = 0;
+    this.timerOn = false;
   }
 
   DecrementInfotrons() {
@@ -42,13 +53,12 @@ class Stats {
     this.levelNum++;
   }
 
-  get Time() {
-    let hh = this.timerHours > 9 ? this.timerHours : '0' + this.timerHours;
-    let mm =
-      this.timerMinutes > 9 ? this.timerMinutes : '0' + this.timerMinutes;
-    let ss =
-      this.timerSeconds > 9 ? this.timerSeconds : '0' + this.timerSeconds;
-    return `${hh}:${mm}:${ss}`;
+  StartTimer() {
+    this.timerOn = true;
+  }
+
+  StopTimer() {
+    this.timerOn = false;
   }
 
   Draw() {

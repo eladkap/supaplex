@@ -1,6 +1,6 @@
 class Bug extends Tile {
-  constructor(row, col, width, forecolor, backcolor, symbol) {
-    super(row, col, width, forecolor, backcolor, symbol);
+  constructor(row, col, width, image, symbol) {
+    super(row, col, width, image, symbol);
     this.visible = true;
     this.offTimer = 0;
     this.onTimer = 0;
@@ -20,12 +20,12 @@ class Bug extends Tile {
   Draw(refPos) {
     strokeWeight(0.1);
     stroke(GRAY3);
-    fill(this.backcolor);
+    fill(BLACK);
     rect(this.pos.x + refPos.x, this.pos.y + refPos.y, this.width, this.width);
     if (this.visible) {
       textSize(this.width * 0.7);
       textFont(FONT_FAMILY);
-      fill(this.forecolor);
+      // fill(this.forecolor);
       text(
         this.symbol,
         this.pos.x + refPos.x,

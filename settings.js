@@ -69,6 +69,7 @@ const BASE_SYMBOL = '🟩';
 const ELECTRON_SYMBOL = '💫'; // '⭐️'
 const SNIKSNAK_SYMBOL = '☀️'; //'☀️✂️'
 const EXIT_SYMBOL = 'E';
+const TERMINAL_SYMBOL = 'T';
 const EXPLOSION_SYMBOL = '💥';
 
 const TILE_MURPHY = 'M';
@@ -82,13 +83,17 @@ const TILE_ELECTRON = 'e';
 const TILE_SNIKSNAK = 'S';
 const TILE_EXIT = 'E';
 const TILE_BUG = 'b';
-const TILE_RIGHT_PORT = 'RP';
-const TILE_LEFT_PORT = 'LP';
-const TILE_DOWN_PORT = 'DP';
-const TILE_UP_PORT = 'UP';
-const TILE_VER_PORT = 'VP';
-const TILE_HOR_PORT = 'HP';
-const TILE_CROSS_PORT = 'CP';
+const TILE_RIGHT_PORT = 'r';
+const TILE_LEFT_PORT = 'l';
+const TILE_DOWN_PORT = 'd';
+const TILE_UP_PORT = 'u';
+const TILE_VER_PORT = 'V';
+const TILE_HOR_PORT = 'H';
+const TILE_CROSS_PORT = 'C';
+const TILE_BOMB_ORANGE = 'O';
+const TILE_BOMB_YELLOW = 'Y';
+const TILE_BOMB_RED = 'R';
+const TILE_TERMINAL = 'T';
 
 const TILE_DICTIONARY = {
   0: TILE_EMPTY,
@@ -99,6 +104,8 @@ const TILE_DICTIONARY = {
   5: TILE_WALL,
   6: TILE_FRAME,
   7: TILE_EXIT,
+  9: TILE_RIGHT_PORT,
+  8: TILE_BOMB_ORANGE,
   9: TILE_RIGHT_PORT,
   10: TILE_DOWN_PORT,
   11: TILE_LEFT_PORT,
@@ -130,20 +137,30 @@ const READY_DELAY_MS = 2000;
 const BUG_DURATION_SEC = 2;
 
 /* Image files */
-const IMAGE_ZONK = 'images/zonk.png';
-const IMAGE_LEFT_PORT = 'images/left_port.png';
-const IMAGE_RIGHT_PORT = 'images/right_port.png';
-const IMAGE_UP_PORT = 'images/up_port.png';
-const IMAGE_DOWN_PORT = 'images/down_port.png';
-const IMAGE_CROSS_PORT = 'images/cross_port.png';
-const IMAGE_DUAL_HORIZONTAL_PORT = 'images/dual_port_horizontal.png';
-const IMAGE_DUAL_VERTICAL_PORT = 'images/dual_port_vertical.png';
+const TILE_IMAGE_DICT = {
+  base: 'images/modern/base.png',
+  infotron: 'images/modern/infotron.png',
+  zonk: 'images/modern/zonk.png',
+  terminal: 'images/modern/terminal.png',
+  left_port: 'images/modern/left_port.png',
+  right_port: 'images/modern/right_port.png',
+  up_port: 'images/modern/up_port.png',
+  down_port: 'images/modern/down_port.png',
+  vertical_port: 'images/modern/vertical_port.png',
+  horizontal_port: 'images/modern/horizontal_port.png',
+  cross_port: 'images/modern/cross_port.png',
+  wall: 'images/modern/wall.png',
+  ram_chip: 'images/modern/ram_chip.png',
+  exit: 'images/modern/exit.png',
+};
 
-const LEVEL_FILE_PATH = 'data/levels.txt';
+const DEMO_LEVEL_FILE = 'data/level_demo.txt';
 const LEVELS_DATA_FILE_PATH = 'data/LEVELS.DAT';
 
 const BYTES_PER_LEVEL = 1536;
 
 const SPACE_KEY = 32;
+
+const LOAD_DEMO_LEVEL = true;
 
 const DEBUG_FLAG = true;

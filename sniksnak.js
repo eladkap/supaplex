@@ -1,16 +1,6 @@
 class SnikSnak extends Entity {
-  constructor(
-    row,
-    col,
-    width,
-    forecolor,
-    backcolor,
-    symbol,
-    speed,
-    map,
-    tileType
-  ) {
-    super(row, col, width, forecolor, backcolor, symbol, speed, map, tileType);
+  constructor(row, col, width, symbol, speed, map, tileType) {
+    super(row, col, width, symbol, speed, map, tileType);
   }
 
   SetRandomDirection() {
@@ -36,7 +26,7 @@ class SnikSnak extends Entity {
     return possibleDirections;
   }
 
-  ChangeDirection() {
+  Move() {
     var currentDirection = null;
     var oppositeDirection = null;
     if (this.direction.x < 0) {
@@ -67,6 +57,6 @@ class SnikSnak extends Entity {
       let chosenDirection = possibleDirections[0];
       this.GotoDirection(chosenDirection);
     }
-    this.isMoving = true;
+    this.isLerping = true;
   }
 }

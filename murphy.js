@@ -1,17 +1,6 @@
 class Murphy extends Entity {
-  constructor(
-    row,
-    col,
-    width,
-    forecolor,
-    backcolor,
-    symbol,
-    speed,
-    map,
-    tileType,
-    lives
-  ) {
-    super(row, col, width, forecolor, backcolor, symbol, speed, map, tileType);
+  constructor(row, col, width, image, symbol, speed, map, tileType, lives) {
+    super(row, col, width, image, symbol, speed, map, tileType);
     this.lives = lives;
   }
 
@@ -22,7 +11,7 @@ class Murphy extends Entity {
   Draw(refPos) {
     if (this.visible) {
       noStroke();
-      fill(this.forecolor);
+      // fill(this.forecolor);
       textSize(this.width * 0.88);
       text(
         this.symbol,

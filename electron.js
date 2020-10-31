@@ -1,16 +1,6 @@
 class Electron extends Entity {
-  constructor(
-    row,
-    col,
-    width,
-    forecolor,
-    backcolor,
-    symbol,
-    speed,
-    map,
-    tileType
-  ) {
-    super(row, col, width, forecolor, backcolor, symbol, speed, map, tileType);
+  constructor(row, col, width, image, symbol, speed, map, tileType) {
+    super(row, col, width, image, symbol, speed, map, tileType);
   }
 
   SetRandomDirection() {

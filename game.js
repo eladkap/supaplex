@@ -6,8 +6,7 @@ class Game {
     this.state = GAME_READY;
     this.gravity = false;
     this.stats = null;
-    this.map = null; // tiles map
-    this.binmap = null; // Binary map
+    this.map = null;
     this.cam = null;
   }
 
@@ -40,9 +39,6 @@ class Game {
 
   Update() {
     this.cam.Update(this.murphy);
-    // if (gravity) {
-    //   murphy.GoDown();
-    // }
     for (let row = 0; row < this.map.Rows; row++) {
       for (let col = 0; col < this.map.Cols; col++) {
         let tile = this.map.GetValue(row, col);
@@ -57,27 +53,31 @@ class Game {
     this.stats.Draw();
     this.stats.Update();
 
-    // this.MoveFallingElements(); todo: uncomment
-    this.MoveEnemies();
+    this.MoveElements();
+    // this.MoveFallingElements();
+    // this.MoveEnemies();
   }
 
   Reset() {
     this.SetState(GAME_PLAY);
     this.stats.Reset();
+    this.stats.StopTimer();
     this.ResetMap();
-    this.SetWallsColor(BLUE);
-    this.stats.Reset();
+    this.SetWallsColor(GRAY1);
     this.murphy.Stop();
     this.murphy.SetOriginalPosition();
-    this.StopFallingElements([Zonk, Infotron]);
-    this.StopEnemies([SnikSnak, Electron]);
+    this.StopElements();
+    // this.StopFallingElements([Zonk, Infotron]);
+    // this.StopEnemies([SnikSnak, Electron]);
   }
 
   Resume() {
     this.SetState(GAME_PLAY);
-    this.SetWallsColor(BLUE);
-    // this.MoveFallingElements(); todo:
-    this.MoveEnemies();
+    this.stats.StartTimer();
+    this.SetWallsColor(GRAY1);
+    // this.MoveElements();
+    // this.MoveFallingElements();
+    // this.MoveEnemies();
   }
 
   SetState(state) {
@@ -98,8 +98,6 @@ class Game {
 
   SetMap(tileMap) {
     this.map = new Map(tileMap);
-    this.binmap = new Map(tileMap);
-    this.binmap.Normalize(); // convert to binary map
   }
 
   SetCamera() {
@@ -118,22 +116,20 @@ class Game {
         let mapVal = this.map.GetValue(i, j);
         if (mapVal == TILE_EMPTY) {
           this.map.matrix[i][j] = null;
-        } else if (mapVal == TILE_WALL) {
-          this.map.matrix[i][j] = new Wall(
-            i,
-            j,
-            TILE_SIZE,
-            BLUE,
-            BLACK,
-            WALL_SYMBOL
-          );
         } else if (mapVal == TILE_FRAME) {
           this.map.matrix[i][j] = new Wall(
             i,
             j,
             TILE_SIZE,
-            GRAY1,
-            BLACK,
+            tileImages['wall'],
+            WALL_SYMBOL
+          );
+        } else if (mapVal == TILE_WALL) {
+          this.map.matrix[i][j] = new Chip(
+            i,
+            j,
+            TILE_SIZE,
+            tileImages['ram_chip'],
             FRAME_SYMBOL
           );
         } else if (mapVal == TILE_BASE) {
@@ -141,8 +137,7 @@ class Game {
             i,
             j,
             TILE_SIZE,
-            GREEN,
-            BLACK,
+            tileImages['base'],
             BASE_SYMBOL
           );
         } else if (mapVal == TILE_ZONK) {
@@ -150,8 +145,7 @@ class Game {
             i,
             j,
             TILE_SIZE,
-            GRAY3,
-            BLACK,
+            tileImages['zonk'],
             ZONK_SYMBOL,
             MURPHY_SPEED,
             this.map,
@@ -162,8 +156,7 @@ class Game {
             i,
             j,
             TILE_SIZE,
-            RED,
-            BLACK,
+            tileImages['infotron'],
             INFOTRON_SYMBOL,
             MURPHY_SPEED,
             this.map,
@@ -174,8 +167,7 @@ class Game {
             i,
             j,
             TILE_SIZE,
-            YELLOW,
-            GREEN,
+            tileImages['bug'],
             BUG_SYMBOL
           );
         } else if (mapVal == TILE_EXIT) {
@@ -183,17 +175,23 @@ class Game {
             i,
             j,
             TILE_SIZE,
-            WHITE,
-            RED,
+            tileImages['exit'],
             EXIT_SYMBOL
+          );
+        } else if (mapVal == TILE_TERMINAL) {
+          this.map.matrix[i][j] = new Terminal(
+            i,
+            j,
+            TILE_SIZE,
+            tileImages['terminal'],
+            TERMINAL_SYMBOL
           );
         } else if (mapVal == TILE_RIGHT_PORT) {
           this.map.matrix[i][j] = new Port(
             i,
             j,
             TILE_SIZE,
-            WHITE,
-            RED,
+            tileImages['right_port'],
             '*',
             'right'
           );
@@ -202,8 +200,7 @@ class Game {
             i,
             j,
             TILE_SIZE,
-            WHITE,
-            RED,
+            tileImages['left_port'],
             '*',
             'left'
           );
@@ -212,8 +209,7 @@ class Game {
             i,
             j,
             TILE_SIZE,
-            WHITE,
-            RED,
+            tileImages['up_port'],
             '*',
             'up'
           );
@@ -222,8 +218,7 @@ class Game {
             i,
             j,
             TILE_SIZE,
-            WHITE,
-            RED,
+            tileImages['down_port'],
             '*',
             'down'
           );
@@ -232,8 +227,7 @@ class Game {
             i,
             j,
             TILE_SIZE,
-            WHITE,
-            RED,
+            tileImages['vertical_port'],
             '*',
             'dual_v'
           );
@@ -242,8 +236,7 @@ class Game {
             i,
             j,
             TILE_SIZE,
-            WHITE,
-            RED,
+            tileImages['horizontal_port'],
             '*',
             'dual_h'
           );
@@ -252,8 +245,7 @@ class Game {
             i,
             j,
             TILE_SIZE,
-            WHITE,
-            RED,
+            tileImages['cross_port'],
             '*',
             'cross'
           );
@@ -262,8 +254,7 @@ class Game {
             i,
             j,
             TILE_SIZE,
-            YELLOW,
-            BLACK,
+            null,
             SNIKSNAK_SYMBOL,
             MURPHY_SPEED,
             this.map,
@@ -274,27 +265,25 @@ class Game {
             i,
             j,
             TILE_SIZE,
-            YELLOW,
-            BLACK,
+            null,
             ELECTRON_SYMBOL,
             MURPHY_SPEED,
             this.map,
             TILE_ELECTRON
           );
         } else if (mapVal == TILE_MURPHY) {
-          this.map.matrix[i][j] = null;
           this.murphy = new Murphy(
             i,
             j,
             TILE_SIZE,
-            YELLOW,
-            BLACK,
+            null,
             MURPHY_SYMBOL,
             MURPHY_SPEED,
             this.map,
             TILE_MURPHY,
             MAX_LIVES
           );
+          this.map.matrix[i][j] = null;
         }
       }
     }
@@ -353,7 +342,29 @@ class Game {
       for (let col = 0; col < this.map.Cols; col++) {
         let tile = this.map.GetValue(row, col);
         if (tile instanceof Wall) {
-          tile.SetColor(color);
+          // tile.SetForecolor(color);
+        }
+      }
+    }
+  }
+
+  MoveElements() {
+    for (let row = 0; row < this.map.Rows; row++) {
+      for (let col = 0; col < this.map.Cols; col++) {
+        let tile = this.map.GetValue(row, col);
+        if (tile != null) {
+          tile.Move();
+        }
+      }
+    }
+  }
+
+  StopElements() {
+    for (let row = 0; row < this.map.Rows; row++) {
+      for (let col = 0; col < this.map.Cols; col++) {
+        let tile = this.map.GetValue(row, col);
+        if (tile != null) {
+          tile.Stop();
         }
       }
     }
@@ -667,5 +678,19 @@ class Game {
       }
     }
     return count;
+  }
+
+  // for debugging
+  GetTilesOf(type) {
+    let tiles = [];
+    for (let row = 0; row < this.map.Rows; row++) {
+      for (let col = 0; col < this.map.Cols; col++) {
+        let tile = this.map.GetValue(row, col);
+        if (tile instanceof type) {
+          tiles.push(tile);
+        }
+      }
+    }
+    return tiles;
   }
 }

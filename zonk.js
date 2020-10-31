@@ -1,16 +1,6 @@
 class Zonk extends Entity {
-  constructor(
-    row,
-    col,
-    width,
-    forecolor,
-    backcolor,
-    symbol,
-    speed,
-    map,
-    tileType
-  ) {
-    super(row, col, width, forecolor, backcolor, symbol, speed, map, tileType);
+  constructor(row, col, width, image, symbol, speed, map, tileType) {
+    super(row, col, width, image, symbol, speed, map, tileType);
     this.angle = 0;
   }
 
@@ -21,7 +11,7 @@ class Zonk extends Entity {
       // this.angle += 0.2;
       // rotate(this.angle);
       image(
-        zonkImage,
+        this.image,
         this.pos.x + refPos.x + this.width / 2,
         this.pos.y + refPos.y + this.width / 2,
         this.width,
@@ -31,7 +21,14 @@ class Zonk extends Entity {
     }
   }
 
-  ChangeDirection() {
+  CanGoDown() {
+    let downTile = this.map.GetValue(this.row + 1, this.col);
+    return (
+      this.row + 1 < this.map.Rows - 1 && downTile == null && !this.isLerping
+    );
+  }
+
+  Move() {
     this.GoDown();
     this.isMoving = true;
   }

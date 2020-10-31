@@ -1,12 +1,11 @@
 class Tile {
-  constructor(row, col, width, forecolor, backcolor, symbol) {
+  constructor(row, col, width, image, symbol) {
     this.row = row;
     this.col = col;
     this.pos = createVector(MAP_POS_X + col * width, MAP_POS_Y + row * width);
     this.width = width;
     this.radius = width / 2;
-    this.forecolor = forecolor;
-    this.backcolor = backcolor;
+    this.image = image;
     this.symbol = symbol;
     this.visible = true;
   }
@@ -32,10 +31,6 @@ class Tile {
     return this.radius;
   }
 
-  get Color() {
-    return this.color;
-  }
-
   get Points() {
     return this.points;
   }
@@ -52,17 +47,20 @@ class Tile {
   //#region Methods
 
   Draw(refPos) {
-    strokeWeight(0.1);
-    stroke(GRAY3);
-    fill(this.forecolor);
-    rect(this.pos.x + refPos.x, this.pos.y + refPos.y, this.width, this.width);
+    image(
+      this.image,
+      this.pos.x + refPos.x + this.width / 2,
+      this.pos.y + refPos.y + this.width / 2,
+      this.width,
+      this.width
+    );
   }
 
   Update() {}
 
-  SetColor(color) {
-    this.color = color;
-  }
+  Move() {}
+
+  Stop() {}
 
   SetSymbol(symbol) {
     this.symbol = symbol;

@@ -2,18 +2,12 @@ var game;
 var tileMap;
 var spaceKeyIsHold;
 var lerpSpeed = LERP_UNIT_NORMAL;
-// var levels;
+
 var levelDataObj;
+var demoLevel;
 
 //#region Images
-var zonkImage;
-var rightPortImage;
-var leftPortImage;
-var upPortImage;
-var downPortImage;
-var dualHorPortImage;
-var dualVerPortImage;
-var crossPortImage;
+var tileImages = {};
 //#endregion
 
 //#region Main Functions
@@ -22,17 +16,22 @@ function LoadTileMap() {
 }
 
 function LoadImages() {
-  zonkImage = loadImage(IMAGE_ZONK);
-  rightPortImage = loadImage(IMAGE_RIGHT_PORT);
-  leftPortImage = loadImage(IMAGE_LEFT_PORT);
-  upPortImage = loadImage(IMAGE_UP_PORT);
-  downPortImage = loadImage(IMAGE_DOWN_PORT);
-  dualHorPortImage = loadImage(IMAGE_DUAL_HORIZONTAL_PORT);
-  dualVerPortImage = loadImage(IMAGE_DUAL_VERTICAL_PORT);
-  crossPortImage = loadImage(IMAGE_CROSS_PORT);
+  for (let key of Object.keys(TILE_IMAGE_DICT)) {
+    tileImages[key] = loadImage(TILE_IMAGE_DICT[key]);
+  }
+  // zonkImage = loadImage(IMAGE_ZONK);
+  // rightPortImage = loadImage(IMAGE_RIGHT_PORT);
+  // leftPortImage = loadImage(IMAGE_LEFT_PORT);
+  // upPortImage = loadImage(IMAGE_UP_PORT);
+  // downPortImage = loadImage(IMAGE_DOWN_PORT);
+  // dualHorPortImage = loadImage(IMAGE_DUAL_HORIZONTAL_PORT);
+  // dualVerPortImage = loadImage(IMAGE_DUAL_VERTICAL_PORT);
+  // crossPortImage = loadImage(IMAGE_CROSS_PORT);
+  // terminalImage = loadImage(IMAGE_TERMINAL);
 }
 
 function preload() {
+  demoLevel = LoadLevelFromTileMap(DEMO_LEVEL_FILE);
   levelDataObj = LoadLevelsDataFile(LEVELS_DATA_FILE_PATH);
   LoadImages();
   ConsoleLog('Game was loaded.');
@@ -42,8 +41,14 @@ function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
   frameRate(FPS);
   imageMode(CENTER);
-  let chosenLevelIndex = int(window.location.href.split('#')[1]);
-  let level = LoadLevel(levelDataObj, chosenLevelIndex);
+  let level = null;
+  if (LOAD_DEMO_LEVEL) {
+    level = demoLevel;
+  } else {
+    let chosenLevelIndex = int(window.location.href.split('#')[1]);
+    level = LoadLevel(levelDataObj, chosenLevelIndex);
+  }
+
   game = new Game(level);
   game.Setup();
   noLoop();
@@ -183,7 +188,7 @@ function DisplayGameOver() {
 
 function DisplayPause() {
   let msg_x = (MAP_POS_X + SCREEN_WIDTH) * 0.32;
-  let msg_y = SCREEN_HEIGHT * 0.7;
+  let msg_y = SCREEN_HEIGHT * 0.55;
   let msg = 'Game Paused';
   DisplayMessage(msg, msg_x, msg_y, WHITE, MESSAGE_FONT_SIZE1);
 }
