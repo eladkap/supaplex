@@ -469,11 +469,11 @@ class Game {
   }
 
   HandleTilePushHorizotalOrVertical(tile, direction) {
-    if (direction == 'U') {
+    if (direction == 'U' && this.murphy.CanPushUp()) {
       this.MurphyPushUp(tile);
       return;
     }
-    if (direction == 'D') {
+    if (direction == 'D' && this.murphy.CanPushDown()) {
       this.MurphyPushDown(tile);
       return;
     }
@@ -527,9 +527,8 @@ class Game {
       this.DetonateYellowBombs();
       return;
     }
+    // Zonk
     if (className == 'Zonk') {
-      // Terminal
-      // Zonk
       this.HandleTilePushHorizotalOnly(tile, direction);
       return;
     }

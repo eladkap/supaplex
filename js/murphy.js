@@ -70,61 +70,69 @@ class Murphy extends Entity {
 
   CanGoLeft() {
     return this.col - 1 > 0 && !this.isLerping;
-    // return (
-    //   this.col > 0 &&
-    //   [TILE_INFOTRON, TILE_BASE, TILE_EMPTY, TILE_BUG].includes(
-    //     this.map.GetValue(this.row, this.col - 1)
-    //   ) &&
-    //   !this.isLerping
-    // );
   }
 
   CanGoRight() {
     return this.col + 1 < this.map.Cols - 1 && !this.isLerping;
-    // return (
-    //   this.col + 1 < this.map.Cols &&
-    //   [TILE_INFOTRON, TILE_BASE, TILE_EMPTY, TILE_BUG].includes(
-    //     this.map.GetValue(this.row, this.col + 1)
-    //   ) &&
-    //   !this.isLerping
-    // );
   }
 
   CanGoUp() {
     return this.row - 1 > 0 && !this.isLerping;
-    // return (
-    //   this.row > 0 &&
-    //   [TILE_INFOTRON, TILE_BASE, TILE_EMPTY, TILE_BUG].includes(
-    //     this.map.GetValue(this.row - 1, this.col)
-    //   ) &&
-    //   !this.isLerping
-    // );
   }
 
   CanGoDown() {
     return this.row + 1 < this.map.Rows - 1 && !this.isLerping;
-    // return (
-    //   this.row + 1 < this.map.Rows &&
-    //   [TILE_INFOTRON, TILE_BASE, TILE_EMPTY, TILE_BUG].includes(
-    //     this.map.GetValue(this.row + 1, this.col)
-    //   ) &&
-    //   !this.isLerping
-    // );
+  }
+
+  CanPushLeft() {
+    let tile = this.map.GetValue(this.row, this.col - 1);
+    let tilePushable =
+      tile instanceof Zonk ||
+      tile instanceof OrangeBomb ||
+      tile instanceof YellowBomb;
+    return (
+      this.col - 2 >= 0 &&
+      tilePushable &&
+      this.map.GetValue(this.row, this.col - 2) == null
+    );
   }
 
   CanPushRight() {
+    let tile = this.map.GetValue(this.row, this.col + 1);
+    let tilePushable =
+      tile instanceof Zonk ||
+      tile instanceof OrangeBomb ||
+      tile instanceof YellowBomb;
     return (
       this.col + 2 < this.map.Cols &&
-      this.map.GetValue(this.row, this.col + 1) instanceof Zonk &&
+      tilePushable &&
       this.map.GetValue(this.row, this.col + 2) == null
     );
   }
 
-  CanPushLeft() {
+  CanPushUp() {
+    let tile = this.map.GetValue(this.row - 1, this.col);
+    let tilePushable =
+      tile instanceof Zonk ||
+      tile instanceof OrangeBomb ||
+      tile instanceof YellowBomb;
     return (
-      this.col - 2 >= 0 &&
-      this.map.GetValue(this.row, this.col - 1) instanceof Zonk &&
-      this.map.GetValue(this.row, this.col - 2) == null
+      this.row - 2 >= 0 &&
+      tilePushable &&
+      this.map.GetValue(this.row - 2, this.col) == null
+    );
+  }
+
+  CanPushDown() {
+    let tile = this.map.GetValue(this.row + 1, this.col);
+    let tilePushable =
+      tile instanceof Zonk ||
+      tile instanceof OrangeBomb ||
+      tile instanceof YellowBomb;
+    return (
+      this.row + 1 < this.map.Cols &&
+      tilePushable &&
+      this.map.GetValue(this.row + 2, this.col) == null
     );
   }
 
