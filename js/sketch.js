@@ -19,15 +19,6 @@ function LoadImages() {
   for (let key of Object.keys(TILE_IMAGE_DICT)) {
     tileImages[key] = loadImage(TILE_IMAGE_DICT[key]);
   }
-  // zonkImage = loadImage(IMAGE_ZONK);
-  // rightPortImage = loadImage(IMAGE_RIGHT_PORT);
-  // leftPortImage = loadImage(IMAGE_LEFT_PORT);
-  // upPortImage = loadImage(IMAGE_UP_PORT);
-  // downPortImage = loadImage(IMAGE_DOWN_PORT);
-  // dualHorPortImage = loadImage(IMAGE_DUAL_HORIZONTAL_PORT);
-  // dualVerPortImage = loadImage(IMAGE_DUAL_VERTICAL_PORT);
-  // crossPortImage = loadImage(IMAGE_CROSS_PORT);
-  // terminalImage = loadImage(IMAGE_TERMINAL);
 }
 
 function preload() {
@@ -68,7 +59,7 @@ function draw() {
     DisplayBusted();
   }
 
-  if (game.EatTile()) {
+  if (game.CollectTile()) {
     Busted();
   }
 

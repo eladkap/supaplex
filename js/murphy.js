@@ -1,11 +1,6 @@
 class Murphy extends Entity {
-  constructor(row, col, width, image, symbol, speed, map, tileType, lives) {
-    super(row, col, width, image, symbol, speed, map, tileType);
-    this.lives = lives;
-  }
-
-  get Lives() {
-    return this.lives;
+  constructor(row, col, width, image, symbol, speed, map, murphy) {
+    super(row, col, width, image, symbol, speed, map, murphy);
   }
 
   Draw(refPos) {
@@ -19,14 +14,6 @@ class Murphy extends Entity {
         this.pos.y + refPos.y + this.width * 0.8
       );
     }
-  }
-
-  IncrementLives() {
-    this.lives++;
-  }
-
-  DecrementLives() {
-    this.lives--;
   }
 
   Collect(direction) {

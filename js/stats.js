@@ -6,6 +6,7 @@ class Stats {
     this.height = h;
     this.infotrons = infotrons;
     this.infotronsRemained = infotrons;
+    this.redBombs = 0;
     this.levelNum = levelNumer;
     this.levelTitle = levelTitle;
     this.timerSeconds = 0;
@@ -49,6 +50,14 @@ class Stats {
     this.infotronsRemained--;
   }
 
+  IncrementRedBombs() {
+    this.redBombs++;
+  }
+
+  DecrementRedBombs() {
+    this.redBombs--;
+  }
+
   SetNextLevel() {
     this.levelNum++;
   }
@@ -68,7 +77,7 @@ class Stats {
     textStyle(NORMAL);
     fill(WHITE);
     text(
-      `Level: ${this.levelNum}\t\t--${this.levelTitle}--\t\t${INFOTRON_SYMBOL}: ${this.infotronsRemained}\t\t Time: ${this.Time}`,
+      `Level: ${this.levelNum}\t\t--${this.levelTitle}--\t\t${INFOTRON_SYMBOL}: ${this.infotronsRemained}\t\tBombs: ${this.redBombs}\t\t Time: ${this.Time}`,
       this.x,
       this.y
     );

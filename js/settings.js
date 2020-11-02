@@ -104,13 +104,15 @@ const TILE_DICTIONARY = {
   5: TILE_WALL,
   6: TILE_FRAME,
   7: TILE_EXIT,
-  9: TILE_RIGHT_PORT,
   8: TILE_BOMB_ORANGE,
   9: TILE_RIGHT_PORT,
   10: TILE_DOWN_PORT,
   11: TILE_LEFT_PORT,
   12: TILE_UP_PORT,
   17: TILE_SNIKSNAK,
+  18: TILE_BOMB_YELLOW,
+  19: TILE_TERMINAL,
+  20: TILE_BOMB_RED,
   21: TILE_VER_PORT,
   22: TILE_HOR_PORT,
   23: TILE_CROSS_PORT,
@@ -152,6 +154,9 @@ const TILE_IMAGE_DICT = {
   wall: 'images/modern/wall.png',
   ram_chip: 'images/modern/ram_chip.png',
   exit: 'images/modern/exit.png',
+  yellow_bomb: 'images/modern/yellow_disk.png',
+  orange_bomb: 'images/modern/orange_disk.png',
+  red_bomb: 'images/modern/red_disk.png',
 };
 
 const DEMO_LEVEL_FILE = 'data/level_demo.txt';

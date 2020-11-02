@@ -15,6 +15,7 @@ class Camera {
   }
 
   Update(target) {
+    // Update camera top-left position according to target element
     let x = -target.pos.x + int(this.width / 2);
     let y = -target.pos.y + int(this.height / 2);
     x = Math.min(0, x);

@@ -1,15 +1,15 @@
-/*
-Entity represents moving object
-*/
 class Entity extends Tile {
-  constructor(row, col, width, image, symbol, speed, map, tileType) {
+  // Entity represents moving object
+  constructor(row, col, width, image, symbol, speed, map, murphy) {
     super(row, col, width, image, symbol);
     this.originalRow = row;
     this.originalCol = col;
+    this.prevRow = row;
+    this.prevCol = col;
     this.speed = speed;
     this.direction = createVector(0, 0);
     this.map = map;
-    this.tileType = tileType;
+    this.murphy = murphy;
     this.lerpingCount = 0;
     this.isLerping = false;
     this.vulnerable = false;
@@ -34,7 +34,6 @@ class Entity extends Tile {
   Draw(refPos) {
     if (this.visible) {
       noStroke();
-      // fill(this.forecolor);
       textSize(this.width * 0.9);
       text(
         this.symbol,
@@ -139,6 +138,7 @@ class Entity extends Tile {
       this.direction.set(-1, 0);
       this.isLerping = true;
       this.map.SetValue(this.row, this.col, null);
+      this.prevCol = this.col;
       this.col--;
       this.map.SetValue(this.row, this.col, this);
     }
@@ -149,6 +149,7 @@ class Entity extends Tile {
       this.direction.set(1, 0);
       this.isLerping = true;
       this.map.SetValue(this.row, this.col, null);
+      this.prevCol = this.col;
       this.col++;
       this.map.SetValue(this.row, this.col, this);
     }
@@ -159,6 +160,7 @@ class Entity extends Tile {
       this.direction.set(0, -1);
       this.isLerping = true;
       this.map.SetValue(this.row, this.col, null);
+      this.prevRow = this.row;
       this.row--;
       this.map.SetValue(this.row, this.col, this);
     }
@@ -169,6 +171,7 @@ class Entity extends Tile {
       this.direction.set(0, 1);
       this.isLerping = true;
       this.map.SetValue(this.row, this.col, null);
+      this.prevRow = this.row;
       this.row++;
       this.map.SetValue(this.row, this.col, this);
     }

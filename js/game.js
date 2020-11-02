@@ -26,7 +26,6 @@ class Game {
   get Map() {
     return this.map;
   }
-
   //#endregion
 
   Setup() {
@@ -45,6 +44,7 @@ class Game {
         if (tile != null) {
           tile.Draw(this.cam.pos);
           tile.Update();
+          tile.Move();
         }
       }
     }
@@ -53,7 +53,7 @@ class Game {
     this.stats.Draw();
     this.stats.Update();
 
-    this.MoveElements();
+    // this.MoveElements();
     // this.MoveFallingElements();
     // this.MoveEnemies();
   }
@@ -149,7 +149,7 @@ class Game {
             ZONK_SYMBOL,
             MURPHY_SPEED,
             this.map,
-            TILE_ZONK
+            this.murphy
           );
         } else if (mapVal == TILE_INFOTRON) {
           this.map.matrix[i][j] = new Infotron(
@@ -160,7 +160,7 @@ class Game {
             INFOTRON_SYMBOL,
             MURPHY_SPEED,
             this.map,
-            TILE_INFOTRON
+            this.murphy
           );
         } else if (mapVal == TILE_BUG) {
           this.map.matrix[i][j] = new Bug(
@@ -185,6 +185,36 @@ class Game {
             TILE_SIZE,
             tileImages['terminal'],
             TERMINAL_SYMBOL
+          );
+        } else if (mapVal == TILE_BOMB_ORANGE) {
+          this.map.matrix[i][j] = new OrangeBomb(
+            i,
+            j,
+            TILE_SIZE,
+            tileImages['orange_bomb'],
+            '*',
+            MURPHY_SPEED,
+            this.map,
+            this.murphy
+          );
+        } else if (mapVal == TILE_BOMB_YELLOW) {
+          this.map.matrix[i][j] = new YellowBomb(
+            i,
+            j,
+            TILE_SIZE,
+            tileImages['yellow_bomb'],
+            '*',
+            MURPHY_SPEED,
+            this.map,
+            this.murphy
+          );
+        } else if (mapVal == TILE_BOMB_RED) {
+          this.map.matrix[i][j] = new RedBomb(
+            i,
+            j,
+            TILE_SIZE,
+            tileImages['red_bomb'],
+            '*'
           );
         } else if (mapVal == TILE_RIGHT_PORT) {
           this.map.matrix[i][j] = new Port(
@@ -258,7 +288,7 @@ class Game {
             SNIKSNAK_SYMBOL,
             MURPHY_SPEED,
             this.map,
-            TILE_SNIKSNAK
+            this.murphy
           );
         } else if (mapVal == TILE_ELECTRON) {
           this.map.matrix[i][j] = new Electron(
@@ -269,7 +299,7 @@ class Game {
             ELECTRON_SYMBOL,
             MURPHY_SPEED,
             this.map,
-            TILE_ELECTRON
+            this.murphy
           );
         } else if (mapVal == TILE_MURPHY) {
           this.murphy = new Murphy(
@@ -280,8 +310,7 @@ class Game {
             MURPHY_SYMBOL,
             MURPHY_SPEED,
             this.map,
-            TILE_MURPHY,
-            MAX_LIVES
+            null
           );
           this.map.matrix[i][j] = null;
         }
@@ -425,8 +454,27 @@ class Game {
     }
   }
 
-  HandleZonk(tile, direction) {
+  HandleTilePushHorizotalOnly(tile, direction) {
     if (direction == 'U' || direction == 'D') {
+      return;
+    }
+    if (direction == 'L' && this.murphy.CanPushLeft()) {
+      this.MurphyPushLeft(tile);
+      return;
+    }
+    if (direction == 'R' && this.murphy.CanPushRight()) {
+      this.MurphyPushRight(tile);
+      return;
+    }
+  }
+
+  HandleTilePushHorizotalOrVertical(tile, direction) {
+    if (direction == 'U') {
+      this.MurphyPushUp(tile);
+      return;
+    }
+    if (direction == 'D') {
+      this.MurphyPushDown(tile);
       return;
     }
     if (direction == 'L' && this.murphy.CanPushLeft()) {
@@ -466,12 +514,33 @@ class Game {
     }
     let className = tile.constructor.name;
     // wall
-    if (className == 'Wall') {
+    if (['Wall', 'Chip'].includes(className)) {
       return;
     }
-    // Zonk
+    // Exit
+    if (className == 'Exit') {
+      this.TryExitLevel();
+      return;
+    }
+    if (className == 'Terminal') {
+      console.log('detonate yellow bombs');
+      this.DetonateYellowBombs();
+      return;
+    }
     if (className == 'Zonk') {
-      this.HandleZonk(tile, direction);
+      // Terminal
+      // Zonk
+      this.HandleTilePushHorizotalOnly(tile, direction);
+      return;
+    }
+    // Orange bomb
+    if (className == 'OrangeBomb') {
+      console.log('orange disk');
+      this.HandleTilePushHorizotalOnly(tile, direction);
+      return;
+    }
+    if (className == 'YellowBomb') {
+      this.HandleTilePushHorizotalOrVertical(tile, direction);
       return;
     }
     //Port
@@ -504,8 +573,29 @@ class Game {
     return false;
   }
 
-  /* Check if murphy collides a tile that destroys it */
-  EatTile() {
+  ExitLevel() {
+    console.log('Exit level');
+  }
+
+  TryExitLevel() {
+    if (this.stats.infotronsRemained <= 0) {
+      this.ExitLevel();
+    }
+  }
+
+  DetonateYellowBombs() {
+    for (let row = 0; row < this.map.Rows; row++) {
+      for (let col = 0; col < this.map.Cols; col++) {
+        let tile = this.map.GetValue(row, col);
+        if (tile instanceof YellowBomb) {
+          tile.Explode();
+        }
+      }
+    }
+  }
+
+  CollectTile() {
+    // Collect tile
     let tile = this.map.matrix[this.murphy.Row][this.murphy.Col];
     if (tile == null) {
       return false;
@@ -525,6 +615,11 @@ class Game {
         this.map.matrix[tile.Row][tile.Col] = null;
         return false;
       }
+    }
+    if (className == 'RedBomb') {
+      this.map.matrix[tile.Row][tile.Col] = null;
+      this.stats.IncrementRedBombs();
+      return false;
     }
   }
 
@@ -560,9 +655,18 @@ class Game {
               return;
             }
           } else if (tile instanceof Infotron) {
-            if (tile.Row == location[0] && tile.Col == location[1]) {
+            if (
+              tile.Row == location[0] &&
+              tile.Col == location[1] &&
+              !tile.isLerping
+            ) {
               this.map.SetValue(location[0], location[1], null);
               this.stats.DecrementInfotrons();
+            }
+          } else if (tile instanceof RedBomb) {
+            if (tile.Row == location[0] && tile.Col == location[1]) {
+              this.map.SetValue(location[0], location[1], null);
+              this.stats.IncrementRedBombs();
             }
           }
         }
@@ -602,6 +706,28 @@ class Game {
     ) {
       tile.GoRight();
       this.murphy.GoRight();
+      return;
+    }
+  }
+
+  MurphyPushUp(tile) {
+    if (
+      tile.pos.x == this.murphy.pos.x &&
+      this.murphy.pos.y - tile.pos.y == TILE_SIZE
+    ) {
+      tile.GoUp();
+      this.murphy.GoUp();
+      return;
+    }
+  }
+
+  MurphyPushDown(tile) {
+    if (
+      tile.pos.x == this.murphy.pos.x &&
+      tile.pos.y - this.murphy.pos.y == TILE_SIZE
+    ) {
+      tile.GoDown();
+      this.murphy.GoDown();
       return;
     }
   }

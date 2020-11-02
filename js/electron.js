@@ -1,15 +1,17 @@
 class Electron extends Entity {
-  constructor(row, col, width, image, symbol, speed, map, tileType) {
-    super(row, col, width, image, symbol, speed, map, tileType);
+  constructor(row, col, width, image, symbol, speed, map, murphy) {
+    super(row, col, width, image, symbol, speed, map, murphy);
   }
 
   SetRandomDirection() {
+    // Set random direction
     let possibleDirections = this.GetPossibleDirections();
     let chosenDirection = random(possibleDirections);
     this.GotoDirection(chosenDirection);
   }
 
   GetPossibleDirections() {
+    // return list of possible directions
     let possibleDirections = [];
     if (this.CanGoLeft()) {
       possibleDirections.push('L');
@@ -26,7 +28,8 @@ class Electron extends Entity {
     return possibleDirections;
   }
 
-  ChangeDirection() {
+  Move() {
+    // Change entity direction
     var currentDirection = null;
     var oppositeDirection = null;
     if (this.direction.x < 0) {
@@ -57,6 +60,6 @@ class Electron extends Entity {
       let chosenDirection = possibleDirections[0];
       this.GotoDirection(chosenDirection);
     }
-    this.isMoving = true;
+    this.isLerping = true;
   }
 }

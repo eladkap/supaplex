@@ -1,6 +1,6 @@
 class SnikSnak extends Entity {
-  constructor(row, col, width, symbol, speed, map, tileType) {
-    super(row, col, width, symbol, speed, map, tileType);
+  constructor(row, col, width, symbol, speed, map, murphy) {
+    super(row, col, width, symbol, speed, map, murphy);
   }
 
   SetRandomDirection() {
