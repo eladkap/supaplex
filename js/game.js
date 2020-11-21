@@ -387,7 +387,7 @@ class Game {
       for (let col = 0; col < this.map.Cols; col++) {
         let tile = this.map.GetValue(row, col);
         if (tile != null && tile != 'M') {
-          console.log(tile);
+          // console.log(tile);
           tile.Stop();
         }
       }

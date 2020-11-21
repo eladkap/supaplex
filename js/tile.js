@@ -1,4 +1,17 @@
+/*
+This class represents the most basic game element
+*/
+
 class Tile {
+  /*
+  row: row index in the map
+  col: column index in the map
+  width: tile width in pixels
+  image: tile image
+  symbol: tile symbol
+  pos: x,y position in pixels
+  visible: true/false
+  */
   constructor(row, col, width, image, symbol) {
     this.row = row;
     this.col = col;
@@ -31,10 +44,6 @@ class Tile {
     return this.radius;
   }
 
-  get Points() {
-    return this.points;
-  }
-
   get Symbol() {
     return this.symbol;
   }
@@ -45,8 +54,8 @@ class Tile {
   //#endregion
 
   //#region Methods
-
   Draw(refPos) {
+    /* Draw tile refer to refPos */
     image(
       this.image,
       this.pos.x + refPos.x + this.width / 2,
@@ -71,6 +80,7 @@ class Tile {
   }
 
   SetPosition(row, col) {
+    /* Set tile position according to its row and column position in the map */
     this.row = row;
     this.col = col;
     let x = MAP_POS_X + col * this.width;
@@ -85,6 +95,7 @@ class Tile {
   }
 
   UpdatePosition() {
+    /* Update x,y position according to its current row and column position */
     this.pos.set(
       MAP_POS_X + this.col * this.width,
       MAP_POS_Y + this.row * this.width

@@ -1,4 +1,13 @@
 class ScoreBoard {
+  /*
+  x: scoreboard top-left x position in pixels
+  y: scoreboard top-left y position in pixels
+  w: scoreboard width in pixels
+  h: scoreboard height in pixels
+  levelNumber: level number
+  levelTitle: level title
+  infotrons: required infotrons
+  */
   constructor(x, y, w, h, levelNumer, levelTitle, infotrons) {
     this.x = x;
     this.y = y;
@@ -7,7 +16,7 @@ class ScoreBoard {
     this.infotronsRequired = infotrons;
     this.infotronsCollected = 0;
     this.redBombs = 0;
-    this.levelNum = levelNumer;
+    this.levelNumber = levelNumer;
     this.levelTitle = levelTitle;
     this.timerSeconds = 0;
     this.timerMinutes = 0;
@@ -16,6 +25,7 @@ class ScoreBoard {
   }
 
   get Time() {
+    /* Return elapsed time since game started */
     let hh = this.timerHours > 9 ? this.timerHours : '0' + this.timerHours;
     let mm =
       this.timerMinutes > 9 ? this.timerMinutes : '0' + this.timerMinutes;
@@ -25,6 +35,7 @@ class ScoreBoard {
   }
 
   Update() {
+    /* Update time */
     if (this.timerOn && frameCount % FPS == 0) {
       this.timerSeconds++;
       if (this.timerSeconds == 60) {
@@ -39,6 +50,7 @@ class ScoreBoard {
   }
 
   Reset() {
+    /* Reset scoreboard (infotrons collected and time) */
     this.infotronsCollected = 0;
     this.timerSeconds = 0;
     this.timerMinutes = 0;
@@ -47,37 +59,44 @@ class ScoreBoard {
   }
 
   IncrementInfotronsCollected() {
+    /* Increment infotrons collected */
     this.infotronsCollected++;
   }
 
   IncrementRedBombs() {
+    /* Increment red disks collected */
     this.redBombs++;
   }
 
   DecrementRedBombs() {
+    /* Decrement red disks */
     this.redBombs--;
   }
 
   SetNextLevel() {
-    this.levelNum++;
+    /* Set next level */
+    this.levelNumber++;
   }
 
   StartTimer() {
+    /* Start timer */
     this.timerOn = true;
   }
 
   StopTimer() {
+    /* Stop timer */
     this.timerOn = false;
   }
 
   Draw() {
+    /* Draw scoreboard */
     noStroke();
     textSize(MESSAGE_FONT_SIZE3);
     textFont(FONT_FAMILY);
     textStyle(NORMAL);
     fill(WHITE);
     text(
-      `Level: ${this.levelNum}\t--${this.levelTitle}--\t${INFOTRON_SYMBOL}: ${this.infotronsCollected}/${this.infotronsRequired}\tBombs: ${this.redBombs}\t Time: ${this.Time}`,
+      `Level: ${this.levelNumber}\t--${this.levelTitle}--\t${INFOTRON_SYMBOL}: ${this.infotronsCollected}/${this.infotronsRequired}\tBombs: ${this.redBombs}\t Time: ${this.Time}`,
       this.x,
       this.y
     );

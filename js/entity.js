@@ -1,5 +1,8 @@
+/*
+This class represents a moving object (Murphy or an enemy)
+*/
+
 class Entity extends Tile {
-  // Entity represents moving object
   constructor(row, col, width, image, symbol, speed, map, murphy) {
     super(row, col, width, image, symbol);
     this.originalRow = row;
@@ -9,7 +12,7 @@ class Entity extends Tile {
     this.speed = speed;
     this.direction = createVector(0, 0);
     this.map = map;
-    this.murphy = murphy;
+    this.murphy = murphy; // todo: no need of murphy reference object
     this.lerpingCount = 0;
     this.isLerping = false;
     this.vulnerable = false;

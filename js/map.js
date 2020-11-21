@@ -1,4 +1,16 @@
+/*
+This class represents the level map containing tiles
+*/
+
 class Map {
+  /*
+  tileMap: string represents the level map
+  rows: rows number
+  cols: columns number
+  matrix: 2d array containing the tiles
+  width: map width in pixels
+  height: map height in pixels
+  */
   constructor(tileMap) {
     this.tileMap = tileMap;
     let line = tileMap[0].split(' ');
@@ -16,6 +28,7 @@ class Map {
     this.Create(tileMap);
   }
 
+  //#region properties
   get Rows() {
     return this.rows;
   }
@@ -31,8 +44,10 @@ class Map {
   get Height() {
     return this.height;
   }
+  //#endregion
 
   Create(tileMap) {
+    /* Create tile map objects according to tile map string */
     for (let i = 0; i < this.rows; i++) {
       let line = tileMap[i].split(' ');
       for (let j = 0; j < this.cols; j++) {
@@ -42,14 +57,17 @@ class Map {
   }
 
   GetValue(i, j) {
+    /* Get tile in i,j position */
     return this.matrix[i][j];
   }
 
   SetValue(i, j, value) {
+    /* Set tile in i,j position */
     this.matrix[i][j] = value;
   }
 
   Copy() {
+    /* Return a copy of map object */
     let map = new Map(this.tileMap);
     return map;
   }

@@ -1,4 +1,14 @@
+/*
+This class represents the game camera that tracking the player
+*/
+
 class Camera {
+  /*
+  x: camera x position in pixels
+  y: camera y position in pixels
+  width: camera width in pixels
+  height: camera height in pixels
+  */
   constructor(x, y, width, height) {
     this.pos = createVector(x, y);
     this.topLeft = createVector(x, y);
