@@ -120,11 +120,11 @@ const TILE_DICTIONARY = {
   25: TILE_BUG,
 };
 
-/* Stats settings */
-const STATS_POS_X = SCREEN_WIDTH * 0.05;
-const STATS_POS_Y = SCREEN_HEIGHT * 0.1;
-const STATS_WIDTH = 100;
-const STATS_HEIGHT = 200;
+/* Scoreboard settings */
+const SCORE_BOARD_POS_X = SCREEN_WIDTH * 0.05;
+const SCORE_BOARD_POS_Y = SCREEN_HEIGHT * 0.1;
+const SCORE_BOARD_WIDTH = 100;
+const SCORE_BOARD_HEIGHT = 200;
 
 /* Game States */
 const GAME_READY = 0;

@@ -1,9 +1,9 @@
 class Level {
-  constructor(number, title, tileMap, infotronsNeeded, gravity) {
+  constructor(number, title, tileMap, infotronsRequired, gravity) {
     this.number = number;
     this.title = title;
     this.tileMap = tileMap;
-    this.infotronsNeeded = infotronsNeeded;
+    this.infotronsRequired = infotronsRequired;
     this.gravity = gravity;
   }
 
@@ -19,7 +19,7 @@ class Level {
     return this.tileMap;
   }
 
-  get InfotronsNeeded() {
-    return this.infotronsNeeded;
+  get InfotronsRequired() {
+    return this.infotronsRequired;
   }
 }

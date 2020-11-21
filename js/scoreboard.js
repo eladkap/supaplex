@@ -1,11 +1,11 @@
-class Stats {
+class ScoreBoard {
   constructor(x, y, w, h, levelNumer, levelTitle, infotrons) {
     this.x = x;
     this.y = y;
     this.width = w;
     this.height = h;
-    this.infotrons = infotrons;
-    this.infotronsRemained = infotrons;
+    this.infotronsRequired = infotrons;
+    this.infotronsCollected = 0;
     this.redBombs = 0;
     this.levelNum = levelNumer;
     this.levelTitle = levelTitle;
@@ -39,15 +39,15 @@ class Stats {
   }
 
   Reset() {
-    this.infotronsRemained = this.infotrons;
+    this.infotronsCollected = 0;
     this.timerSeconds = 0;
     this.timerMinutes = 0;
     this.timerHours = 0;
     this.timerOn = false;
   }
 
-  DecrementInfotrons() {
-    this.infotronsRemained--;
+  IncrementInfotronsCollected() {
+    this.infotronsCollected++;
   }
 
   IncrementRedBombs() {
@@ -77,7 +77,7 @@ class Stats {
     textStyle(NORMAL);
     fill(WHITE);
     text(
-      `Level: ${this.levelNum}\t\t--${this.levelTitle}--\t\t${INFOTRON_SYMBOL}: ${this.infotronsRemained}\t\tBombs: ${this.redBombs}\t\t Time: ${this.Time}`,
+      `Level: ${this.levelNum}\t--${this.levelTitle}--\t${INFOTRON_SYMBOL}: ${this.infotronsCollected}/${this.infotronsRequired}\tBombs: ${this.redBombs}\t Time: ${this.Time}`,
       this.x,
       this.y
     );

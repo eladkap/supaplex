@@ -5,7 +5,7 @@ class Game {
     this.tileMap = level.TileMap;
     this.state = GAME_READY;
     this.gravity = false;
-    this.stats = null;
+    this.scoreBoard = null;
     this.map = null;
     this.cam = null;
   }
@@ -30,8 +30,9 @@ class Game {
 
   Setup() {
     this.SetMap(this.tileMap);
+    this.SetMurphy();
     this.SetTiles();
-    this.SetStats();
+    this.SetScoreBoard();
     this.SetCamera();
     this.state = GAME_READY;
   }
@@ -41,7 +42,7 @@ class Game {
     for (let row = 0; row < this.map.Rows; row++) {
       for (let col = 0; col < this.map.Cols; col++) {
         let tile = this.map.GetValue(row, col);
-        if (tile != null) {
+        if (tile != null && tile != 'M') {
           tile.Draw(this.cam.pos);
           tile.Update();
           tile.Move();
@@ -50,18 +51,14 @@ class Game {
     }
     this.murphy.Draw(this.cam.pos);
     this.murphy.Update();
-    this.stats.Draw();
-    this.stats.Update();
-
-    // this.MoveElements();
-    // this.MoveFallingElements();
-    // this.MoveEnemies();
+    this.scoreBoard.Draw();
+    this.scoreBoard.Update();
   }
 
   Reset() {
     this.SetState(GAME_PLAY);
-    this.stats.Reset();
-    this.stats.StopTimer();
+    this.scoreBoard.Reset();
+    this.scoreBoard.StopTimer();
     this.ResetMap();
     this.SetWallsColor(GRAY1);
     this.murphy.Stop();
@@ -73,7 +70,7 @@ class Game {
 
   Resume() {
     this.SetState(GAME_PLAY);
-    this.stats.StartTimer();
+    this.scoreBoard.StartTimer();
     this.SetWallsColor(GRAY1);
     // this.MoveElements();
     // this.MoveFallingElements();
@@ -84,15 +81,15 @@ class Game {
     this.state = state;
   }
 
-  SetStats() {
-    this.stats = new Stats(
-      STATS_POS_X,
-      STATS_POS_Y,
-      STATS_WIDTH,
-      STATS_HEIGHT,
+  SetScoreBoard() {
+    this.scoreBoard = new ScoreBoard(
+      SCORE_BOARD_POS_X,
+      SCORE_BOARD_POS_Y,
+      SCORE_BOARD_WIDTH,
+      SCORE_BOARD_HEIGHT,
       this.level.Number,
       this.level.Title,
-      this.level.InfotronsNeeded
+      this.level.InfotronsRequired
     );
   }
 
@@ -108,6 +105,27 @@ class Game {
     this.map.Create(this.level.tileMap);
     this.SetTiles();
     this.state = GAME_READY;
+  }
+
+  SetMurphy() {
+    for (let i = 0; i < this.map.Rows; i++) {
+      for (let j = 0; j < this.map.Cols; j++) {
+        let mapVal = this.map.GetValue(i, j);
+        if (mapVal == TILE_MURPHY) {
+          this.murphy = new Murphy(
+            i,
+            j,
+            TILE_SIZE,
+            null,
+            MURPHY_SYMBOL,
+            MURPHY_SPEED,
+            this.map,
+            null
+          );
+          this.map.matrix[i][j] = null;
+        }
+      }
+    }
   }
 
   SetTiles() {
@@ -301,18 +319,6 @@ class Game {
             this.map,
             this.murphy
           );
-        } else if (mapVal == TILE_MURPHY) {
-          this.murphy = new Murphy(
-            i,
-            j,
-            TILE_SIZE,
-            null,
-            MURPHY_SYMBOL,
-            MURPHY_SPEED,
-            this.map,
-            null
-          );
-          this.map.matrix[i][j] = null;
         }
       }
     }
@@ -323,18 +329,6 @@ class Game {
       if (this.murphy.Collide(this.tiles[i])) {
         if (this.tiles[i] instanceof Base) {
           let base = this.tiles.splice(i, 1)[0];
-        }
-      }
-    }
-  }
-
-  CheckMurphyEatInfotron() {
-    for (let i = this.tiles.length - 1; i >= 0; i--) {
-      if (this.murphy.Collide(this.tiles[i])) {
-        if (this.tiles[i] instanceof Infotron) {
-          let infotron = this.tiles.splice(i, 1)[0];
-          // todo: instad of removing the tile from tiles, set maze[r][c] to null/undefined
-          this.stats.DecrementInfotrons();
         }
       }
     }
@@ -392,7 +386,8 @@ class Game {
     for (let row = 0; row < this.map.Rows; row++) {
       for (let col = 0; col < this.map.Cols; col++) {
         let tile = this.map.GetValue(row, col);
-        if (tile != null) {
+        if (tile != null && tile != 'M') {
+          console.log(tile);
           tile.Stop();
         }
       }
@@ -577,7 +572,9 @@ class Game {
   }
 
   TryExitLevel() {
-    if (this.stats.infotronsRemained <= 0) {
+    if (
+      this.scoreBoard.infotronsCollected >= this.scoreBoard.infotronsRequired
+    ) {
       this.ExitLevel();
     }
   }
@@ -606,7 +603,7 @@ class Game {
     }
     if (className == 'Infotron') {
       this.map.matrix[tile.Row][tile.Col] = null;
-      this.stats.DecrementInfotrons();
+      this.scoreBoard.IncrementInfotronsCollected();
       return false;
     }
     if (className == 'Bug') {
@@ -617,7 +614,7 @@ class Game {
     }
     if (className == 'RedBomb') {
       this.map.matrix[tile.Row][tile.Col] = null;
-      this.stats.IncrementRedBombs();
+      this.scoreBoard.IncrementRedBombs();
       return false;
     }
   }
@@ -642,7 +639,7 @@ class Game {
     this.InteractWithTile(targetTile, 'D');
   }
 
-  MurphyCollectTile(direction) {
+  MurphyCollectTileWithoutEntering(direction) {
     let location = this.murphy.Collect(direction);
     if (location != null) {
       for (let i = 0; i < this.map.Rows; i++) {
@@ -660,12 +657,12 @@ class Game {
               !tile.isLerping
             ) {
               this.map.SetValue(location[0], location[1], null);
-              this.stats.DecrementInfotrons();
+              this.scoreBoard.IncrementInfotronsCollected();
             }
           } else if (tile instanceof RedBomb) {
             if (tile.Row == location[0] && tile.Col == location[1]) {
               this.map.SetValue(location[0], location[1], null);
-              this.stats.IncrementRedBombs();
+              this.scoreBoard.IncrementRedBombs();
             }
           }
         }

@@ -46,9 +46,27 @@ function setup() {
 }
 
 function draw() {
+  // Check for user input (keyboard and mouse events)
+  CheckKeyIsDown();
+
+  // Run AI
+
+  // Move enemies
+  game.MoveFallingElements();
+  game.MoveEnemies();
+
+  // Resolve collisions and interactions
+  if (game.CollectTile()) {
+    Busted();
+  }
+
+  if (game.CollideEnemy()) {
+    Busted();
+  }
+
+  // Draw graphics
   background(BLACK);
   game.Update();
-
   if (game.State == GAME_READY) {
     DisplayReady();
   }
@@ -59,34 +77,7 @@ function draw() {
     DisplayBusted();
   }
 
-  if (game.CollectTile()) {
-    Busted();
-  }
-
-  if (game.CollideEnemy()) {
-    Busted();
-  }
-
-  // game.CheckMurphyCollidesExit();
-  // game.CheckMurphyEatBase();
-  // game.CheckMurphyEatInfotron();
-
-  // todo: game.CheckMurphyCollidesPort();
-  // todo: checkMurphyCollideTerminal()
-
-  // if (game.CheckMurphyCollidesBug()) {
-  //   Busted();
-  // }
-
-  // if (game.CheckMurphyCollidesEnemy()) {
-  //   Busted();
-  // }
-
-  // CheckTileFallOnMurphy();
-
-  CheckKeyIsDown();
-
-  // DrawGameSignature();
+  // Play sound
 }
 //#endregion
 
@@ -230,46 +221,6 @@ function CheckTileFallOnMurphy() {
   }
 }
 
-// function MoveMurphyRight() {
-// game.Murphy.GoRight();
-// if (game.Murphy.CanPushRight()) {
-//   game.MurphyPushRight();
-// } else if (game.Murphy.CanPassRight()) {
-//   game.MurphyPassRight();
-// } else {
-//   game.Murphy.GoRight();
-// }
-// }
-
-// function MoveMurphyLeft() {
-// game.Murphy.GoLeft();
-// if (game.Murphy.CanPushLeft()) {
-//   game.MurphyPushLeft();
-// } else if (game.Murphy.CanPassLeft()) {
-//   game.MurphyPassLeft();
-// } else {
-//   game.Murphy.GoLeft();
-// }
-// }
-
-// function MoveMurphyUp() {
-// game.Murphy.GoUp();
-// if (game.Murphy.CanPassUp()) {
-//   game.MurphyPushUp();
-// } else {
-//   game.Murphy.GoUp();
-// }
-// }
-
-// function MoveMurphyDown() {
-// game.Murphy.GoDown();
-// if (game.Murphy.CanPassDown()) {
-//   game.MurphyPushDown();
-// } else {
-//   game.Murphy.GoDown();
-// }
-// }
-
 //#region Keyboard Events
 function CheckKeyIsDown() {
   if (game.State == GAME_PLAY) {
@@ -278,13 +229,13 @@ function CheckKeyIsDown() {
     }
     if (spaceKeyIsHold) {
       if (keyIsDown(RIGHT_ARROW)) {
-        game.MurphyCollectTile('R');
+        game.MurphyCollectTileWithoutEntering('R');
       } else if (keyIsDown(LEFT_ARROW)) {
-        game.MurphyCollectTile('L');
+        game.MurphyCollectTileWithoutEntering('L');
       } else if (keyIsDown(UP_ARROW)) {
-        game.MurphyCollectTile('U');
+        game.MurphyCollectTileWithoutEntering('U');
       } else if (keyIsDown(DOWN_ARROW)) {
-        game.MurphyCollectTile('D');
+        game.MurphyCollectTileWithoutEntering('D');
       }
     } else {
       if (keyIsDown(RIGHT_ARROW)) {
