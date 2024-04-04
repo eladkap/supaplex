@@ -1,8 +1,8 @@
 /*
-This class represents the level map containing tiles
+This class represents the level grid containing tiles
 */
 
-class Map {
+class Grid {
   /*
   tileMap: string represents the level map
   rows: rows number
@@ -67,9 +67,9 @@ class Map {
   }
 
   Copy() {
-    /* Return a copy of map object */
-    let map = new Map(this.tileMap);
-    return map;
+    /* Return a copy of grid object */
+    let grid = new Grid(this.tileMap);
+    return grid;
   }
 
   Normalize() {

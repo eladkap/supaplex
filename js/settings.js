@@ -95,6 +95,8 @@ const TILE_BOMB_YELLOW = 'Y';
 const TILE_BOMB_RED = 'R';
 const TILE_TERMINAL = 'T';
 
+
+
 const TILE_DICTIONARY = {
   0: TILE_EMPTY,
   1: TILE_ZONK,
@@ -166,6 +168,6 @@ const BYTES_PER_LEVEL = 1536;
 
 const SPACE_KEY = 32;
 
-const LOAD_DEMO_LEVEL = true;
+const LOAD_DEMO_LEVEL = false;
 
 const DEBUG_FLAG = true;

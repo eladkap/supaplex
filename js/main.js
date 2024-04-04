@@ -5,12 +5,12 @@ var chosenLevelIndex = 0;
 var levelsDataObj;
 
 function preload() {
-  levelsDataObj = LoadLevelsDataFile(LEVELS_DATA_FILE_PATH);
+  levelsDataObj = Utils.loadLevelsDataFile(LEVELS_DATA_FILE_PATH);
 }
 
 function setup() {
   createCanvas(SCREEN_WIDTH, SCREEN_HEIGHT);
-  levels = LoadLevels(levelsDataObj);
+  levels = Utils.loadLevels(levelsDataObj);
   let levelTitles = [];
   levels.forEach((level) =>
     levelTitles.push(level.Number + ': ' + level.Title)

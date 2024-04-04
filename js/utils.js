@@ -1,83 +1,99 @@
-function Sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function ReadTextFile(txtFile) {
-  var allText = loadStrings(txtFile);
-  return allText;
-}
-
-function ConsoleLog(msg) {
-  if (DEBUG_FLAG) {
-    console.log(msg);
+class Utils {
+  static sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
-}
 
-function LoadLevelFromTileMap(tileMapFile) {
-  let tileMapText = ReadTextFile(tileMapFile);
-  return new Level(0, '---DEMO LEVEL---', tileMapText, 0, false);
-}
-
-function LoadLevelsDataFile(binFile) {
-  let data = loadBytes(binFile);
-  return data;
-}
-
-function ConvertHexTile(hexTile) {
-  if (hexTile >= 26) {
-    return TILE_FRAME;
+  static readTextFile(txtFile) {
+    var allText = loadStrings(txtFile);
+    return allText;
   }
-  tileType = TILE_DICTIONARY[hexTile];
-  if (tileType == undefined) {
-    return TILE_EMPTY;
-  }
-  return tileType;
-}
 
-// Return level object
-function LoadLevel(data, levelIndex) {
-  let tileMap = [];
-  let offset = levelIndex * BYTES_PER_LEVEL;
-  let index = offset;
-  for (let row = 0; row < MAP_ROWS; row++) {
-    let rowTiles = [];
-    for (let col = 0; col < MAP_COLS; col++) {
-      let hexTile = data.bytes[index];
-      let tileType = ConvertHexTile(hexTile);
-      rowTiles.push(tileType);
-      index++;
+  static consoleLog(msg) {
+    if (DEBUG_FLAG) {
+      console.log(msg);
     }
-    let line = join(rowTiles, ' ');
-    tileMap.push(line);
   }
 
-  // Get level title
-  let i = offset + 1446;
-  let title = '';
-  while (i < offset + 1446 + 23) {
-    title += String.fromCharCode(data.bytes[i]);
-    i++;
+  static loadLevelFromTileMap(tileMapFile) {
+    let tileMapText = Utils.readTextFile(tileMapFile);
+    return new Level(0, '---DEMO LEVEL---', tileMapText, 0, false);
   }
 
-  infotronsNeeded = int(data.bytes[offset + 1470]);
-  gravity = false;
+  static loadLevelsDataFile(binFile) {
+    let data = loadBytes(binFile);
+    return data;
+  }
 
-  let level = new Level(
-    levelIndex + 1,
-    title,
-    tileMap,
-    infotronsNeeded,
-    gravity
-  );
-  return level;
+  static convertHexTile(hexTile) {
+    if (hexTile >= 26) {
+      return TILE_FRAME;
+    }
+    let tileType = TILE_DICTIONARY[hexTile];
+    if (tileType == undefined) {
+      return TILE_EMPTY;
+    }
+    return tileType;
+  }
+
+  static loadLevel(data, levelIndex) {
+    let tileMap = [];
+    let offset = levelIndex * BYTES_PER_LEVEL;
+    let index = offset;
+    for (let row = 0; row < MAP_ROWS; row++) {
+      let rowTiles = [];
+      for (let col = 0; col < MAP_COLS; col++) {
+        let hexTile = data.bytes[index];
+        let tileType = Utils.convertHexTile(hexTile);
+        rowTiles.push(tileType);
+        index++;
+      }
+      let line = join(rowTiles, ' ');
+      tileMap.push(line);
+    }
+
+    // Get level title
+    let i = offset + 1446;
+    let title = '';
+    while (i < offset + 1446 + 23) {
+      title += String.fromCharCode(data.bytes[i]);
+      i++;
+    }
+
+    let infotronsNeeded = int(data.bytes[offset + 1470]);
+    let gravity = false;
+
+    let level = new Level(
+      levelIndex + 1,
+      title,
+      tileMap,
+      infotronsNeeded,
+      gravity
+    );
+    return level;
+  }
+
+  /**
+   * Load all levels
+   * 
+   * @param {*} levelsDataObj 
+   * @returns levels
+   */
+  static loadLevels(levelsDataObj) {
+    let levels = [];
+    let levelsNum = levelsDataObj.bytes.length / BYTES_PER_LEVEL;
+    for (let i = 0; i < levelsNum; i++) {
+      levels.push(Utils.loadLevel(levelsDataObj, i));
+    }
+    return levels;
+  }
 }
 
-// Load all levels
-function LoadLevels(levelsDataObj) {
-  let levels = [];
-  let levelsNum = levelsDataObj.bytes.length / BYTES_PER_LEVEL;
-  for (let i = 0; i < levelsNum; i++) {
-    levels.push(LoadLevel(levelsDataObj, i));
-  }
-  return levels;
-}
+
+
+
+
+
+
+
+
+

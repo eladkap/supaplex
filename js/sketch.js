@@ -12,7 +12,7 @@ var tileImages = {};
 
 //#region Main Functions
 function LoadTileMap() {
-  tileMap = ReadTextFile(LEVEL_FILE_PATH);
+  tileMap = Utils.readTextFile(LEVEL_FILE_PATH);
 }
 
 function LoadImages() {
@@ -22,10 +22,10 @@ function LoadImages() {
 }
 
 function preload() {
-  demoLevel = LoadLevelFromTileMap(DEMO_LEVEL_FILE);
-  levelDataObj = LoadLevelsDataFile(LEVELS_DATA_FILE_PATH);
+  demoLevel = Utils.loadLevelFromTileMap(DEMO_LEVEL_FILE);
+  levelDataObj = Utils.loadLevelsDataFile(LEVELS_DATA_FILE_PATH);
   LoadImages();
-  ConsoleLog('Game was loaded.');
+  Utils.consoleLog('Game was loaded.');
 }
 
 function setup() {
@@ -37,7 +37,7 @@ function setup() {
     level = demoLevel;
   } else {
     let chosenLevelIndex = int(window.location.href.split('#')[1]);
-    level = LoadLevel(levelDataObj, chosenLevelIndex);
+    level = Utils.loadLevel(levelDataObj, chosenLevelIndex);
   }
 
   game = new Game(level);
@@ -92,7 +92,7 @@ function DrawGameSignature() {
 }
 
 function ResetRound() {
-  ConsoleLog('Reset round');
+  Utils.consoleLog('Reset round');
   game.Reset();
   loop();
 }
@@ -109,7 +109,7 @@ function SetLifeTile() {
 }
 
 function Busted() {
-  ConsoleLog('Busted');
+  Utils.consoleLog('Busted');
   game.SetWallsColor(DARK_BLUE);
   game.SetState(GAME_BUSTED);
   DisplayBusted();
@@ -117,7 +117,7 @@ function Busted() {
 }
 
 function LevelCompleted() {
-  ConsoleLog('Level completed.');
+  Utils.consoleLog('Level completed.');
   DisplayLevelCompleted();
   game.SetState(GAME_LEVEL_COMPLETED);
   noLoop();
@@ -176,7 +176,7 @@ function DisplayPause() {
 }
 
 function PauseGame() {
-  ConsoleLog('Game paused.');
+  Utils.consoleLog('Game paused.');
   game.SetState(GAME_PAUSED);
   game.SetWallsColor(DARK_BLUE);
   DisplayPause();
@@ -184,7 +184,7 @@ function PauseGame() {
 }
 
 function ResumeGame() {
-  ConsoleLog('Game resumed');
+  Utils.consoleLog('Game resumed');
   game.Resume();
   loop();
 }
@@ -288,15 +288,15 @@ function keyPressed() {
     }
     // if (key == '1') {
     //   lerpSpeed = LERP_UNIT_SLOW;
-    //   ConsoleLog('Changed speed to slow');
+    //   Utils.consoleLog('Changed speed to slow');
     // }
     // if (key == '2') {
     //   lerpSpeed = LERP_UNIT_NORMAL;
-    //   ConsoleLog('Changed speed to normal');
+    //   Utils.consoleLog('Changed speed to normal');
     // }
     // if (key == '3') {
     //   lerpSpeed = LERP_UNIT_FAST;
-    //   ConsoleLog('Changed speed to fast');
+    //   Utils.consoleLog('Changed speed to fast');
     // }
   }
 }

@@ -6,7 +6,7 @@ class Game {
     this.state = GAME_READY;
     this.gravity = false;
     this.scoreBoard = null;
-    this.map = null;
+    this.grid = null;
     this.cam = null;
   }
 
@@ -23,13 +23,13 @@ class Game {
     return this.state;
   }
 
-  get Map() {
-    return this.map;
+  get Grid() {
+    return this.grid;
   }
   //#endregion
 
   Setup() {
-    this.SetMap(this.tileMap);
+    this.setGrid(this.tileMap);
     this.SetMurphy();
     this.SetTiles();
     this.SetScoreBoard();
@@ -39,9 +39,9 @@ class Game {
 
   Update() {
     this.cam.Update(this.murphy);
-    for (let row = 0; row < this.map.Rows; row++) {
-      for (let col = 0; col < this.map.Cols; col++) {
-        let tile = this.map.GetValue(row, col);
+    for (let row = 0; row < this.grid.Rows; row++) {
+      for (let col = 0; col < this.grid.Cols; col++) {
+        let tile = this.grid.GetValue(row, col);
         if (tile != null && tile != 'M') {
           tile.Draw(this.cam.pos);
           tile.Update();
@@ -93,24 +93,24 @@ class Game {
     );
   }
 
-  SetMap(tileMap) {
-    this.map = new Map(tileMap);
+  setGrid(tileMap) {
+    this.grid = new Grid(tileMap);
   }
 
   SetCamera() {
     this.cam = new Camera(MAP_POS_X, MAP_POS_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
   }
 
-  ResetMap() {
-    this.map.Create(this.level.tileMap);
+  ResetGrid() {
+    this.grid.Create(this.level.tileMap);
     this.SetTiles();
     this.state = GAME_READY;
   }
 
   SetMurphy() {
-    for (let i = 0; i < this.map.Rows; i++) {
-      for (let j = 0; j < this.map.Cols; j++) {
-        let mapVal = this.map.GetValue(i, j);
+    for (let i = 0; i < this.grid.Rows; i++) {
+      for (let j = 0; j < this.grid.Cols; j++) {
+        let mapVal = this.grid.GetValue(i, j);
         if (mapVal == TILE_MURPHY) {
           this.murphy = new Murphy(
             i,
@@ -119,23 +119,23 @@ class Game {
             null,
             MURPHY_SYMBOL,
             MURPHY_SPEED,
-            this.map,
+            this.grid,
             null
           );
-          this.map.matrix[i][j] = null;
+          this.grid.matrix[i][j] = null;
         }
       }
     }
   }
 
   SetTiles() {
-    for (let i = 0; i < this.map.Rows; i++) {
-      for (let j = 0; j < this.map.Cols; j++) {
-        let mapVal = this.map.GetValue(i, j);
+    for (let i = 0; i < this.grid.Rows; i++) {
+      for (let j = 0; j < this.grid.Cols; j++) {
+        let mapVal = this.grid.GetValue(i, j);
         if (mapVal == TILE_EMPTY) {
-          this.map.matrix[i][j] = null;
+          this.grid.matrix[i][j] = null;
         } else if (mapVal == TILE_FRAME) {
-          this.map.matrix[i][j] = new Wall(
+          this.grid.matrix[i][j] = new Wall(
             i,
             j,
             TILE_SIZE,
@@ -143,7 +143,7 @@ class Game {
             WALL_SYMBOL
           );
         } else if (mapVal == TILE_WALL) {
-          this.map.matrix[i][j] = new Chip(
+          this.grid.matrix[i][j] = new Chip(
             i,
             j,
             TILE_SIZE,
@@ -151,7 +151,7 @@ class Game {
             FRAME_SYMBOL
           );
         } else if (mapVal == TILE_BASE) {
-          this.map.matrix[i][j] = new Base(
+          this.grid.matrix[i][j] = new Base(
             i,
             j,
             TILE_SIZE,
@@ -159,29 +159,29 @@ class Game {
             BASE_SYMBOL
           );
         } else if (mapVal == TILE_ZONK) {
-          this.map.matrix[i][j] = new Zonk(
+          this.grid.matrix[i][j] = new Zonk(
             i,
             j,
             TILE_SIZE,
             tileImages['zonk'],
             ZONK_SYMBOL,
             MURPHY_SPEED,
-            this.map,
+            this.grid,
             this.murphy
           );
         } else if (mapVal == TILE_INFOTRON) {
-          this.map.matrix[i][j] = new Infotron(
+          this.grid.matrix[i][j] = new Infotron(
             i,
             j,
             TILE_SIZE,
             tileImages['infotron'],
             INFOTRON_SYMBOL,
             MURPHY_SPEED,
-            this.map,
+            this.grid,
             this.murphy
           );
         } else if (mapVal == TILE_BUG) {
-          this.map.matrix[i][j] = new Bug(
+          this.grid.matrix[i][j] = new Bug(
             i,
             j,
             TILE_SIZE,
@@ -189,7 +189,7 @@ class Game {
             BUG_SYMBOL
           );
         } else if (mapVal == TILE_EXIT) {
-          this.map.matrix[i][j] = new Exit(
+          this.grid.matrix[i][j] = new Exit(
             i,
             j,
             TILE_SIZE,
@@ -197,7 +197,7 @@ class Game {
             EXIT_SYMBOL
           );
         } else if (mapVal == TILE_TERMINAL) {
-          this.map.matrix[i][j] = new Terminal(
+          this.grid.matrix[i][j] = new Terminal(
             i,
             j,
             TILE_SIZE,
@@ -205,29 +205,29 @@ class Game {
             TERMINAL_SYMBOL
           );
         } else if (mapVal == TILE_BOMB_ORANGE) {
-          this.map.matrix[i][j] = new OrangeBomb(
+          this.grid.matrix[i][j] = new OrangeBomb(
             i,
             j,
             TILE_SIZE,
             tileImages['orange_bomb'],
             '*',
             MURPHY_SPEED,
-            this.map,
+            this.grid,
             this.murphy
           );
         } else if (mapVal == TILE_BOMB_YELLOW) {
-          this.map.matrix[i][j] = new YellowBomb(
+          this.grid.matrix[i][j] = new YellowBomb(
             i,
             j,
             TILE_SIZE,
             tileImages['yellow_bomb'],
             '*',
             MURPHY_SPEED,
-            this.map,
+            this.grid,
             this.murphy
           );
         } else if (mapVal == TILE_BOMB_RED) {
-          this.map.matrix[i][j] = new RedBomb(
+          this.grid.matrix[i][j] = new RedBomb(
             i,
             j,
             TILE_SIZE,
@@ -235,7 +235,7 @@ class Game {
             '*'
           );
         } else if (mapVal == TILE_RIGHT_PORT) {
-          this.map.matrix[i][j] = new Port(
+          this.grid.matrix[i][j] = new Port(
             i,
             j,
             TILE_SIZE,
@@ -244,7 +244,7 @@ class Game {
             'right'
           );
         } else if (mapVal == TILE_LEFT_PORT) {
-          this.map.matrix[i][j] = new Port(
+          this.grid.matrix[i][j] = new Port(
             i,
             j,
             TILE_SIZE,
@@ -253,7 +253,7 @@ class Game {
             'left'
           );
         } else if (mapVal == TILE_UP_PORT) {
-          this.map.matrix[i][j] = new Port(
+          this.grid.matrix[i][j] = new Port(
             i,
             j,
             TILE_SIZE,
@@ -262,7 +262,7 @@ class Game {
             'up'
           );
         } else if (mapVal == TILE_DOWN_PORT) {
-          this.map.matrix[i][j] = new Port(
+          this.grid.matrix[i][j] = new Port(
             i,
             j,
             TILE_SIZE,
@@ -271,7 +271,7 @@ class Game {
             'down'
           );
         } else if (mapVal == TILE_VER_PORT) {
-          this.map.matrix[i][j] = new Port(
+          this.grid.matrix[i][j] = new Port(
             i,
             j,
             TILE_SIZE,
@@ -280,7 +280,7 @@ class Game {
             'dual_v'
           );
         } else if (mapVal == TILE_HOR_PORT) {
-          this.map.matrix[i][j] = new Port(
+          this.grid.matrix[i][j] = new Port(
             i,
             j,
             TILE_SIZE,
@@ -289,7 +289,7 @@ class Game {
             'dual_h'
           );
         } else if (mapVal == TILE_CROSS_PORT) {
-          this.map.matrix[i][j] = new Port(
+          this.grid.matrix[i][j] = new Port(
             i,
             j,
             TILE_SIZE,
@@ -298,25 +298,25 @@ class Game {
             'cross'
           );
         } else if (mapVal == TILE_SNIKSNAK) {
-          this.map.matrix[i][j] = new SnikSnak(
+          this.grid.matrix[i][j] = new SnikSnak(
             i,
             j,
             TILE_SIZE,
             null,
             SNIKSNAK_SYMBOL,
             MURPHY_SPEED,
-            this.map,
+            this.grid,
             this.murphy
           );
         } else if (mapVal == TILE_ELECTRON) {
-          this.map.matrix[i][j] = new Electron(
+          this.grid.matrix[i][j] = new Electron(
             i,
             j,
             TILE_SIZE,
             null,
             ELECTRON_SYMBOL,
             MURPHY_SPEED,
-            this.map,
+            this.grid,
             this.murphy
           );
         }
@@ -326,6 +326,7 @@ class Game {
 
   CheckMurphyEatBase() {
     for (let i = this.tiles.length - 1; i >= 0; i--) {
+      // if (CollisionDetection.areCollide(this.murphy, this.tiles[i]))
       if (this.murphy.Collide(this.tiles[i])) {
         if (this.tiles[i] instanceof Base) {
           let base = this.tiles.splice(i, 1)[0];
@@ -361,9 +362,9 @@ class Game {
   }
 
   SetWallsColor(color) {
-    for (let row = 0; row < this.map.Rows; row++) {
-      for (let col = 0; col < this.map.Cols; col++) {
-        let tile = this.map.GetValue(row, col);
+    for (let row = 0; row < this.grid.Rows; row++) {
+      for (let col = 0; col < this.grid.Cols; col++) {
+        let tile = this.grid.GetValue(row, col);
         if (tile instanceof Wall) {
           // tile.SetForecolor(color);
         }
@@ -372,9 +373,9 @@ class Game {
   }
 
   MoveElements() {
-    for (let row = 0; row < this.map.Rows; row++) {
-      for (let col = 0; col < this.map.Cols; col++) {
-        let tile = this.map.GetValue(row, col);
+    for (let row = 0; row < this.grid.Rows; row++) {
+      for (let col = 0; col < this.grid.Cols; col++) {
+        let tile = this.grid.GetValue(row, col);
         if (tile != null) {
           tile.Move();
         }
@@ -383,9 +384,9 @@ class Game {
   }
 
   StopElements() {
-    for (let row = 0; row < this.map.Rows; row++) {
-      for (let col = 0; col < this.map.Cols; col++) {
-        let tile = this.map.GetValue(row, col);
+    for (let row = 0; row < this.grid.Rows; row++) {
+      for (let col = 0; col < this.grid.Cols; col++) {
+        let tile = this.grid.GetValue(row, col);
         if (tile != null && tile != 'M') {
           // console.log(tile);
           tile.Stop();
@@ -396,9 +397,9 @@ class Game {
 
   MoveFallingElements() {
     let types = [Zonk, Infotron];
-    for (let row = 0; row < this.map.Rows; row++) {
-      for (let col = 0; col < this.map.Cols; col++) {
-        let tile = this.map.GetValue(row, col);
+    for (let row = 0; row < this.grid.Rows; row++) {
+      for (let col = 0; col < this.grid.Cols; col++) {
+        let tile = this.grid.GetValue(row, col);
         for (let type of types) {
           if (tile instanceof type) {
             tile.GoDown();
@@ -410,9 +411,9 @@ class Game {
 
   MoveEnemies() {
     let types = [SnikSnak, Electron];
-    for (let row = 0; row < this.map.Rows; row++) {
-      for (let col = 0; col < this.map.Cols; col++) {
-        let tile = this.map.GetValue(row, col);
+    for (let row = 0; row < this.grid.Rows; row++) {
+      for (let col = 0; col < this.grid.Cols; col++) {
+        let tile = this.grid.GetValue(row, col);
         for (let type of types) {
           if (tile instanceof type) {
             tile.SetRandomDirection();
@@ -423,9 +424,9 @@ class Game {
   }
 
   StopFallingElements(types) {
-    for (let row = 0; row < this.map.Rows; row++) {
-      for (let col = 0; col < this.map.Cols; col++) {
-        let tile = this.map.GetValue(row, col);
+    for (let row = 0; row < this.grid.Rows; row++) {
+      for (let col = 0; col < this.grid.Cols; col++) {
+        let tile = this.grid.GetValue(row, col);
         for (let type of types) {
           if (tile instanceof type) {
             tile.Stop();
@@ -436,9 +437,9 @@ class Game {
   }
 
   StopEnemies(types) {
-    for (let row = 0; row < this.map.Rows; row++) {
-      for (let col = 0; col < this.map.Cols; col++) {
-        let tile = this.map.GetValue(row, col);
+    for (let row = 0; row < this.grid.Rows; row++) {
+      for (let col = 0; col < this.grid.Cols; col++) {
+        let tile = this.grid.GetValue(row, col);
         for (let type of types) {
           if (tile instanceof type) {
             tile.SetOriginalPosition();
@@ -546,9 +547,9 @@ class Game {
   }
 
   CollideEnemy() {
-    for (let row = 0; row < this.map.Rows; row++) {
-      for (let col = 0; col < this.map.Cols; col++) {
-        let tile = this.map.GetValue(row, col);
+    for (let row = 0; row < this.grid.Rows; row++) {
+      for (let col = 0; col < this.grid.Cols; col++) {
+        let tile = this.grid.GetValue(row, col);
         if (tile == null) {
           continue;
         }
@@ -580,9 +581,9 @@ class Game {
   }
 
   DetonateYellowBombs() {
-    for (let row = 0; row < this.map.Rows; row++) {
-      for (let col = 0; col < this.map.Cols; col++) {
-        let tile = this.map.GetValue(row, col);
+    for (let row = 0; row < this.grid.Rows; row++) {
+      for (let col = 0; col < this.grid.Cols; col++) {
+        let tile = this.grid.GetValue(row, col);
         if (tile instanceof YellowBomb) {
           tile.Explode();
         }
@@ -592,62 +593,62 @@ class Game {
 
   CollectTile() {
     // Collect tile
-    let tile = this.map.matrix[this.murphy.Row][this.murphy.Col];
+    let tile = this.grid.matrix[this.murphy.Row][this.murphy.Col];
     if (tile == null) {
       return false;
     }
     let className = tile.constructor.name;
     if (className == 'Base') {
-      this.map.matrix[tile.Row][tile.Col] = null;
+      this.grid.matrix[tile.Row][tile.Col] = null;
       return false;
     }
     if (className == 'Infotron') {
-      this.map.matrix[tile.Row][tile.Col] = null;
+      this.grid.matrix[tile.Row][tile.Col] = null;
       this.scoreBoard.IncrementInfotronsCollected();
       return false;
     }
     if (className == 'Bug') {
       if (!tile.Activated) {
-        this.map.matrix[tile.Row][tile.Col] = null;
+        this.grid.matrix[tile.Row][tile.Col] = null;
         return false;
       }
     }
     if (className == 'RedBomb') {
-      this.map.matrix[tile.Row][tile.Col] = null;
+      this.grid.matrix[tile.Row][tile.Col] = null;
       this.scoreBoard.IncrementRedBombs();
       return false;
     }
   }
 
   MoveMurphyRight() {
-    let targetTile = this.map.GetValue(this.murphy.Row, this.murphy.Col + 1);
+    let targetTile = this.grid.GetValue(this.murphy.Row, this.murphy.Col + 1);
     this.InteractWithTile(targetTile, 'R');
   }
 
   MoveMurphyLeft() {
-    let targetTile = this.map.GetValue(this.murphy.Row, this.murphy.Col - 1);
+    let targetTile = this.grid.GetValue(this.murphy.Row, this.murphy.Col - 1);
     this.InteractWithTile(targetTile, 'L');
   }
 
   MoveMurphyUp() {
-    let targetTile = this.map.GetValue(this.murphy.Row - 1, this.murphy.Col);
+    let targetTile = this.grid.GetValue(this.murphy.Row - 1, this.murphy.Col);
     this.InteractWithTile(targetTile, 'U');
   }
 
   MoveMurphyDown() {
-    let targetTile = this.map.GetValue(this.murphy.Row + 1, this.murphy.Col);
+    let targetTile = this.grid.GetValue(this.murphy.Row + 1, this.murphy.Col);
     this.InteractWithTile(targetTile, 'D');
   }
 
   MurphyCollectTileWithoutEntering(direction) {
     let location = this.murphy.Collect(direction);
     if (location != null) {
-      for (let i = 0; i < this.map.Rows; i++) {
-        for (let j = 0; j < this.map.Cols; j++) {
-          let tile = this.map.matrix[i][j];
+      for (let i = 0; i < this.grid.Rows; i++) {
+        for (let j = 0; j < this.grid.Cols; j++) {
+          let tile = this.grid.matrix[i][j];
           if (tile instanceof Base) {
             if (tile.Row == location[0] && tile.Col == location[1]) {
-              this.map.SetValue(location[0], location[1], null);
+              this.grid.SetValue(location[0], location[1], null);
               return;
             }
           } else if (tile instanceof Infotron) {
@@ -656,12 +657,12 @@ class Game {
               tile.Col == location[1] &&
               !tile.isLerping
             ) {
-              this.map.SetValue(location[0], location[1], null);
+              this.grid.SetValue(location[0], location[1], null);
               this.scoreBoard.IncrementInfotronsCollected();
             }
           } else if (tile instanceof RedBomb) {
             if (tile.Row == location[0] && tile.Col == location[1]) {
-              this.map.SetValue(location[0], location[1], null);
+              this.grid.SetValue(location[0], location[1], null);
               this.scoreBoard.IncrementRedBombs();
             }
           }
@@ -791,9 +792,9 @@ class Game {
   // for debugging
   CountElements(type) {
     let count = 0;
-    for (let row = 0; row < this.map.Rows; row++) {
-      for (let col = 0; col < this.map.Cols; col++) {
-        let tile = this.map.GetValue(row, col);
+    for (let row = 0; row < this.grid.Rows; row++) {
+      for (let col = 0; col < this.grid.Cols; col++) {
+        let tile = this.grid.GetValue(row, col);
         if (tile instanceof type) {
           count++;
         }
@@ -805,9 +806,9 @@ class Game {
   // for debugging
   GetTilesOf(type) {
     let tiles = [];
-    for (let row = 0; row < this.map.Rows; row++) {
-      for (let col = 0; col < this.map.Cols; col++) {
-        let tile = this.map.GetValue(row, col);
+    for (let row = 0; row < this.grid.Rows; row++) {
+      for (let col = 0; col < this.grid.Cols; col++) {
+        let tile = this.grid.GetValue(row, col);
         if (tile instanceof type) {
           tiles.push(tile);
         }
