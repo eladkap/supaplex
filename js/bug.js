@@ -18,19 +18,19 @@ class Bug extends Tile {
   }
 
   Draw(refPos) {
-    strokeWeight(0.1);
-    stroke(GRAY3);
-    fill(BLACK);
-    rect(this.pos.x + refPos.x, this.pos.y + refPos.y, this.width, this.width);
-    if (this.visible) {
-      textSize(this.width * 0.7);
-      textFont(FONT_FAMILY);
-      // fill(this.forecolor);
-      text(
-        this.symbol,
-        this.pos.x + refPos.x,
-        this.pos.y + refPos.y + this.width * 0.7
-      );
+    image(
+      this.image,
+      this.pos.x + refPos.x + this.width / 2,
+      this.pos.y + refPos.y + this.width / 2,
+      this.width,
+      this.width
+    );
+
+    if (this.visible && game.state == GAME_PLAY) {
+      stroke(BLUE);
+      strokeWeight(3);
+      line(this.pos.x + refPos.x, this.pos.y + refPos.y + this.width, this.pos.x + refPos.x + this.width, this.pos.y + refPos.y);
+      line(this.pos.x + refPos.x + this.radius, this.pos.y + refPos.y + this.radius, this.pos.x + refPos.x + this.width,  this.pos.y + refPos.y + this.width);
     }
   }
 

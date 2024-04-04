@@ -42,7 +42,7 @@ class Game {
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
         let tile = this.grid.GetValue(row, col);
-        if (tile != null && tile != 'M') {
+        if (tile != null && tile != TILE_MURPHY) {
           tile.Draw(this.cam.pos);
           tile.Update();
           tile.Move();
@@ -185,8 +185,8 @@ class Game {
             i,
             j,
             TILE_SIZE,
-            tileImages['bug'],
-            BUG_SYMBOL
+            tileImages['base'],
+            this.murphy
           );
         } else if (mapVal == TILE_EXIT) {
           this.grid.matrix[i][j] = new Exit(
@@ -326,7 +326,6 @@ class Game {
 
   CheckMurphyEatBase() {
     for (let i = this.tiles.length - 1; i >= 0; i--) {
-      // if (CollisionDetection.areCollide(this.murphy, this.tiles[i]))
       if (this.murphy.Collide(this.tiles[i])) {
         if (this.tiles[i] instanceof Base) {
           let base = this.tiles.splice(i, 1)[0];
@@ -386,8 +385,7 @@ class Game {
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
         let tile = this.grid.GetValue(row, col);
-        if (tile != null && tile != 'M') {
-          // console.log(tile);
+        if (tile != null && tile != TILE_MURPHY) {
           tile.Stop();
         }
       }
@@ -549,7 +547,7 @@ class Game {
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
         let tile = this.grid.GetValue(row, col);
-        if (tile == null) {
+        if (tile == null || tile == TILE_MURPHY) {
           continue;
         }
         if (Physics.areCollide(this.murphy, tile)) {
