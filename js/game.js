@@ -59,7 +59,7 @@ class Game {
     this.SetState(GAME_PLAY);
     this.scoreBoard.Reset();
     this.scoreBoard.StopTimer();
-    this.ResetMap();
+    this.resetGrid();
     this.SetWallsColor(GRAY1);
     this.murphy.Stop();
     this.murphy.SetOriginalPosition();
@@ -101,7 +101,7 @@ class Game {
     this.cam = new Camera(MAP_POS_X, MAP_POS_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
   }
 
-  ResetGrid() {
+  resetGrid() {
     this.grid.Create(this.level.tileMap);
     this.SetTiles();
     this.state = GAME_READY;
@@ -340,7 +340,6 @@ class Game {
     for (let i = this.tiles.length - 1; i >= 0; i--) {
       if (this.murphy.Collide(this.tiles[i])) {
         if (this.tiles[i] instanceof Bug && this.tiles[i].Activated) {
-          console.log('bug!');
           return true;
         } else {
           let bug = this.tiles.splice(i, 1)[0];
@@ -553,7 +552,7 @@ class Game {
         if (tile == null) {
           continue;
         }
-        if (this.murphy.Collide(tile)) {
+        if (Physics.areCollide(this.murphy, tile)) {
           if (tile instanceof SnikSnak || tile instanceof Electron) {
             return true;
           }
