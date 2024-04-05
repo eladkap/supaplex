@@ -49,7 +49,7 @@ class Game {
             tile.Move();
           }
           catch (error) {
-            console.log(error);
+            Utils.consoleLog(error);
           } 
         }
       }
@@ -357,7 +357,7 @@ class Game {
     for (let i = this.tiles.length - 1; i >= 0; i--) {
       if (this.murphy.Collide(this.tiles[i])) {
         if (this.tiles[i] instanceof Exit) {
-          console.log('Exit!');
+          Utils.consoleLog('Exit!');
           return;
         }
       }
@@ -487,7 +487,7 @@ class Game {
 
   HandlePort(tile, direction) {
     if (direction == 'L' && this.murphy.CanPassLeft()) {
-      console.log('pass');
+      Utils.consoleLog('pass');
       this.MurphyPassLeft(tile);
       return;
     }
@@ -521,7 +521,7 @@ class Game {
       return;
     }
     if (className == 'Terminal') {
-      console.log('detonate yellow bombs');
+      Utils.consoleLog('detonate yellow bombs');
       this.DetonateYellowBombs();
       return;
     }
@@ -532,7 +532,7 @@ class Game {
     }
     // Orange bomb
     if (className == 'OrangeBomb') {
-      console.log('orange disk');
+      Utils.consoleLog('orange disk');
       this.HandleTilePushHorizotalOnly(tile, direction);
       return;
     }
@@ -571,7 +571,7 @@ class Game {
   }
 
   ExitLevel() {
-    console.log('Exit level');
+    Utils.consoleLog('Exit level');
   }
 
   TryExitLevel() {

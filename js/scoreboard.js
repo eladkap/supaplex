@@ -1,12 +1,13 @@
 class ScoreBoard {
-  /*
-  x: scoreboard top-left x position in pixels
-  y: scoreboard top-left y position in pixels
-  w: scoreboard width in pixels
-  h: scoreboard height in pixels
-  levelNumber: level number
-  levelTitle: level title
-  infotrons: required infotrons
+ /**
+  * C'tor
+  * @param {number} x scoreboard top-left x position in pixels
+  * @param {number} y scoreboard top-left y position in pixels
+  * @param {number} w scoreboard width in pixels
+  * @param {number} h scoreboard height in pixels
+  * @param {number} levelNumer level number
+  * @param {string} levelTitle level title
+  * @param {number} infotrons required infotrons
   */
   constructor(x, y, w, h, levelNumer, levelTitle, infotrons) {
     this.x = x;
@@ -24,8 +25,10 @@ class ScoreBoard {
     this.timerOn = false;
   }
 
+  /**
+   * Return elapsed time since game started
+   */
   get Time() {
-    /* Return elapsed time since game started */
     let hh = this.timerHours > 9 ? this.timerHours : '0' + this.timerHours;
     let mm =
       this.timerMinutes > 9 ? this.timerMinutes : '0' + this.timerMinutes;
@@ -34,8 +37,10 @@ class ScoreBoard {
     return `${hh}:${mm}:${ss}`;
   }
 
+  /**
+   * Update time
+   */
   Update() {
-    /* Update time */
     if (this.timerOn && frameCount % FPS == 0) {
       this.timerSeconds++;
       if (this.timerSeconds == 60) {
@@ -49,8 +54,10 @@ class ScoreBoard {
     }
   }
 
+  /**
+   * Reset scoreboard
+   */
   Reset() {
-    /* Reset scoreboard (infotrons collected and time) */
     this.infotronsCollected = 0;
     this.timerSeconds = 0;
     this.timerMinutes = 0;
@@ -59,37 +66,33 @@ class ScoreBoard {
   }
 
   IncrementInfotronsCollected() {
-    /* Increment infotrons collected */
     this.infotronsCollected++;
   }
 
   IncrementRedBombs() {
-    /* Increment red disks collected */
     this.redBombs++;
   }
 
   DecrementRedBombs() {
-    /* Decrement red disks */
     this.redBombs--;
   }
 
   SetNextLevel() {
-    /* Set next level */
     this.levelNumber++;
   }
 
   StartTimer() {
-    /* Start timer */
     this.timerOn = true;
   }
 
   StopTimer() {
-    /* Stop timer */
     this.timerOn = false;
   }
 
+  /**
+   * Draw scoreboard
+   */
   Draw() {
-    /* Draw scoreboard */
     noStroke();
     textSize(MESSAGE_FONT_SIZE3);
     textFont(FONT_FAMILY);

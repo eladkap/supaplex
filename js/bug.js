@@ -16,16 +16,6 @@ class Bug extends Tile {
     this.activated = value;
   }
 
-  // Draw(refPos) {
-  //   image(
-  //     this.image,
-  //     this.pos.x + refPos.x + this.width / 2,
-  //     this.pos.y + refPos.y + this.width / 2,
-  //     this.width,
-  //     this.width
-  //   );
-  // }
-
   Update() {
     if (frameCount % FPS == 0) {
       if (this.timer % this.offDuration == 0) {

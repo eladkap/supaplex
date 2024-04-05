@@ -23,6 +23,9 @@ const LERP_UNIT_FAST = 0.25;
 const LERP_MODE_NORMAL = 1;
 const LERP_MODE_SLOW = 2;
 
+/* Mechanics */
+const COLLISION_GAP = 0.9;
+
 /* COLORS */
 const BLACK = [0, 0, 0];
 const BLACK1 = [20, 20, 20];

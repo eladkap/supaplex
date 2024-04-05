@@ -9,11 +9,11 @@ class Physics {
     static areCollide(entity1, entity2) {
         try {
             var d = dist(entity1.pos.x, entity1.pos.y, entity2.pos.x, entity2.pos.y);
-            return d < (entity1.radius + entity2.radius) / 2;
+            return d < (entity1.radius + entity2.radius) * COLLISION_GAP;
         } catch (error) {
-            console.log(entity1);
-            console.log(entity2);
-            console.log(error);
+            Utils.consoleLog(entity1);
+            Utils.consoleLog(entity2);
+            Utils.consoleLog(error);
             noLoop();
         }
         
