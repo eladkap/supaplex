@@ -16,25 +16,27 @@ class Bug extends Tile {
     this.activated = value;
   }
 
-  Draw(refPos) {
-    image(
-      this.image,
-      this.pos.x + refPos.x + this.width / 2,
-      this.pos.y + refPos.y + this.width / 2,
-      this.width,
-      this.width
-    );
-  }
+  // Draw(refPos) {
+  //   image(
+  //     this.image,
+  //     this.pos.x + refPos.x + this.width / 2,
+  //     this.pos.y + refPos.y + this.width / 2,
+  //     this.width,
+  //     this.width
+  //   );
+  // }
 
   Update() {
     if (frameCount % FPS == 0) {
       if (this.timer % this.offDuration == 0) {
         this.activated = true;
         this.image = tileImages['bug'];
+        this.symbol = TILE_EMOJI_DICT['bug'];
       }
       else {
         this.activated = false;
         this.image = tileImages['base'];
+        this.symbol = TILE_EMOJI_DICT['base'];
       }
       this.timer++;
     }

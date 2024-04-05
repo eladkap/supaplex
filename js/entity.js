@@ -34,17 +34,17 @@ class Entity extends Tile {
   //#endregion
 
   //#region Methods
-  Draw(refPos) {
-    if (this.visible) {
-      noStroke();
-      textSize(this.width * 0.9);
-      text(
-        this.symbol,
-        this.pos.x + refPos.x - this.width * 0.1,
-        this.pos.y + refPos.y + this.width * 0.8
-      );
-    }
-  }
+  // Draw(refPos) {
+  //   if (this.visible) {
+  //     noStroke();
+  //     textSize(this.width * 0.9);
+  //     text(
+  //       this.symbol,
+  //       this.pos.x + refPos.x - this.width * 0.1,
+  //       this.pos.y + refPos.y + this.width * 0.8
+  //     );
+  //   }
+  // }
 
   Move() {}
 

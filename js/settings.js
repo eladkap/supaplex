@@ -162,6 +162,32 @@ const TILE_IMAGE_DICT = {
   red_bomb: 'images/modern/red_disk.png',
 };
 
+const TILE_EMOJI_DICT = {
+  murphy: '🙂',
+  frame: '🔲',
+  base: '🟩',
+  bug: '🟥',
+  infotron: '💎',
+  zonk: '🌑',
+  terminal: '📟',
+  left_port: '⬅️',
+  right_port: '➡️',
+  up_port: '⬆️',
+  down_port: '⬇️',
+  vertical_port: '⏬',
+  horizontal_port: '⏩',
+  cross_port: '🔄',
+  wall: '🟫',
+  ram_chip: '🟪',
+  exit: '🔚',
+  yellow_bomb: '📒',
+  orange_bomb: '📙',
+  red_bomb: '📕',
+  sniksnak: '☀️',
+  electron: '💫',
+  explosion: '💥'
+};
+
 const DEMO_LEVEL_FILE = 'data/level_demo.txt';
 const LEVELS_DATA_FILE_PATH = 'data/LEVELS.DAT';
 
@@ -172,3 +198,8 @@ const SPACE_KEY = 32;
 const LOAD_DEMO_LEVEL = false;
 
 const DEBUG_FLAG = true;
+
+const GFX_TILE_EMOJI_MODE = 'gfx_emoji';
+const GFX_TILE_IMAGE_MODE = 'gfx_image';
+
+const GFX_MODE = GFX_TILE_EMOJI_MODE;

@@ -43,9 +43,14 @@ class Game {
       for (let col = 0; col < this.grid.Cols; col++) {
         let tile = this.grid.GetValue(row, col);
         if (tile != null && tile != TILE_MURPHY) {
-          tile.Draw(this.cam.pos);
-          tile.Update();
-          tile.Move();
+          try {
+            tile.Draw(this.cam.pos);
+            tile.Update();
+            tile.Move();
+          }
+          catch (error) {
+            console.log(error);
+          } 
         }
       }
     }
@@ -140,7 +145,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['wall'],
-            WALL_SYMBOL
+            TILE_EMOJI_DICT['wall']
           );
         } else if (mapVal == TILE_WALL) {
           this.grid.matrix[i][j] = new Chip(
@@ -148,7 +153,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['ram_chip'],
-            FRAME_SYMBOL
+            TILE_EMOJI_DICT['frame']
           );
         } else if (mapVal == TILE_BASE) {
           this.grid.matrix[i][j] = new Base(
@@ -156,7 +161,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['base'],
-            BASE_SYMBOL
+            TILE_EMOJI_DICT['base']
           );
         } else if (mapVal == TILE_ZONK) {
           this.grid.matrix[i][j] = new Zonk(
@@ -164,7 +169,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['zonk'],
-            ZONK_SYMBOL,
+            TILE_EMOJI_DICT['zonk'],
             MURPHY_SPEED,
             this.grid,
             this.murphy
@@ -175,7 +180,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['infotron'],
-            INFOTRON_SYMBOL,
+            TILE_EMOJI_DICT['infotron'],
             MURPHY_SPEED,
             this.grid,
             this.murphy
@@ -186,7 +191,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['base'],
-            this.murphy
+            TILE_EMOJI_DICT['base']
           );
         } else if (mapVal == TILE_EXIT) {
           this.grid.matrix[i][j] = new Exit(
@@ -194,7 +199,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['exit'],
-            EXIT_SYMBOL
+            TILE_EMOJI_DICT['exit']
           );
         } else if (mapVal == TILE_TERMINAL) {
           this.grid.matrix[i][j] = new Terminal(
@@ -202,7 +207,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['terminal'],
-            TERMINAL_SYMBOL
+            TILE_EMOJI_DICT['terminal']
           );
         } else if (mapVal == TILE_BOMB_ORANGE) {
           this.grid.matrix[i][j] = new OrangeBomb(
@@ -210,7 +215,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['orange_bomb'],
-            '*',
+            TILE_EMOJI_DICT['orange_bomb'],
             MURPHY_SPEED,
             this.grid,
             this.murphy
@@ -221,7 +226,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['yellow_bomb'],
-            '*',
+            TILE_EMOJI_DICT['yellow_bomb'],
             MURPHY_SPEED,
             this.grid,
             this.murphy
@@ -232,7 +237,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['red_bomb'],
-            '*'
+            TILE_EMOJI_DICT['red_bomb']
           );
         } else if (mapVal == TILE_RIGHT_PORT) {
           this.grid.matrix[i][j] = new Port(
@@ -240,7 +245,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['right_port'],
-            '*',
+            TILE_EMOJI_DICT['right_port'],
             'right'
           );
         } else if (mapVal == TILE_LEFT_PORT) {
@@ -249,7 +254,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['left_port'],
-            '*',
+            TILE_EMOJI_DICT['left_port'],
             'left'
           );
         } else if (mapVal == TILE_UP_PORT) {
@@ -258,7 +263,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['up_port'],
-            '*',
+            TILE_EMOJI_DICT['up_port'],
             'up'
           );
         } else if (mapVal == TILE_DOWN_PORT) {
@@ -267,7 +272,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['down_port'],
-            '*',
+            TILE_EMOJI_DICT['down_port'],
             'down'
           );
         } else if (mapVal == TILE_VER_PORT) {
@@ -276,7 +281,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['vertical_port'],
-            '*',
+            TILE_EMOJI_DICT['vertical_port'],
             'dual_v'
           );
         } else if (mapVal == TILE_HOR_PORT) {
@@ -285,7 +290,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['horizontal_port'],
-            '*',
+            TILE_EMOJI_DICT['horizontal_port'],
             'dual_h'
           );
         } else if (mapVal == TILE_CROSS_PORT) {
@@ -294,7 +299,7 @@ class Game {
             j,
             TILE_SIZE,
             tileImages['cross_port'],
-            '*',
+            TILE_EMOJI_DICT['cross_port'],
             'cross'
           );
         } else if (mapVal == TILE_SNIKSNAK) {
@@ -303,7 +308,7 @@ class Game {
             j,
             TILE_SIZE,
             null,
-            SNIKSNAK_SYMBOL,
+            TILE_EMOJI_DICT['sniksnak'],
             MURPHY_SPEED,
             this.grid,
             this.murphy
@@ -314,7 +319,7 @@ class Game {
             j,
             TILE_SIZE,
             null,
-            ELECTRON_SYMBOL,
+            TILE_EMOJI_DICT['electron'],
             MURPHY_SPEED,
             this.grid,
             this.murphy
