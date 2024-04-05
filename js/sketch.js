@@ -63,17 +63,16 @@ function update() {
   // Physics
   // check murphy tackles static objects
 
-
   // check murphy eats elements (infotron, base, bug, red disk)
+  if (game.CollectTile()) {
+    Busted();
+  }
+
   // check murphy pushes elements (zonk, orange disk, yellow disk)
   // check murphy collides enemies/explosion
 
   game.MoveFallingElements();
   game.MoveEnemies();
-
-  if (game.CollectTile()) {
-    Busted();
-  }
 
   if (game.CollideEnemy()) {
     Busted();
