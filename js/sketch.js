@@ -47,13 +47,20 @@ function setup() {
   noLoop();
 }
 
-function draw() {
-  // Check for user input (keyboard and mouse events)
+/**
+ * Handles user's input via keyboard
+ */
+function processInput() {
   CheckKeyIsDown();
+}
 
-  // Run AI
+/**
+ * Update game elements
+ */
+function update() {
+  // AI
 
-  // Move enemies
+  // Physics
   game.MoveFallingElements();
   game.MoveEnemies();
 
@@ -65,10 +72,15 @@ function draw() {
   if (game.CollideEnemy()) {
     Busted();
   }
+}
 
-  // Draw graphics
+/**
+ * Draws game elements
+ */
+function render() {
   background(BLACK);
   game.Update();
+
   if (game.State == GAME_READY) {
     DisplayReady();
   }
@@ -78,7 +90,18 @@ function draw() {
   if (game.State == GAME_BUSTED) {
     DisplayBusted();
   }
+}
 
+/**
+ * Game loop:
+ * - process input
+ * - update
+ * - render
+ */
+function draw() {
+  processInput();
+  update();
+  render();
   // Play sound
 }
 //#endregion
