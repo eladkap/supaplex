@@ -17,7 +17,7 @@ class ScoreBoard {
     this.infotronsRequired = infotrons;
     this.infotronsCollected = 0;
     this.redBombs = 0;
-    this.levelNumber = levelNumer;
+    this.levelNumber = '0'.repeat(3-String(levelNumer).length)+String(levelNumer)
     this.levelTitle = levelTitle;
     this.timerSeconds = 0;
     this.timerMinutes = 0;
