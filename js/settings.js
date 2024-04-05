@@ -1,6 +1,6 @@
 /* Screen settings */
-const SCREEN_WIDTH = 1024;
-const SCREEN_HEIGHT = 768;
+const SCREEN_WIDTH = window.innerWidth; // 1024;
+const SCREEN_HEIGHT = window.innerHeight; // 768;
 
 const FPS = 30;
 const TILE_SIZE = 50;
