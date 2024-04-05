@@ -138,11 +138,12 @@ const GAME_FINISHED = 5;
 const GAME_OVER = 6;
 
 const READY_DELAY_MS = 2000;
-const BUG_DURATION_SEC = 2;
+const BUG_DURATION_SEC = 3;
 
 /* Image files */
 const TILE_IMAGE_DICT = {
   base: 'images/modern/base.png',
+  bug: 'images/modern/bug.png',
   infotron: 'images/modern/infotron.png',
   zonk: 'images/modern/zonk.png',
   terminal: 'images/modern/terminal.png',
