@@ -339,20 +339,6 @@ class Game {
     }
   }
 
-  CheckMurphyCollidesBug() {
-    // Return true if busted or not
-    for (let i = this.tiles.length - 1; i >= 0; i--) {
-      if (this.murphy.Collide(this.tiles[i])) {
-        if (this.tiles[i] instanceof Bug && this.tiles[i].Activated) {
-          return true;
-        } else {
-          let bug = this.tiles.splice(i, 1)[0];
-        }
-      }
-    }
-    return false;
-  }
-
   CheckMurphyCollidesExit() {
     for (let i = this.tiles.length - 1; i >= 0; i--) {
       if (this.murphy.Collide(this.tiles[i])) {
