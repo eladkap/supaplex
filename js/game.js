@@ -645,29 +645,27 @@ class Game {
   MurphyCollectTileWithoutEntering(direction) {
     let location = this.murphy.Collect(direction);
     if (location != null) {
-      for (let i = 0; i < this.grid.Rows; i++) {
-        for (let j = 0; j < this.grid.Cols; j++) {
-          let tile = this.grid.matrix[i][j];
-          if (tile instanceof Base) {
-            if (tile.Row == location[0] && tile.Col == location[1]) {
-              this.grid.SetValue(location[0], location[1], null);
-              return;
-            }
-          } else if (tile instanceof Infotron) {
-            if (
-              tile.Row == location[0] &&
-              tile.Col == location[1] &&
-              !tile.isLerping
-            ) {
-              this.grid.SetValue(location[0], location[1], null);
-              this.scoreBoard.IncrementInfotronsCollected();
-            }
-          } else if (tile instanceof RedBomb) {
-            if (tile.Row == location[0] && tile.Col == location[1]) {
-              this.grid.SetValue(location[0], location[1], null);
-              this.scoreBoard.IncrementRedBombs();
-            }
+      let row = location[0];
+      let col = location[1];
+      let tile = this.grid.GetValue(row, col);
+      if (tile instanceof Base) {
+        if (tile.Row == location[0] && tile.Col == location[1]) {
+            this.grid.SetValue(location[0], location[1], null);
+            return;
           }
+        } else if (tile instanceof Infotron) {
+          if (
+            tile.Row == location[0] &&
+            tile.Col == location[1] &&
+            !tile.isLerping
+          ) {
+            this.grid.SetValue(location[0], location[1], null);
+            this.scoreBoard.IncrementInfotronsCollected();
+          }
+        } else if (tile instanceof RedBomb) {
+          if (tile.Row == location[0] && tile.Col == location[1]) {
+            this.grid.SetValue(location[0], location[1], null);
+            this.scoreBoard.IncrementRedBombs();
         }
       }
     }

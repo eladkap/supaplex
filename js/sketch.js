@@ -61,10 +61,16 @@ function update() {
   // AI
 
   // Physics
+  // check murphy tackles static objects
+
+
+  // check murphy eats elements (infotron, base, bug, red disk)
+  // check murphy pushes elements (zonk, orange disk, yellow disk)
+  // check murphy collides enemies/explosion
+
   game.MoveFallingElements();
   game.MoveEnemies();
 
-  // Resolve collisions and interactions
   if (game.CollectTile()) {
     Busted();
   }
@@ -90,6 +96,8 @@ function render() {
   if (game.State == GAME_BUSTED) {
     DisplayBusted();
   }
+
+  // Play sound
 }
 
 /**
@@ -102,7 +110,6 @@ function draw() {
   processInput();
   update();
   render();
-  // Play sound
 }
 //#endregion
 

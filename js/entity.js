@@ -3,7 +3,7 @@ This class represents a moving object (Murphy or an enemy)
 */
 
 class Entity extends Tile {
-  constructor(row, col, width, image, symbol, speed, map, murphy) {
+  constructor(row, col, width, image, symbol, speed, grid, murphy) {
     super(row, col, width, image, symbol);
     this.originalRow = row;
     this.originalCol = col;
@@ -11,8 +11,8 @@ class Entity extends Tile {
     this.prevCol = col;
     this.speed = speed;
     this.direction = createVector(0, 0);
-    this.map = map;
-    this.murphy = murphy; // todo: no need of murphy reference object
+    this.grid = grid;
+    this.murphy = murphy;
     this.lerpingCount = 0;
     this.isLerping = false;
     this.vulnerable = false;
@@ -90,15 +90,15 @@ class Entity extends Tile {
   CanGoLeft() {
     return (
       this.col - 1 > 0 &&
-      this.map.GetValue(this.row, this.col - 1) == null &&
+      this.grid.GetValue(this.row, this.col - 1) == null &&
       !this.isLerping
     );
   }
 
   CanGoRight() {
     return (
-      this.col + 1 < this.map.Cols - 1 &&
-      this.map.GetValue(this.row, this.col + 1) == null &&
+      this.col + 1 < this.grid.Cols - 1 &&
+      this.grid.GetValue(this.row, this.col + 1) == null &&
       !this.isLerping
     );
   }
@@ -106,15 +106,15 @@ class Entity extends Tile {
   CanGoUp() {
     return (
       this.row - 1 > 0 &&
-      this.map.GetValue(this.row - 1, this.col) == null &&
+      this.grid.GetValue(this.row - 1, this.col) == null &&
       !this.isLerping
     );
   }
 
   CanGoDown() {
     return (
-      this.row + 1 < this.map.Rows - 1 &&
-      this.map.GetValue(this.row + 1, this.col) == null &&
+      this.row + 1 < this.grid.Rows - 1 &&
+      this.grid.GetValue(this.row + 1, this.col) == null &&
       !this.isLerping
     );
   }
@@ -140,10 +140,10 @@ class Entity extends Tile {
     if (this.CanGoLeft()) {
       this.direction.set(-1, 0);
       this.isLerping = true;
-      this.map.SetValue(this.row, this.col, null);
+      this.grid.SetValue(this.row, this.col, null);
       this.prevCol = this.col;
       this.col--;
-      this.map.SetValue(this.row, this.col, this);
+      this.grid.SetValue(this.row, this.col, this);
     }
   }
 
@@ -151,10 +151,10 @@ class Entity extends Tile {
     if (this.CanGoRight()) {
       this.direction.set(1, 0);
       this.isLerping = true;
-      this.map.SetValue(this.row, this.col, null);
+      this.grid.SetValue(this.row, this.col, null);
       this.prevCol = this.col;
       this.col++;
-      this.map.SetValue(this.row, this.col, this);
+      this.grid.SetValue(this.row, this.col, this);
     }
   }
 
@@ -162,10 +162,10 @@ class Entity extends Tile {
     if (this.CanGoUp()) {
       this.direction.set(0, -1);
       this.isLerping = true;
-      this.map.SetValue(this.row, this.col, null);
+      this.grid.SetValue(this.row, this.col, null);
       this.prevRow = this.row;
       this.row--;
-      this.map.SetValue(this.row, this.col, this);
+      this.grid.SetValue(this.row, this.col, this);
     }
   }
 
@@ -173,10 +173,10 @@ class Entity extends Tile {
     if (this.CanGoDown()) {
       this.direction.set(0, 1);
       this.isLerping = true;
-      this.map.SetValue(this.row, this.col, null);
+      this.grid.SetValue(this.row, this.col, null);
       this.prevRow = this.row;
       this.row++;
-      this.map.SetValue(this.row, this.col, this);
+      this.grid.SetValue(this.row, this.col, this);
     }
   }
 
