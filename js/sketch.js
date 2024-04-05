@@ -24,7 +24,9 @@ function LoadImages() {
 function preload() {
   demoLevel = Utils.loadLevelFromTileMap(DEMO_LEVEL_FILE);
   levelDataObj = Utils.loadLevelsDataFile(LEVELS_DATA_FILE_PATH);
-  LoadImages();
+  if (GFX_MODE == GFX_TILE_IMAGE_MODE) {
+    LoadImages();
+  }
   Utils.consoleLog('Game was loaded.');
 }
 
