@@ -96,7 +96,7 @@ class ScoreBoard {
     textStyle(NORMAL);
     fill(WHITE);
     text(
-      `Level: ${this.levelNumber}\t--${this.levelTitle}--\t${INFOTRON_SYMBOL}: ${this.infotronsCollected}/${this.infotronsRequired}\tBombs: ${this.redBombs}\t Time: ${this.Time}`,
+      `Level: ${this.levelNumber}\t--${this.levelTitle}--\t${TILE_EMOJI_DICT['infotron']}: ${this.infotronsCollected}/${this.infotronsRequired}\tBombs: ${this.redBombs}\t Time: ${this.Time}`,
       this.x,
       this.y
     );

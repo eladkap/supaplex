@@ -122,7 +122,7 @@ class Game {
             j,
             TILE_SIZE,
             null,
-            MURPHY_SYMBOL,
+            TILE_EMOJI_DICT['murphy'],
             MURPHY_SPEED,
             this.grid,
             null

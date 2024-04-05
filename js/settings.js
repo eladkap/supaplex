@@ -47,8 +47,6 @@ const DARK_BLUE = [0, 0, 64];
 const MURPHY_RADIUS = TILE_SIZE / 2;
 const MURPHY_SPEED = 1 * TILE_SIZE;
 
-const MAX_LIVES = 5;
-
 const INFOTRONS = 10;
 
 /* Fonts */
@@ -58,20 +56,7 @@ const MESSAGE_FONT_SIZE1 = 64;
 const MESSAGE_FONT_SIZE2 = 32;
 const MESSAGE_FONT_SIZE3 = 28;
 
-/* Tile Symbols */
-const MURPHY_SYMBOL = '🙂';
-const FRAME_SYMBOL = '🔲';
-const WALL_SYMBOL = '🟫';
-const INFOTRON_SYMBOL = '💎';
-const ZONK_SYMBOL = '🌑';
-const BUG_SYMBOL = '⚡️';
-const BASE_SYMBOL = '🟩';
-const ELECTRON_SYMBOL = '💫'; // '⭐️'
-const SNIKSNAK_SYMBOL = '☀️'; //'☀️✂️'
-const EXIT_SYMBOL = 'E';
-const TERMINAL_SYMBOL = 'T';
-const EXPLOSION_SYMBOL = '💥';
-
+/* Tile codes */
 const TILE_MURPHY = 'M';
 const TILE_FRAME = 'F';
 const TILE_EMPTY = '_';
@@ -96,8 +81,7 @@ const TILE_BOMB_RED = 'R';
 const TILE_TERMINAL = 'T';
 
 
-
-const TILE_DICTIONARY = {
+const TILE_CODE_DICTIONARY = {
   0: TILE_EMPTY,
   1: TILE_ZONK,
   2: TILE_BASE,

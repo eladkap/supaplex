@@ -28,7 +28,7 @@ class Utils {
     if (hexTile >= 26) {
       return TILE_FRAME;
     }
-    let tileType = TILE_DICTIONARY[hexTile];
+    let tileType = TILE_CODE_DICTIONARY[hexTile];
     if (tileType == undefined) {
       return TILE_EMPTY;
     }
