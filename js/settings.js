@@ -189,4 +189,4 @@ const GFX_TILE_IMAGE_MODE = 'gfx_image';
 
 const GFX_MODE = GFX_TILE_EMOJI_MODE;
 
-const LOAD_DEMO_LEVEL = true;
+const LOAD_DEMO_LEVEL = false;
