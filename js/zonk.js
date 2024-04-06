@@ -18,8 +18,5 @@ class Zonk extends Entity {
 
   Move() {
     this.GoDown();
-    // if (frameCount % FPS == 0) {
-    //   this.time++;
-    // }
   }
 }

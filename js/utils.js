@@ -16,7 +16,7 @@ class Utils {
 
   static loadLevelFromTileMap(tileMapFile) {
     let tileMapText = Utils.readTextFile(tileMapFile);
-    return new Level(0, '---DEMO LEVEL---', tileMapText, 0, false);
+    return new Level(0, '---DEMO LEVEL---', tileMapText, 5, false);
   }
 
   static loadLevelsDataFile(binFile) {

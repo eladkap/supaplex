@@ -182,11 +182,11 @@ const BYTES_PER_LEVEL = 1536;
 
 const SPACE_KEY = 32;
 
-const LOAD_DEMO_LEVEL = false;
-
 const DEBUG_FLAG = true;
 
 const GFX_TILE_EMOJI_MODE = 'gfx_emoji';
 const GFX_TILE_IMAGE_MODE = 'gfx_image';
 
 const GFX_MODE = GFX_TILE_EMOJI_MODE;
+
+const LOAD_DEMO_LEVEL = true;

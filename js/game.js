@@ -329,27 +329,6 @@ class Game {
     }
   }
 
-  CheckMurphyEatBase() {
-    for (let i = this.tiles.length - 1; i >= 0; i--) {
-      if (this.murphy.Collide(this.tiles[i])) {
-        if (this.tiles[i] instanceof Base) {
-          let base = this.tiles.splice(i, 1)[0];
-        }
-      }
-    }
-  }
-
-  CheckMurphyCollidesExit() {
-    for (let i = this.tiles.length - 1; i >= 0; i--) {
-      if (this.murphy.Collide(this.tiles[i])) {
-        if (this.tiles[i] instanceof Exit) {
-          Utils.consoleLog('Exit!');
-          return;
-        }
-      }
-    }
-  }
-
   SetWallsColor(color) {
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
@@ -492,18 +471,17 @@ class Game {
   }
 
   InteractWithTile(tile, direction) {
+    // empty tile
     if (tile == null) {
       this.murphy.GotoDirection(direction);
       return;
     }
     let className = tile.constructor.name;
-    // wall
     if (['Wall', 'Chip'].includes(className)) {
       return;
     }
-    // Exit
     if (className == 'Exit') {
-      this.TryExitLevel();
+      this.tryExitLevel();
       return;
     }
     if (className == 'Terminal') {
@@ -511,12 +489,10 @@ class Game {
       this.DetonateYellowBombs();
       return;
     }
-    // Zonk
     if (className == 'Zonk') {
       this.HandleTilePushHorizotalOnly(tile, direction);
       return;
     }
-    // Orange bomb
     if (className == 'OrangeBomb') {
       Utils.consoleLog('orange disk');
       this.HandleTilePushHorizotalOnly(tile, direction);
@@ -526,7 +502,6 @@ class Game {
       this.HandleTilePushHorizotalOrVertical(tile, direction);
       return;
     }
-    //Port
     if (className == 'Port') {
       this.HandlePort(tile, direction);
       return;
@@ -546,9 +521,7 @@ class Game {
             return true;
           }
           if (tile instanceof Bug && tile.Activated) {
-            if (tile.Activated) {
-              return true;
-            }
+            return true;
           }
         }
       }
@@ -560,7 +533,7 @@ class Game {
     Utils.consoleLog('Exit level');
   }
 
-  TryExitLevel() {
+  tryExitLevel() {
     if (
       this.scoreBoard.infotronsCollected >= this.scoreBoard.infotronsRequired
     ) {
@@ -628,30 +601,40 @@ class Game {
     this.InteractWithTile(targetTile, 'D');
   }
 
-  MurphyCollectTileWithoutEntering(direction) {
-    let location = this.murphy.Collect(direction);
-    if (location != null) {
-      let row = location[0];
-      let col = location[1];
+  murphyCollectTileWithoutEntering(direction) {
+    let targetLocation = this.murphy.Collect(direction);
+    if (targetLocation != null) {
+      let row = targetLocation[0];
+      let col = targetLocation[1];
       let tile = this.grid.getTile(row, col);
       if (tile instanceof Base) {
-        if (tile.Row == location[0] && tile.Col == location[1]) {
-            this.grid.SetValue(location[0], location[1], null);
-            return;
-          }
-        } else if (tile instanceof Infotron) {
-          if (
-            tile.Row == location[0] &&
-            tile.Col == location[1] &&
-            !tile.isLerping
-          ) {
-            this.grid.SetValue(location[0], location[1], null);
-            this.scoreBoard.IncrementInfotronsCollected();
-          }
-        } else if (tile instanceof RedBomb) {
-          if (tile.Row == location[0] && tile.Col == location[1]) {
-            this.grid.SetValue(location[0], location[1], null);
-            this.scoreBoard.IncrementRedBombs();
+        if (tile.Row == targetLocation[0] && tile.Col == targetLocation[1]) {
+          this.grid.SetValue(targetLocation[0], targetLocation[1], null);
+          return;
+        }
+      }
+      else if (tile instanceof Bug) {
+        if (tile.Activated) {
+          Busted();
+        }
+        else {
+          this.grid.SetValue(targetLocation[0], targetLocation[1], null);
+          return;
+        }
+      }
+      else if (tile instanceof Infotron) {
+        if (
+          tile.Row == targetLocation[0] &&
+          tile.Col == targetLocation[1] && !tile.isLerping
+        ) {
+          this.grid.SetValue(targetLocation[0], targetLocation[1], null);
+          this.scoreBoard.IncrementInfotronsCollected();
+        }
+      }
+      else if (tile instanceof RedBomb) {
+        if (tile.Row == targetLocation[0] && tile.Col == targetLocation[1]) {
+          this.grid.SetValue(targetLocation[0], targetLocation[1], null);
+          this.scoreBoard.IncrementRedBombs();
         }
       }
     }

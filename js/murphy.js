@@ -18,19 +18,15 @@ class Murphy extends Entity {
 
   Collect(direction) {
     if (direction == 'R' && this.CanGoRight()) {
-      // this.grid.SetValue(this.row, this.col + 1, null);
       return [this.row, this.col + 1];
     }
     if (direction == 'L' && this.CanGoLeft()) {
-      // this.grid.SetValue(this.row, this.col - 1, null);
       return [this.row, this.col - 1];
     }
     if (direction == 'U' && this.CanGoUp()) {
-      // this.grid.SetValue(this.row - 1, this.col, null);
       return [this.row - 1, this.col];
     }
     if (direction == 'D' && this.CanGoDown()) {
-      // this.grid.SetValue(this.row + 1, this.col, null);
       return [this.row + 1, this.col];
     }
     return null;

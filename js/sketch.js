@@ -61,11 +61,16 @@ function update() {
   // AI
 
   // Physics
-  // check murphy tackles static objects
+  // Murphy interacts with static objects (ram-chip/hardward, ports, exit)
+  
 
   // check murphy eats elements (infotron, base, bug, red disk)
   if (game.CollectTile()) {
     Busted();
+  }
+
+  if (game.tryExitLevel()) {
+    DisplayLevelCompleted();
   }
 
   // check murphy pushes elements (zonk, orange disk, yellow disk)
@@ -260,13 +265,13 @@ function CheckKeyIsDown() {
     }
     if (spaceKeyIsHold) {
       if (keyIsDown(RIGHT_ARROW)) {
-        game.MurphyCollectTileWithoutEntering('R');
+        game.murphyCollectTileWithoutEntering('R');
       } else if (keyIsDown(LEFT_ARROW)) {
-        game.MurphyCollectTileWithoutEntering('L');
+        game.murphyCollectTileWithoutEntering('L');
       } else if (keyIsDown(UP_ARROW)) {
-        game.MurphyCollectTileWithoutEntering('U');
+        game.murphyCollectTileWithoutEntering('U');
       } else if (keyIsDown(DOWN_ARROW)) {
-        game.MurphyCollectTileWithoutEntering('D');
+        game.murphyCollectTileWithoutEntering('D');
       }
     } else {
       if (keyIsDown(RIGHT_ARROW)) {
