@@ -7,7 +7,7 @@ class Game {
     this.gravity = false;
     this.scoreBoard = null;
     this.grid = null;
-    this.cam = null;
+    this.camera = null;
   }
 
   //#region Properties
@@ -38,13 +38,13 @@ class Game {
   }
 
   Update() {
-    this.cam.Update(this.murphy);
+    this.camera.Update(this.murphy);
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
         let tile = this.grid.getTile(row, col);
         if (tile != null && tile != TILE_MURPHY) {
           try {
-            tile.Draw(this.cam.pos);
+            tile.Draw(this.camera.pos);
             tile.Update();
             tile.Move();
           }
@@ -54,7 +54,7 @@ class Game {
         }
       }
     }
-    this.murphy.Draw(this.cam.pos);
+    this.murphy.Draw(this.camera.pos);
     this.murphy.Update();
     this.scoreBoard.Draw();
     this.scoreBoard.Update();
@@ -103,7 +103,7 @@ class Game {
   }
 
   SetCamera() {
-    this.cam = new Camera(MAP_POS_X, MAP_POS_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
+    this.camera = new Camera(MAP_POS_X, MAP_POS_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
   }
 
   resetGrid() {
@@ -471,40 +471,38 @@ class Game {
     }
   }
 
-  InteractWithTile(tile, direction) {
+  interactWithTile(tile, direction) {
     // empty tile
     if (tile == null) {
       this.murphy.GotoDirection(direction);
       return;
     }
-    // todo: user instanceof
-    let className = tile.constructor.name;
-    if (['Wall', 'Chip'].includes(className)) {
+    if (tile instanceof Wall || tile instanceof Chip) {
       return;
     }
-    if (className == 'Exit') {
+    if (tile instanceof Exit) {
       this.tryExitLevel();
       return;
     }
-    if (className == 'Terminal') {
+    if (tile instanceof Terminal) {
       Utils.consoleLog('detonate yellow bombs');
       this.DetonateYellowBombs();
       return;
     }
-    if (className == 'Zonk') {
+    if (tile instanceof Zonk) {
       this.HandleTilePushHorizotalOnly(tile, direction);
       return;
     }
-    if (className == 'OrangeBomb') {
+    if (tile instanceof OrangeBomb) {
       Utils.consoleLog('orange disk');
       this.HandleTilePushHorizotalOnly(tile, direction);
       return;
     }
-    if (className == 'YellowBomb') {
+    if (tile instanceof YellowBomb) {
       this.HandleTilePushHorizotalOrVertical(tile, direction);
       return;
     }
-    if (className == 'Port') {
+    if (tile instanceof Port) {
       this.HandlePort(tile, direction);
       return;
     }
@@ -544,6 +542,7 @@ class Game {
   }
 
   DetonateYellowBombs() {
+    // todo: loop over just the yellow bombs objects
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
         let tile = this.grid.getTile(row, col);
@@ -554,32 +553,31 @@ class Game {
     }
   }
 
-  CollectTile() {
+  collectTile() {
     // Collect tile
     let tile = this.grid.matrix[this.murphy.Row][this.murphy.Col];
     if (tile == null) {
       return false;
     }
-    let className = tile.constructor.name;
-    if (className == 'Base') {
+    if (tile instanceof Base) {
       delete this.grid.matrix[tile.Row][tile.Col]
       this.grid.matrix[tile.Row][tile.Col] = null;
       return false;
     }
-    if (className == 'Infotron') {
+    if (tile instanceof Infotron) {
       delete this.grid.matrix[tile.Row][tile.Col]
       this.grid.matrix[tile.Row][tile.Col] = null;
       this.scoreBoard.IncrementInfotronsCollected();
       return false;
     }
-    if (className == 'Bug') {
+    if (tile instanceof Bug) {
       if (!tile.Activated) {
         delete this.grid.matrix[tile.Row][tile.Col]
         this.grid.matrix[tile.Row][tile.Col] = null;
         return false;
       }
     }
-    if (className == 'RedBomb') {
+    if (tile instanceof RedBomb) {
       delete this.grid.matrix[tile.Row][tile.Col]
       this.grid.matrix[tile.Row][tile.Col] = null;
       this.scoreBoard.IncrementRedBombs();
@@ -606,7 +604,7 @@ class Game {
     else if (direction == 'D') {
       targetTile = this.grid.getTile(this.murphy.Row + 1, this.murphy.Col);
     }
-    this.InteractWithTile(targetTile, direction);
+    this.interactWithTile(targetTile, direction);
   }
 
   murphyCollectTileWithoutEntering(direction) {
