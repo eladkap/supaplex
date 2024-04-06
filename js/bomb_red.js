@@ -3,7 +3,7 @@ class RedBomb extends Tile {
     super(row, col, width, image, symbol);
   }
 
-  Explode() {
-    
+  explode() {
+
   }
 }

@@ -547,7 +547,7 @@ class Game {
       for (let col = 0; col < this.grid.Cols; col++) {
         let tile = this.grid.getTile(row, col);
         if (tile instanceof YellowBomb) {
-          tile.Explode();
+          tile.explode();
         }
       }
     }

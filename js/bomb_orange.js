@@ -19,5 +19,5 @@ class OrangeBomb extends Entity {
     this.GoDown();
   }
 
-  Explode() {}
+  explode() {}
 }

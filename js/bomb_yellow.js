@@ -3,5 +3,5 @@ class YellowBomb extends Entity {
     super(row, col, width, image, symbol, speed, map, murphy);
   }
 
-  Explode() {}
+  explode() {}
 }
