@@ -85,7 +85,7 @@ class Murphy extends Entity {
   }
 
   CanPushLeft() {
-    let tile = this.grid.GetValue(this.row, this.col - 1);
+    let tile = this.grid.getTile(this.row, this.col - 1);
     let tilePushable =
       tile instanceof Zonk ||
       tile instanceof OrangeBomb ||
@@ -93,12 +93,12 @@ class Murphy extends Entity {
     return (
       this.col - 2 >= 0 &&
       tilePushable &&
-      this.grid.GetValue(this.row, this.col - 2) == null
+      this.grid.getTile(this.row, this.col - 2) == null
     );
   }
 
   CanPushRight() {
-    let tile = this.grid.GetValue(this.row, this.col + 1);
+    let tile = this.grid.getTile(this.row, this.col + 1);
     let tilePushable =
       tile instanceof Zonk ||
       tile instanceof OrangeBomb ||
@@ -106,12 +106,12 @@ class Murphy extends Entity {
     return (
       this.col + 2 < this.grid.Cols &&
       tilePushable &&
-      this.grid.GetValue(this.row, this.col + 2) == null
+      this.grid.getTile(this.row, this.col + 2) == null
     );
   }
 
   CanPushUp() {
-    let tile = this.grid.GetValue(this.row - 1, this.col);
+    let tile = this.grid.getTile(this.row - 1, this.col);
     let tilePushable =
       tile instanceof Zonk ||
       tile instanceof OrangeBomb ||
@@ -119,12 +119,12 @@ class Murphy extends Entity {
     return (
       this.row - 2 >= 0 &&
       tilePushable &&
-      this.grid.GetValue(this.row - 2, this.col) == null
+      this.grid.getTile(this.row - 2, this.col) == null
     );
   }
 
   CanPushDown() {
-    let tile = this.grid.GetValue(this.row + 1, this.col);
+    let tile = this.grid.getTile(this.row + 1, this.col);
     let tilePushable =
       tile instanceof Zonk ||
       tile instanceof OrangeBomb ||
@@ -132,51 +132,51 @@ class Murphy extends Entity {
     return (
       this.row + 1 < this.grid.Cols &&
       tilePushable &&
-      this.grid.GetValue(this.row + 2, this.col) == null
+      this.grid.getTile(this.row + 2, this.col) == null
     );
   }
 
   CanPassRight() {
     return (
       this.col + 2 < this.grid.Cols &&
-      this.grid.GetValue(this.row, this.col + 1) instanceof Port &&
+      this.grid.getTile(this.row, this.col + 1) instanceof Port &&
       ['right', 'dual_h', 'cross'].includes(
-        this.grid.GetValue(this.row, this.col + 1).type
+        this.grid.getTile(this.row, this.col + 1).type
       ) &&
-      this.grid.GetValue(this.row, this.col + 2) == null
+      this.grid.getTile(this.row, this.col + 2) == null
     );
   }
 
   CanPassLeft() {
     return (
       this.col - 2 >= 0 &&
-      this.grid.GetValue(this.row, this.col - 1) instanceof Port &&
+      this.grid.getTile(this.row, this.col - 1) instanceof Port &&
       ['left', 'dual_h', 'cross'].includes(
-        this.grid.GetValue(this.row, this.col - 1).type
+        this.grid.getTile(this.row, this.col - 1).type
       ) &&
-      this.grid.GetValue(this.row, this.col - 2) == null
+      this.grid.getTile(this.row, this.col - 2) == null
     );
   }
 
   CanPassUp() {
     return (
       this.row - 2 >= 0 &&
-      this.grid.GetValue(this.row - 1, this.col) instanceof Port &&
+      this.grid.getTile(this.row - 1, this.col) instanceof Port &&
       ['up', 'dual_v', 'cross'].includes(
-        this.grid.GetValue(this.row - 1, this.col).type
+        this.grid.getTile(this.row - 1, this.col).type
       ) &&
-      this.grid.GetValue(this.row - 2, this.col) == null
+      this.grid.getTile(this.row - 2, this.col) == null
     );
   }
 
   CanPassDown() {
     return (
       this.row + 2 < this.grid.Rows &&
-      this.grid.GetValue(this.row + 1, this.col) instanceof Port &&
+      this.grid.getTile(this.row + 1, this.col) instanceof Port &&
       ['down', 'dual_v', 'cross'].includes(
-        this.grid.GetValue(this.row + 1, this.col).type
+        this.grid.getTile(this.row + 1, this.col).type
       ) &&
-      this.grid.GetValue(this.row + 2, this.col) == null
+      this.grid.getTile(this.row + 2, this.col) == null
     );
   }
 

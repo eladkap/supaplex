@@ -5,7 +5,7 @@ class Zonk extends Entity {
   }
 
   CanGoDown() {
-    let downTile = this.grid.GetValue(this.row + 1, this.col);
+    let downTile = this.grid.getTile(this.row + 1, this.col);
     let murphyBelowCondition =
       this.Col == this.murphy.Col && this.Row == this.murphy.Row - 1;
     return (
@@ -18,5 +18,8 @@ class Zonk extends Entity {
 
   Move() {
     this.GoDown();
+    // if (frameCount % FPS == 0) {
+    //   this.time++;
+    // }
   }
 }

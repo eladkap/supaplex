@@ -56,8 +56,14 @@ class Grid {
     }
   }
 
-  GetValue(i, j) {
-    /* Get tile in i,j position */
+  /**
+   * Get tile in (i, j) position
+   * 
+   * @param {number} i row i
+   * @param {number} j column j
+   * @returns tile (i, j)
+   */
+  getTile(i, j) {
     return this.matrix[i][j];
   }
 

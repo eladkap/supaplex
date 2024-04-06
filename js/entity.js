@@ -17,6 +17,7 @@ class Entity extends Tile {
     this.isLerping = false;
     this.vulnerable = false;
     this.lerpUnit = lerpSpeed;
+    this.time = 0;
   }
 
   //#region Properties
@@ -90,7 +91,7 @@ class Entity extends Tile {
   CanGoLeft() {
     return (
       this.col - 1 > 0 &&
-      this.grid.GetValue(this.row, this.col - 1) == null &&
+      this.grid.getTile(this.row, this.col - 1) == null &&
       !this.isLerping
     );
   }
@@ -98,7 +99,7 @@ class Entity extends Tile {
   CanGoRight() {
     return (
       this.col + 1 < this.grid.Cols - 1 &&
-      this.grid.GetValue(this.row, this.col + 1) == null &&
+      this.grid.getTile(this.row, this.col + 1) == null &&
       !this.isLerping
     );
   }
@@ -106,7 +107,7 @@ class Entity extends Tile {
   CanGoUp() {
     return (
       this.row - 1 > 0 &&
-      this.grid.GetValue(this.row - 1, this.col) == null &&
+      this.grid.getTile(this.row - 1, this.col) == null &&
       !this.isLerping
     );
   }
@@ -114,7 +115,7 @@ class Entity extends Tile {
   CanGoDown() {
     return (
       this.row + 1 < this.grid.Rows - 1 &&
-      this.grid.GetValue(this.row + 1, this.col) == null &&
+      this.grid.getTile(this.row + 1, this.col) == null &&
       !this.isLerping
     );
   }
@@ -183,6 +184,7 @@ class Entity extends Tile {
   Stop() {
     this.SetDirection(0, 0);
     this.lerpingCount = 0;
+    this.time= 0;
   }
 
   IsFalling() {
@@ -191,7 +193,7 @@ class Entity extends Tile {
 
   Collide(entity) {
     var d = dist(this.pos.x, this.pos.y, entity.pos.x, entity.pos.y);
-    return d < (this.radius + entity.radius) / 2;
+    return d < (this.radius + entity.radius) / COLLISION_FACTOR;
   }
   //#endregion
 }

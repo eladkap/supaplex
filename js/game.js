@@ -41,7 +41,7 @@ class Game {
     this.cam.Update(this.murphy);
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
-        let tile = this.grid.GetValue(row, col);
+        let tile = this.grid.getTile(row, col);
         if (tile != null && tile != TILE_MURPHY) {
           try {
             tile.Draw(this.cam.pos);
@@ -115,7 +115,7 @@ class Game {
   SetMurphy() {
     for (let i = 0; i < this.grid.Rows; i++) {
       for (let j = 0; j < this.grid.Cols; j++) {
-        let mapVal = this.grid.GetValue(i, j);
+        let mapVal = this.grid.getTile(i, j);
         if (mapVal == TILE_MURPHY) {
           this.murphy = new Murphy(
             i,
@@ -136,7 +136,7 @@ class Game {
   SetTiles() {
     for (let i = 0; i < this.grid.Rows; i++) {
       for (let j = 0; j < this.grid.Cols; j++) {
-        let mapVal = this.grid.GetValue(i, j);
+        let mapVal = this.grid.getTile(i, j);
         if (mapVal == TILE_EMPTY) {
           this.grid.matrix[i][j] = null;
         } else if (mapVal == TILE_FRAME) {
@@ -353,7 +353,7 @@ class Game {
   SetWallsColor(color) {
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
-        let tile = this.grid.GetValue(row, col);
+        let tile = this.grid.getTile(row, col);
         if (tile instanceof Wall) {
           // tile.SetForecolor(color);
         }
@@ -364,7 +364,7 @@ class Game {
   MoveElements() {
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
-        let tile = this.grid.GetValue(row, col);
+        let tile = this.grid.getTile(row, col);
         if (tile != null) {
           tile.Move();
         }
@@ -375,7 +375,7 @@ class Game {
   StopElements() {
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
-        let tile = this.grid.GetValue(row, col);
+        let tile = this.grid.getTile(row, col);
         if (tile != null && tile != TILE_MURPHY) {
           tile.Stop();
         }
@@ -387,7 +387,7 @@ class Game {
     let types = [Zonk, Infotron];
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
-        let tile = this.grid.GetValue(row, col);
+        let tile = this.grid.getTile(row, col);
         for (let type of types) {
           if (tile instanceof type) {
             tile.GoDown();
@@ -401,7 +401,7 @@ class Game {
     let types = [SnikSnak, Electron];
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
-        let tile = this.grid.GetValue(row, col);
+        let tile = this.grid.getTile(row, col);
         for (let type of types) {
           if (tile instanceof type) {
             tile.SetRandomDirection();
@@ -414,7 +414,7 @@ class Game {
   StopFallingElements(types) {
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
-        let tile = this.grid.GetValue(row, col);
+        let tile = this.grid.getTile(row, col);
         for (let type of types) {
           if (tile instanceof type) {
             tile.Stop();
@@ -427,7 +427,7 @@ class Game {
   StopEnemies(types) {
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
-        let tile = this.grid.GetValue(row, col);
+        let tile = this.grid.getTile(row, col);
         for (let type of types) {
           if (tile instanceof type) {
             tile.SetOriginalPosition();
@@ -537,7 +537,7 @@ class Game {
   CollideEnemy() {
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
-        let tile = this.grid.GetValue(row, col);
+        let tile = this.grid.getTile(row, col);
         if (tile == null || tile == TILE_MURPHY) {
           continue;
         }
@@ -571,7 +571,7 @@ class Game {
   DetonateYellowBombs() {
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
-        let tile = this.grid.GetValue(row, col);
+        let tile = this.grid.getTile(row, col);
         if (tile instanceof YellowBomb) {
           tile.Explode();
         }
@@ -609,22 +609,22 @@ class Game {
   }
 
   MoveMurphyRight() {
-    let targetTile = this.grid.GetValue(this.murphy.Row, this.murphy.Col + 1);
+    let targetTile = this.grid.getTile(this.murphy.Row, this.murphy.Col + 1);
     this.InteractWithTile(targetTile, 'R');
   }
 
   MoveMurphyLeft() {
-    let targetTile = this.grid.GetValue(this.murphy.Row, this.murphy.Col - 1);
+    let targetTile = this.grid.getTile(this.murphy.Row, this.murphy.Col - 1);
     this.InteractWithTile(targetTile, 'L');
   }
 
   MoveMurphyUp() {
-    let targetTile = this.grid.GetValue(this.murphy.Row - 1, this.murphy.Col);
+    let targetTile = this.grid.getTile(this.murphy.Row - 1, this.murphy.Col);
     this.InteractWithTile(targetTile, 'U');
   }
 
   MoveMurphyDown() {
-    let targetTile = this.grid.GetValue(this.murphy.Row + 1, this.murphy.Col);
+    let targetTile = this.grid.getTile(this.murphy.Row + 1, this.murphy.Col);
     this.InteractWithTile(targetTile, 'D');
   }
 
@@ -633,7 +633,7 @@ class Game {
     if (location != null) {
       let row = location[0];
       let col = location[1];
-      let tile = this.grid.GetValue(row, col);
+      let tile = this.grid.getTile(row, col);
       if (tile instanceof Base) {
         if (tile.Row == location[0] && tile.Col == location[1]) {
             this.grid.SetValue(location[0], location[1], null);
@@ -780,7 +780,7 @@ class Game {
     let count = 0;
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
-        let tile = this.grid.GetValue(row, col);
+        let tile = this.grid.getTile(row, col);
         if (tile instanceof type) {
           count++;
         }
@@ -794,7 +794,7 @@ class Game {
     let tiles = [];
     for (let row = 0; row < this.grid.Rows; row++) {
       for (let col = 0; col < this.grid.Cols; col++) {
-        let tile = this.grid.GetValue(row, col);
+        let tile = this.grid.getTile(row, col);
         if (tile instanceof type) {
           tiles.push(tile);
         }
