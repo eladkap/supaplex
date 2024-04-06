@@ -15,7 +15,6 @@ class Physics {
             Utils.consoleLog(entity2);
             Utils.consoleLog(error);
             noLoop();
-        }
-        
+        }     
     }
 }

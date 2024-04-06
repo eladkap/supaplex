@@ -61,16 +61,11 @@ function update() {
   // AI
 
   // Physics
-  // Murphy interacts with static objects (ram-chip/hardward, ports, exit)
-  
+  // Murphy interacts with static objects (ram-chip/hardward, ports, exit) - interactWithTile()
 
   // check murphy eats elements (infotron, base, bug, red disk)
   if (game.CollectTile()) {
     Busted();
-  }
-
-  if (game.tryExitLevel()) {
-    DisplayLevelCompleted();
   }
 
   // check murphy pushes elements (zonk, orange disk, yellow disk)
@@ -259,6 +254,7 @@ function CheckTileFallOnMurphy() {
 
 //#region Keyboard Events
 function CheckKeyIsDown() {
+  // Utils.consoleLog(spaceKeyIsHold);
   if (game.State == GAME_PLAY) {
     if (keyIsDown(SPACE_KEY)) {
       spaceKeyIsHold = true;
@@ -275,23 +271,25 @@ function CheckKeyIsDown() {
       }
     } else {
       if (keyIsDown(RIGHT_ARROW)) {
-        game.MoveMurphyRight();
+        game.moveMurphyToDirection('R')
       } else if (keyIsDown(LEFT_ARROW)) {
-        game.MoveMurphyLeft();
+        game.moveMurphyToDirection('L');
       } else if (keyIsDown(UP_ARROW)) {
-        game.MoveMurphyUp();
+        game.moveMurphyToDirection('U');
       } else if (keyIsDown(DOWN_ARROW)) {
-        game.MoveMurphyDown();
+        game.moveMurphyToDirection('D');
       }
     }
   }
 }
 
 function keyReleased() {
+  // Utils.consoleLog('key released');
   spaceKeyIsHold = false;
 }
 
 function keyPressed() {
+  // Utils.consoleLog('key pressed');
   if (game.State == GAME_READY && key == ' ') {
     ResumeGame();
   }
@@ -314,13 +312,13 @@ function keyPressed() {
   }
   if (game.State == GAME_PLAY && !spaceKeyIsHold) {
     if (keyCode === RIGHT_ARROW) {
-      game.MoveMurphyRight();
+      game.moveMurphyToDirection('R');
     } else if (keyCode === LEFT_ARROW) {
-      game.MoveMurphyLeft();
+      game.moveMurphyToDirection('L');
     } else if (keyCode === UP_ARROW) {
-      game.MoveMurphyUp();
+      game.moveMurphyToDirection('U');
     } else if (keyCode === DOWN_ARROW) {
-      game.MoveMurphyDown();
+      game.moveMurphyToDirection('D');
     }
     // if (key == '1') {
     //   lerpSpeed = LERP_UNIT_SLOW;

@@ -127,6 +127,7 @@ class Game {
             this.grid,
             null
           );
+          delete this.grid.matrix[i][j];
           this.grid.matrix[i][j] = null;
         }
       }
@@ -476,6 +477,7 @@ class Game {
       this.murphy.GotoDirection(direction);
       return;
     }
+    // todo: user instanceof
     let className = tile.constructor.name;
     if (['Wall', 'Chip'].includes(className)) {
       return;
@@ -560,45 +562,51 @@ class Game {
     }
     let className = tile.constructor.name;
     if (className == 'Base') {
+      delete this.grid.matrix[tile.Row][tile.Col]
       this.grid.matrix[tile.Row][tile.Col] = null;
       return false;
     }
     if (className == 'Infotron') {
+      delete this.grid.matrix[tile.Row][tile.Col]
       this.grid.matrix[tile.Row][tile.Col] = null;
       this.scoreBoard.IncrementInfotronsCollected();
       return false;
     }
     if (className == 'Bug') {
       if (!tile.Activated) {
+        delete this.grid.matrix[tile.Row][tile.Col]
         this.grid.matrix[tile.Row][tile.Col] = null;
         return false;
       }
     }
     if (className == 'RedBomb') {
+      delete this.grid.matrix[tile.Row][tile.Col]
       this.grid.matrix[tile.Row][tile.Col] = null;
       this.scoreBoard.IncrementRedBombs();
       return false;
     }
   }
 
-  MoveMurphyRight() {
-    let targetTile = this.grid.getTile(this.murphy.Row, this.murphy.Col + 1);
-    this.InteractWithTile(targetTile, 'R');
-  }
-
-  MoveMurphyLeft() {
-    let targetTile = this.grid.getTile(this.murphy.Row, this.murphy.Col - 1);
-    this.InteractWithTile(targetTile, 'L');
-  }
-
-  MoveMurphyUp() {
-    let targetTile = this.grid.getTile(this.murphy.Row - 1, this.murphy.Col);
-    this.InteractWithTile(targetTile, 'U');
-  }
-
-  MoveMurphyDown() {
-    let targetTile = this.grid.getTile(this.murphy.Row + 1, this.murphy.Col);
-    this.InteractWithTile(targetTile, 'D');
+  /**
+   * Move Murphy to a tile given direction
+   * 
+   * @param {string} direction direction
+   */
+  moveMurphyToDirection(direction) {
+    let targetTile = null;
+    if (direction == 'R') {
+      targetTile = this.grid.getTile(this.murphy.Row, this.murphy.Col + 1);
+    }
+    else if (direction == 'L') {
+      targetTile = this.grid.getTile(this.murphy.Row, this.murphy.Col - 1);
+    }
+    else if (direction == 'U') {
+      targetTile = this.grid.getTile(this.murphy.Row - 1, this.murphy.Col);
+    }
+    else if (direction == 'D') {
+      targetTile = this.grid.getTile(this.murphy.Row + 1, this.murphy.Col);
+    }
+    this.InteractWithTile(targetTile, direction);
   }
 
   murphyCollectTileWithoutEntering(direction) {
