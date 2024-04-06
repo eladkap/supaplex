@@ -64,7 +64,7 @@ function update() {
   // Murphy interacts with static objects (ram-chip/hardward, ports, exit) - interactWithTile()
 
   // check murphy eats elements (infotron, base, bug, red disk)
-  if (game.collectTile()) {
+  if (!game.collectTile()) {
     Busted();
   }
 
@@ -72,9 +72,9 @@ function update() {
   // check murphy collides enemies/explosion
 
   game.MoveFallingElements();
-  game.MoveEnemies();
+  // game.MoveEnemies();
 
-  if (game.CollideEnemy()) {
+  if (game.collideEnemy()) {
     Busted();
   }
 }

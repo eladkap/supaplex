@@ -7,9 +7,9 @@ class Enemy extends Entity {
         let possibleDirections = this.GetPossibleDirections();
         let chosenDirection = random(possibleDirections);
         this.GotoDirection(chosenDirection);
-      }
+    }
     
-      GetPossibleDirections() {
+    GetPossibleDirections() {
         let possibleDirections = [];
         if (this.CanGoLeft()) {
           possibleDirections.push('L');
@@ -26,7 +26,7 @@ class Enemy extends Entity {
         return possibleDirections;
       }
     
-      Move() {
+    Move() {
         var currentDirection = null;
         var oppositeDirection = null;
         if (this.direction.x < 0) {
@@ -58,5 +58,5 @@ class Enemy extends Entity {
           this.GotoDirection(chosenDirection);
         }
         this.isLerping = true;
-      }
+    }
 }

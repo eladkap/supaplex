@@ -8,6 +8,8 @@ class Game {
     this.scoreBoard = null;
     this.grid = null;
     this.camera = null;
+    this.enemies = [];
+    this.yellowBombs = [];
   }
 
   //#region Properties
@@ -31,7 +33,9 @@ class Game {
   Setup() {
     this.setGrid(this.tileMap);
     this.SetMurphy();
-    this.SetTiles();
+    this.setTiles();
+    this.setEnemies();
+    this.setYellowBombs();
     this.SetScoreBoard();
     this.SetCamera();
     this.state = GAME_READY;
@@ -108,7 +112,9 @@ class Game {
 
   resetGrid() {
     this.grid.Create(this.level.tileMap);
-    this.SetTiles();
+    this.setTiles();
+    this.setEnemies();
+    this.setYellowBombs();
     this.state = GAME_READY;
   }
 
@@ -134,7 +140,31 @@ class Game {
     }
   }
 
-  SetTiles() {
+  setEnemies() {
+    this.enemies = [];
+    for (let i = 0; i < this.grid.Rows; i++) {
+      for (let j = 0; j < this.grid.Cols; j++) {
+        let tile = this.grid.getTile(i, j);
+        if (tile instanceof Enemy) {
+          this.enemies.push(tile);
+        }
+      }
+    }
+  }
+
+  setYellowBombs() {
+    this.yellowBombs = [];
+    for (let i = 0; i < this.grid.Rows; i++) {
+      for (let j = 0; j < this.grid.Cols; j++) {
+        let tile = this.grid.getTile(i, j);
+        if (tile instanceof YellowBomb) {
+          this.yellowBombs.push(tile);
+        }
+      }
+    }
+  }
+
+  setTiles() {
     for (let i = 0; i < this.grid.Rows; i++) {
       for (let j = 0; j < this.grid.Cols; j++) {
         let mapVal = this.grid.getTile(i, j);
@@ -509,21 +539,16 @@ class Game {
     this.murphy.GotoDirection(direction);
   }
 
-  CollideEnemy() {
-    for (let row = 0; row < this.grid.Rows; row++) {
-      for (let col = 0; col < this.grid.Cols; col++) {
-        let tile = this.grid.getTile(row, col);
-        if (tile == null || tile == TILE_MURPHY) {
-          continue;
-        }
-        if (Physics.areCollide(this.murphy, tile)) {
-          if (tile instanceof SnikSnak || tile instanceof Electron) {
-            return true;
-          }
-          if (tile instanceof Bug && tile.Activated) {
-            return true;
-          }
-        }
+  /**
+   * 
+   * @returns true/false if Murphy collides enemy
+   */
+  collideEnemy() {
+    for (let enemy of this.enemies) {
+      if (Physics.areCollide(this.murphy, enemy)) {
+        Utils.consoleLog('Busted by:');
+        Utils.consoleLog(enemy);
+        return true;
       }
     }
     return false;
@@ -553,27 +578,35 @@ class Game {
     }
   }
 
+  /**
+   * 
+   * @returns true/false if Murphy collected tile without destroyed
+   */
   collectTile() {
-    // Collect tile
     let tile = this.grid.matrix[this.murphy.Row][this.murphy.Col];
     if (tile == null) {
-      return false;
+      return true;
     }
     if (tile instanceof Base) {
       delete this.grid.matrix[tile.Row][tile.Col]
       this.grid.matrix[tile.Row][tile.Col] = null;
-      return false;
+      return true;
     }
     if (tile instanceof Infotron) {
       delete this.grid.matrix[tile.Row][tile.Col]
       this.grid.matrix[tile.Row][tile.Col] = null;
       this.scoreBoard.IncrementInfotronsCollected();
-      return false;
+      return true;
     }
     if (tile instanceof Bug) {
       if (!tile.Activated) {
         delete this.grid.matrix[tile.Row][tile.Col]
         this.grid.matrix[tile.Row][tile.Col] = null;
+        return true;
+      }
+      else {
+        Utils.consoleLog('Busted by:');
+        Utils.consoleLog(tile);
         return false;
       }
     }
@@ -581,8 +614,9 @@ class Game {
       delete this.grid.matrix[tile.Row][tile.Col]
       this.grid.matrix[tile.Row][tile.Col] = null;
       this.scoreBoard.IncrementRedBombs();
-      return false;
+      return true;
     }
+    return true;
   }
 
   /**
@@ -644,20 +678,6 @@ class Game {
         }
       }
     }
-  }
-
-  CheckMurphyCollidesEnemy() {
-    let types = [SnikSnak, Electron];
-    for (let tile of this.tiles) {
-      for (let type of types) {
-        if (tile instanceof type) {
-          if (this.murphy.Collide(tile)) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
   }
 
   MurphyPushLeft(tile) {
