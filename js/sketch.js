@@ -63,6 +63,11 @@ function update() {
   // Physics
   // Murphy interacts with static objects (ram-chip/hardward, ports, exit) - interactWithTile()
 
+  // Check Murphy completed level
+  if (game.isCompleted) {
+    levelCompleted();
+  }
+
   // check murphy eats elements (infotron, base, bug, red disk)
   if (!game.collectTile()) {
     Busted();
@@ -150,17 +155,10 @@ function Busted() {
   noLoop();
 }
 
-function LevelCompleted() {
-  Utils.consoleLog('Level completed.');
-  DisplayLevelCompleted();
-  game.SetState(GAME_LEVEL_COMPLETED);
-  noLoop();
-}
-
-function DisplayLevelCompleted() {
+function displayLevelCompleted() {
   let msg_x = SCREEN_WIDTH * 0.3;
   let msg_y = SCREEN_HEIGHT * 0.71;
-  let msg = 'Level completed. Press ENTER for level ' + (currLevelIndex + 2);
+  let msg = 'Level completed';
   DisplayMessage(msg, msg_x, msg_y, GREEN, MESSAGE_FONT_SIZE2);
 }
 
@@ -221,6 +219,14 @@ function ResumeGame() {
   Utils.consoleLog('Game resumed');
   game.Resume();
   loop();
+}
+
+function levelCompleted() {
+  Utils.consoleLog('Level completed.');
+  game.SetState(GAME_LEVEL_COMPLETED);
+  game.SetWallsColor(DARK_BLUE);
+  displayLevelCompleted();
+  noLoop();
 }
 
 function SetNextLevel() {

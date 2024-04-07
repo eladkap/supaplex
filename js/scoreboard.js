@@ -14,6 +14,7 @@ class ScoreBoard {
     this.y = y;
     this.width = w;
     this.height = h;
+    this.infotrons = infotrons;
     this.requiredInfotrons = infotrons;
     this.redBombs = 0;
     this.levelNumber = '0'.repeat(3-String(levelNumer).length)+String(levelNumer)
@@ -57,6 +58,7 @@ class ScoreBoard {
    * Reset scoreboard
    */
   Reset() {
+    this.requiredInfotrons = this.infotrons;
     this.timerSeconds = 0;
     this.timerMinutes = 0;
     this.timerHours = 0;

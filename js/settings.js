@@ -187,6 +187,7 @@ const TILE_EMOJI_DICT = {
 
 const DEMO_LEVEL_FILE = 'data/level_demo.txt';
 const LEVELS_DATA_FILE_PATH = 'data/LEVELS.DAT';
+const DEMO_REQUIRED_INFORTRONS = 1;
 
 const BYTES_PER_LEVEL = 1536;
 
@@ -197,6 +198,6 @@ const DEBUG_FLAG = true;
 const GFX_TILE_EMOJI_MODE = 'gfx_emoji';
 const GFX_TILE_IMAGE_MODE = 'gfx_image';
 
-const GFX_MODE = GFX_TILE_EMOJI_MODE;
+const GFX_MODE = GFX_TILE_IMAGE_MODE;
 
 const LOAD_DEMO_LEVEL = true;

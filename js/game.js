@@ -11,7 +11,8 @@ class Game {
     this.enemies = [];
     this.yellowBombs = [];
     this.exitTiles = [];
-    this.destroyedTiles = []
+    this.destroyedTiles = [];
+    this.isCompleted = false;
   }
 
   //#region Properties
@@ -578,12 +579,12 @@ class Game {
 
   ExitLevel() {
     Utils.consoleLog('Exit level');
+    this.murphy.exit();
+    this.isCompleted = true;
   }
 
   tryExitLevel() {
-    if (
-      this.scoreBoard.infotronsCollected >= this.scoreBoard.infotronsRequired
-    ) {
+    if (this.scoreBoard.requiredInfotrons <= 0) {
       this.ExitLevel();
     }
   }

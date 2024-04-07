@@ -176,6 +176,10 @@ class Murphy extends Entity {
     );
   }
 
+  exit() {
+    this.visible = false;
+  }
+
   Destroy() {}
   // todo: implement an explosion
 }
