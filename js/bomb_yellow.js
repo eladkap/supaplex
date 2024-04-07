@@ -1,7 +1,9 @@
 class YellowBomb extends Entity {
-  constructor(row, col, width, image, symbol, speed, map, murphy) {
-    super(row, col, width, image, symbol, speed, map, murphy);
+  constructor(row, col, width, image, symbol, speed, grid, murphy) {
+    super(row, col, width, image, symbol, speed, grid, murphy);
   }
 
-  explode() {}
+  explode() {  
+    this.destroy();
+  }
 }

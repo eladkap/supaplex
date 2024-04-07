@@ -17,7 +17,6 @@ class Entity extends Tile {
     this.isLerping = false;
     this.vulnerable = false;
     this.lerpUnit = lerpSpeed;
-    this.time = 0;
   }
 
   //#region Properties
@@ -184,7 +183,6 @@ class Entity extends Tile {
   Stop() {
     this.SetDirection(0, 0);
     this.lerpingCount = 0;
-    this.time= 0;
   }
 
   IsFalling() {

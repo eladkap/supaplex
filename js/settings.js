@@ -1,6 +1,6 @@
 /* Screen settings */
 const SCREEN_WIDTH = window.innerWidth; // 1024;
-const SCREEN_HEIGHT = window.innerHeight; // 768;
+const SCREEN_HEIGHT =  768;
 
 const FPS = 30;
 const TILE_SIZE = 50;
@@ -116,6 +116,14 @@ const SCORE_BOARD_WIDTH = 100;
 const SCORE_BOARD_HEIGHT = 200;
 
 /* Game States */
+const GameStates = Object.freeze({
+  GAME_READY: 0,
+  GAME_PLAY: 1,
+  GAME_LEVEL_COMPLETED: 2,
+  GAME_BUSTED: 3,
+  GAME_PAUSED: 4
+})
+
 const GAME_READY = 0;
 const GAME_PLAY = 1;
 const GAME_LEVEL_COMPLETED = 2;
@@ -126,6 +134,7 @@ const GAME_OVER = 6;
 
 const READY_DELAY_MS = 2000;
 const BUG_DURATION_SEC = 3;
+const EXPLOSION_DURATION = 3;
 
 /* Image files */
 const TILE_IMAGE_DICT = {
@@ -144,6 +153,7 @@ const TILE_IMAGE_DICT = {
   wall: 'images/modern/wall.png',
   ram_chip: 'images/modern/ram_chip.png',
   exit: 'images/modern/exit.png',
+  exit_green: 'images/modern/exit-green.png',
   yellow_bomb: 'images/modern/yellow_disk.png',
   orange_bomb: 'images/modern/orange_disk.png',
   red_bomb: 'images/modern/red_disk.png',
@@ -189,4 +199,4 @@ const GFX_TILE_IMAGE_MODE = 'gfx_image';
 
 const GFX_MODE = GFX_TILE_EMOJI_MODE;
 
-const LOAD_DEMO_LEVEL = false;
+const LOAD_DEMO_LEVEL = true;

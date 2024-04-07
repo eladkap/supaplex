@@ -14,8 +14,7 @@ class ScoreBoard {
     this.y = y;
     this.width = w;
     this.height = h;
-    this.infotronsRequired = infotrons;
-    this.infotronsCollected = 0;
+    this.requiredInfotrons = infotrons;
     this.redBombs = 0;
     this.levelNumber = '0'.repeat(3-String(levelNumer).length)+String(levelNumer)
     this.levelTitle = levelTitle;
@@ -58,15 +57,14 @@ class ScoreBoard {
    * Reset scoreboard
    */
   Reset() {
-    this.infotronsCollected = 0;
     this.timerSeconds = 0;
     this.timerMinutes = 0;
     this.timerHours = 0;
     this.timerOn = false;
   }
 
-  IncrementInfotronsCollected() {
-    this.infotronsCollected++;
+  decrementRequiredInfotrons() {
+    this.requiredInfotrons = Math.max(0, this.requiredInfotrons - 1);
   }
 
   IncrementRedBombs() {
@@ -99,7 +97,7 @@ class ScoreBoard {
     textStyle(NORMAL);
     fill(WHITE);
     text(
-      `Level: ${this.levelNumber}\t--${this.levelTitle}--\t${TILE_EMOJI_DICT['infotron']}: ${this.infotronsCollected}/${this.infotronsRequired}\tBombs: ${this.redBombs}\t Time: ${this.Time}`,
+      `Level: ${this.levelNumber}\t--${this.levelTitle}--\t${TILE_EMOJI_DICT['infotron']}: ${this.requiredInfotrons}\tBombs: ${this.redBombs}\t Time: ${this.Time}`,
       this.x,
       this.y
     );

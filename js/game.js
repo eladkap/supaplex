@@ -10,6 +10,8 @@ class Game {
     this.camera = null;
     this.enemies = [];
     this.yellowBombs = [];
+    this.exitTiles = [];
+    this.destroyedTiles = []
   }
 
   //#region Properties
@@ -36,6 +38,7 @@ class Game {
     this.setTiles();
     this.setEnemies();
     this.setYellowBombs();
+    this.setExitTiles();
     this.SetScoreBoard();
     this.SetCamera();
     this.state = GAME_READY;
@@ -115,6 +118,8 @@ class Game {
     this.setTiles();
     this.setEnemies();
     this.setYellowBombs();
+    this.setExitTiles();
+    this.destroyedTiles = [];
     this.state = GAME_READY;
   }
 
@@ -159,6 +164,18 @@ class Game {
         let tile = this.grid.getTile(i, j);
         if (tile instanceof YellowBomb) {
           this.yellowBombs.push(tile);
+        }
+      }
+    }
+  }
+
+  setExitTiles() {
+    this.exitTiles = [];
+    for (let i = 0; i < this.grid.Rows; i++) {
+      for (let j = 0; j < this.grid.Cols; j++) {
+        let tile = this.grid.getTile(i, j);
+        if (tile instanceof Exit) {
+          this.exitTiles.push(tile);
         }
       }
     }
@@ -515,7 +532,6 @@ class Game {
       return;
     }
     if (tile instanceof Terminal) {
-      Utils.consoleLog('detonate yellow bombs');
       this.DetonateYellowBombs();
       return;
     }
@@ -554,6 +570,12 @@ class Game {
     return false;
   }
 
+  updateDestroyedTiles() {
+    for (let destroyedTile of this.destroyedTiles) {
+      // delete destroyedTile;
+    }
+  }
+
   ExitLevel() {
     Utils.consoleLog('Exit level');
   }
@@ -567,14 +589,31 @@ class Game {
   }
 
   DetonateYellowBombs() {
-    // todo: loop over just the yellow bombs objects
-    for (let row = 0; row < this.grid.Rows; row++) {
-      for (let col = 0; col < this.grid.Cols; col++) {
-        let tile = this.grid.getTile(row, col);
-        if (tile instanceof YellowBomb) {
-          tile.explode();
-        }
-      }
+    if (this.yellowBombs.length == 0) {
+      return;
+    }
+    Utils.consoleLog('detonate yellow bombs');
+    for (let yellowBomb of this.yellowBombs) {
+      yellowBomb.destroy();
+      // this.destroyedTiles.push(yellowBomb);
+      // let explosion = new Explosion(yellowBomb.row, yellowBomb.col, yellowBomb.width, yellowBomb.image, TILE_EMOJI_DICT['explosion'])
+      // let row = yellowBomb.row;
+      // let col = yellowBomb.col;
+      // this.grid.SetValue(row, col, explosion);
+    }
+    this.yellowBombs = [];
+  }
+
+  updateExitTilesToGreen() {
+    for (let exitTile of this.exitTiles) {
+      exitTile.image = tileImages['exit_green'];
+    }
+  }
+
+  decrementRequiredInfotrons() {
+    this.scoreBoard.decrementRequiredInfotrons();
+    if (this.scoreBoard.requiredInfotrons <= 0) {
+      this.updateExitTilesToGreen();
     }
   }
 
@@ -595,7 +634,7 @@ class Game {
     if (tile instanceof Infotron) {
       delete this.grid.matrix[tile.Row][tile.Col]
       this.grid.matrix[tile.Row][tile.Col] = null;
-      this.scoreBoard.IncrementInfotronsCollected();
+      this.decrementRequiredInfotrons();
       return true;
     }
     if (tile instanceof Bug) {
@@ -668,7 +707,7 @@ class Game {
           tile.Col == targetLocation[1] && !tile.isLerping
         ) {
           this.grid.SetValue(targetLocation[0], targetLocation[1], null);
-          this.scoreBoard.IncrementInfotronsCollected();
+          this.decrementRequiredInfotrons();
         }
       }
       else if (tile instanceof RedBomb) {
@@ -767,22 +806,6 @@ class Game {
       return;
     }
   }
-
-  CheckMurphyCollidesTerminal() {
-    //todo: implement
-  }
-
-  // CheckMurphyCollidesPort() {
-  //   for (let i = this.tiles.length - 1; i >= 0; i--) {
-  //     if (this.murphy.Collide(this.tiles[i])) {
-  //       if (this.tiles[i] instanceof Port) {
-  //         let port = this.tiles[i];
-  //         if (port.type == 'left' && this.murphy.pos.x > port.pos.x) {
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
 
   // for debugging
   CountElements(type) {

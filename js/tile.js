@@ -21,6 +21,8 @@ class Tile {
     this.image = image;
     this.symbol = symbol;
     this.visible = true;
+    this.destroyed = false;
+    this.time = 0;
   }
 
   //#region Properties
@@ -76,7 +78,14 @@ class Tile {
     }   
   }
 
-  Update() {}
+  Update() {
+    // if (this.destroyed && frameCount % FPS == 0) {
+    //   this.time++;
+    //   if (this.time >= EXPLOSION_DURATION) {
+    //     this.visible = false;
+    //   }
+    // }
+  }
 
   Move() {}
 
@@ -111,6 +120,12 @@ class Tile {
       MAP_POS_X + this.col * this.width,
       MAP_POS_Y + this.row * this.width
     );
+  }
+
+  destroy() {
+    this.destroyed = true;
+    this.image = tileImages['explosion'];
+    this.symbol = TILE_EMOJI_DICT['explosion'];
   }
 }
 //#endregion

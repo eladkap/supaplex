@@ -77,6 +77,9 @@ function update() {
   if (game.collideEnemy()) {
     Busted();
   }
+
+  // update destroyed tiles
+  game.updateDestroyedTiles();
 }
 
 /**
