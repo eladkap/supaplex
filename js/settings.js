@@ -121,16 +121,10 @@ const GameStates = Object.freeze({
   GAME_PLAY: 1,
   GAME_LEVEL_COMPLETED: 2,
   GAME_BUSTED: 3,
-  GAME_PAUSED: 4
+  GAME_PAUSED: 4,
+  GAME_FINISHED: 5
 })
 
-const GAME_READY = 0;
-const GAME_PLAY = 1;
-const GAME_LEVEL_COMPLETED = 2;
-const GAME_BUSTED = 3;
-const GAME_PAUSED = 4;
-const GAME_FINISHED = 5;
-const GAME_OVER = 6;
 
 const READY_DELAY_MS = 2000;
 const BUG_DURATION_SEC = 3;
@@ -198,6 +192,6 @@ const DEBUG_FLAG = true;
 const GFX_TILE_EMOJI_MODE = 'gfx_emoji';
 const GFX_TILE_IMAGE_MODE = 'gfx_image';
 
-const GFX_MODE = GFX_TILE_EMOJI_MODE;
+const GFX_MODE = GFX_TILE_IMAGE_MODE;
 
 const LOAD_DEMO_LEVEL = true;

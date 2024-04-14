@@ -3,7 +3,7 @@ class Game {
     this.level = level;
     this.murphy = null;
     this.tileMap = level.TileMap;
-    this.state = GAME_READY;
+    this.state = GameStates.GAME_READY;
     this.gravity = false;
     this.scoreBoard = null;
     this.grid = null;
@@ -42,7 +42,7 @@ class Game {
     this.setExitTiles();
     this.SetScoreBoard();
     this.SetCamera();
-    this.state = GAME_READY;
+    this.state = GameStates.GAME_READY;
   }
 
   Update() {
@@ -69,7 +69,7 @@ class Game {
   }
 
   Reset() {
-    this.SetState(GAME_PLAY);
+    this.SetState(GameStates.GAME_PLAY);
     this.scoreBoard.Reset();
     this.scoreBoard.StopTimer();
     this.resetGrid();
@@ -82,7 +82,7 @@ class Game {
   }
 
   Resume() {
-    this.SetState(GAME_PLAY);
+    this.SetState(GameStates.GAME_PLAY);
     this.scoreBoard.StartTimer();
     this.SetWallsColor(GRAY1);
     // this.MoveElements();
@@ -121,7 +121,7 @@ class Game {
     this.setYellowBombs();
     this.setExitTiles();
     this.destroyedTiles = [];
-    this.state = GAME_READY;
+    this.state = GameStates.GAME_READY;
   }
 
   SetMurphy() {

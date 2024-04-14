@@ -94,13 +94,13 @@ function render() {
   background(BLACK);
   game.Update();
 
-  if (game.State == GAME_READY) {
+  if (game.State == GameStates.GAME_READY) {
     DisplayReady();
   }
-  if (game.State == GAME_PAUSED) {
+  if (game.State == GameStates.GAME_PAUSED) {
     DisplayPause();
   }
-  if (game.State == GAME_BUSTED) {
+  if (game.State == GameStates.GAME_BUSTED) {
     DisplayBusted();
   }
 
@@ -150,7 +150,7 @@ function SetLifeTile() {
 function Busted() {
   console.log('Busted');
   game.SetWallsColor(DARK_BLUE);
-  game.SetState(GAME_BUSTED);
+  game.SetState(GameStates.GAME_BUSTED);
   DisplayBusted();
   noLoop();
 }
@@ -209,7 +209,7 @@ function DisplayPause() {
 
 function PauseGame() {
   console.log('Game paused.');
-  game.SetState(GAME_PAUSED);
+  game.SetState(GameStates.PAUSED);
   game.SetWallsColor(DARK_BLUE);
   DisplayPause();
   noLoop();
@@ -223,7 +223,7 @@ function ResumeGame() {
 
 function levelCompleted() {
   console.log('Level completed.');
-  game.SetState(GAME_LEVEL_COMPLETED);
+  game.SetState(GameStates.GAME_LEVEL_COMPLETED);
   game.SetWallsColor(DARK_BLUE);
   displayLevelCompleted();
   noLoop();
@@ -236,7 +236,7 @@ function SetNextLevel() {
   // }
   // stats.SetNextLevel();
   game.Reset();
-  // game.SetState(GAME_READY);
+  // game.SetState(GameStates.GAME_READY);
   // loop();
 }
 
@@ -244,7 +244,7 @@ function FinishGame() {
   let msg_x = SCREEN_WIDTH / 2 - 100;
   let msg_y = SCREEN_HEIGHT / 2;
   let msg = 'Game Finished';
-  game.SetState(GAME_FINISHED);
+  game.SetState(GameStates.GAME_FINISHED);
   DisplayMessage(msg, msg_x, msg_y, GREEN, MESSAGE_FONT_SIZE2);
   noLoop();
 }
@@ -263,7 +263,7 @@ function CheckTileFallOnMurphy() {
 
 //#region Keyboard Events
 function CheckKeyIsDown() {
-  if (game.State == GAME_PLAY) {
+  if (game.State == GameStates.GAME_PLAY) {
     if (keyIsDown(SPACE_KEY)) {
       spaceKeyIsHold = true;
     }
@@ -296,27 +296,27 @@ function keyReleased() {
 }
 
 function keyPressed() {
-  if (game.State == GAME_READY && key == ' ') {
+  if (game.State == GameStates.GAME_READY && key == ' ') {
     ResumeGame();
   }
-  if (game.State == GAME_BUSTED && key == ' ') {
+  if (game.State == GameStates.GAME_BUSTED && key == ' ') {
     ResetRound();
   }
-  if (game.State == GAME_LEVEL_COMPLETED && keyCode == ENTER) {
+  if (game.State == GameStates.GAME_LEVEL_COMPLETED && keyCode == ENTER) {
     SetNextLevel();
   }
-  if (game.State == GAME_PLAY && key === 'p') {
+  if (game.State == GameStates.GAME_PLAY && key === 'p') {
     PauseGame();
     return;
   }
-  if (game.State == GAME_PLAY && keyCode == ESCAPE) {
+  if (game.State == GameStates.GAME_PLAY && keyCode == ESCAPE) {
     game.Murphy.Destroy();
     Busted();
   }
-  if (game.State == GAME_PAUSED && key === 'p') {
+  if (game.State == GameStates.GAME_PAUSED && key === 'p') {
     ResumeGame();
   }
-  if (game.State == GAME_PLAY && !spaceKeyIsHold) {
+  if (game.State == GameStates.GAME_PLAY && !spaceKeyIsHold) {
     if (keyCode === RIGHT_ARROW) {
       game.moveMurphyToDirection('R');
     } else if (keyCode === LEFT_ARROW) {
