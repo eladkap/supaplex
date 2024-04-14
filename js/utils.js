@@ -8,12 +8,6 @@ class Utils {
     return allText;
   }
 
-  static consoleLog(msg) {
-    if (DEBUG_FLAG) {
-      console.log(msg);
-    }
-  }
-
   static loadLevelFromTileMap(tileMapFile) {
     let tileMapText = Utils.readTextFile(tileMapFile);
     return new Level(0, '---DEMO LEVEL---', tileMapText, DEMO_REQUIRED_INFORTRONS, false);

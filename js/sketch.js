@@ -27,7 +27,7 @@ function preload() {
   if (GFX_MODE == GFX_TILE_IMAGE_MODE) {
     LoadImages();
   }
-  Utils.consoleLog('Game was loaded.');
+  console.log('Game was loaded.');
 }
 
 function setup() {
@@ -131,7 +131,7 @@ function DrawGameSignature() {
 }
 
 function ResetRound() {
-  Utils.consoleLog('Reset round');
+  console.log('Reset round');
   game.Reset();
   loop();
 }
@@ -148,7 +148,7 @@ function SetLifeTile() {
 }
 
 function Busted() {
-  Utils.consoleLog('Busted');
+  console.log('Busted');
   game.SetWallsColor(DARK_BLUE);
   game.SetState(GAME_BUSTED);
   DisplayBusted();
@@ -208,7 +208,7 @@ function DisplayPause() {
 }
 
 function PauseGame() {
-  Utils.consoleLog('Game paused.');
+  console.log('Game paused.');
   game.SetState(GAME_PAUSED);
   game.SetWallsColor(DARK_BLUE);
   DisplayPause();
@@ -216,13 +216,13 @@ function PauseGame() {
 }
 
 function ResumeGame() {
-  Utils.consoleLog('Game resumed');
+  console.log('Game resumed');
   game.Resume();
   loop();
 }
 
 function levelCompleted() {
-  Utils.consoleLog('Level completed.');
+  console.log('Level completed.');
   game.SetState(GAME_LEVEL_COMPLETED);
   game.SetWallsColor(DARK_BLUE);
   displayLevelCompleted();
@@ -263,7 +263,6 @@ function CheckTileFallOnMurphy() {
 
 //#region Keyboard Events
 function CheckKeyIsDown() {
-  // Utils.consoleLog(spaceKeyIsHold);
   if (game.State == GAME_PLAY) {
     if (keyIsDown(SPACE_KEY)) {
       spaceKeyIsHold = true;
@@ -293,12 +292,10 @@ function CheckKeyIsDown() {
 }
 
 function keyReleased() {
-  // Utils.consoleLog('key released');
   spaceKeyIsHold = false;
 }
 
 function keyPressed() {
-  // Utils.consoleLog('key pressed');
   if (game.State == GAME_READY && key == ' ') {
     ResumeGame();
   }
@@ -331,15 +328,15 @@ function keyPressed() {
     }
     // if (key == '1') {
     //   lerpSpeed = LERP_UNIT_SLOW;
-    //   Utils.consoleLog('Changed speed to slow');
+    //   console.log('Changed speed to slow');
     // }
     // if (key == '2') {
     //   lerpSpeed = LERP_UNIT_NORMAL;
-    //   Utils.consoleLog('Changed speed to normal');
+    //   console.log('Changed speed to normal');
     // }
     // if (key == '3') {
     //   lerpSpeed = LERP_UNIT_FAST;
-    //   Utils.consoleLog('Changed speed to fast');
+    //   console.log('Changed speed to fast');
     // }
   }
 }

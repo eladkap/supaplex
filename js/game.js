@@ -57,7 +57,7 @@ class Game {
             tile.Move();
           }
           catch (error) {
-            Utils.consoleLog(error);
+            console.log(error);
           } 
         }
       }
@@ -501,7 +501,6 @@ class Game {
 
   HandlePort(tile, direction) {
     if (direction == 'L' && this.murphy.CanPassLeft()) {
-      Utils.consoleLog('pass');
       this.MurphyPassLeft(tile);
       return;
     }
@@ -541,7 +540,7 @@ class Game {
       return;
     }
     if (tile instanceof OrangeBomb) {
-      Utils.consoleLog('orange disk');
+      console.log('orange disk');
       this.HandleTilePushHorizotalOnly(tile, direction);
       return;
     }
@@ -563,8 +562,8 @@ class Game {
   collideEnemy() {
     for (let enemy of this.enemies) {
       if (Physics.areCollide(this.murphy, enemy)) {
-        Utils.consoleLog('Busted by:');
-        Utils.consoleLog(enemy);
+        console.log('Busted by:');
+        console.log(enemy);
         return true;
       }
     }
@@ -578,7 +577,7 @@ class Game {
   }
 
   ExitLevel() {
-    Utils.consoleLog('Exit level');
+    console.log('Exit level');
     this.murphy.exit();
     this.isCompleted = true;
   }
@@ -593,7 +592,7 @@ class Game {
     if (this.yellowBombs.length == 0) {
       return;
     }
-    Utils.consoleLog('detonate yellow bombs');
+    console.log('detonate yellow bombs');
     for (let yellowBomb of this.yellowBombs) {
       yellowBomb.destroy();
       // this.destroyedTiles.push(yellowBomb);
@@ -645,8 +644,8 @@ class Game {
         return true;
       }
       else {
-        Utils.consoleLog('Busted by:');
-        Utils.consoleLog(tile);
+        console.log('Busted by:');
+        console.log(tile);
         return false;
       }
     }
