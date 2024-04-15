@@ -60,7 +60,7 @@ const MESSAGE_FONT_SIZE2 = 32;
 const MESSAGE_FONT_SIZE3 = 28;
 
 /* Tile codes */
-const TILE_MURPHY = 'M';
+const TILE_MURPHY = 'm';
 const TILE_FRAME = 'F';
 const TILE_EMPTY = '_';
 const TILE_BASE = 'B';
@@ -68,7 +68,7 @@ const TILE_WALL = 'W';
 const TILE_ZONK = 'Z';
 const TILE_INFOTRON = 'I';
 const TILE_ELECTRON = 'e';
-const TILE_SNIKSNAK = 'S';
+const TILE_SNIKSNAK = 's';
 const TILE_EXIT = 'E';
 const TILE_BUG = 'b';
 const TILE_RIGHT_PORT = 'r';

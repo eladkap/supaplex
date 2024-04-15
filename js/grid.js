@@ -25,7 +25,7 @@ class Grid {
         this.matrix[i][j] = null;
       }
     }
-    this.Create(tileMap);
+    this.create(tileMap);
   }
 
   //#region properties
@@ -46,7 +46,7 @@ class Grid {
   }
   //#endregion
 
-  Create(tileMap) {
+  create(tileMap) {
     /* Create tile map objects according to tile map string */
     for (let i = 0; i < this.rows; i++) {
       let line = tileMap[i].split(' ');

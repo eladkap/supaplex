@@ -117,7 +117,7 @@ class Game {
   }
 
   resetGrid() {
-    this.grid.Create(this.level.tileMap);
+    this.grid.create(this.level.tileMap);
     this.setTiles();
     this.setEnemies();
     this.setYellowBombs();
