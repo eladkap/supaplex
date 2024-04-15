@@ -11,6 +11,7 @@ class Game {
     this.enemies = [];
     this.yellowBombs = [];
     this.exitTiles = [];
+    this.terminalTiles = [];
     this.destroyedTiles = [];
     this.isCompleted = false;
   }
@@ -40,6 +41,7 @@ class Game {
     this.setEnemies();
     this.setYellowBombs();
     this.setExitTiles();
+    this.setTerminalTiles();
     this.SetScoreBoard();
     this.SetCamera();
     this.state = GameStates.GAME_READY;
@@ -52,8 +54,8 @@ class Game {
         let tile = this.grid.getTile(row, col);
         if (tile != null && tile != TILE_MURPHY) {
           try {
-            tile.Draw(this.camera.pos);
             tile.Update();
+            tile.Draw(this.camera.pos);
             tile.Move();
           }
           catch (error) {
@@ -120,6 +122,7 @@ class Game {
     this.setEnemies();
     this.setYellowBombs();
     this.setExitTiles();
+    this.setTerminalTiles();
     this.destroyedTiles = [];
     this.state = GameStates.GAME_READY;
   }
@@ -177,6 +180,18 @@ class Game {
         let tile = this.grid.getTile(i, j);
         if (tile instanceof Exit) {
           this.exitTiles.push(tile);
+        }
+      }
+    }
+  }
+
+  setTerminalTiles() {
+    this.terminalTiles = [];
+    for (let i = 0; i < this.grid.Rows; i++) {
+      for (let j = 0; j < this.grid.Cols; j++) {
+        let tile = this.grid.getTile(i, j);
+        if (tile instanceof Terminal) {
+          this.terminalTiles.push(tile);
         }
       }
     }
@@ -518,21 +533,24 @@ class Game {
     }
   }
 
+  /**
+   * Check Murphy interaction with static/pushable tiles - wall, ram-chip, port, zonk, yellow bomb, orange bomb
+   * 
+   * @param {*} tile 
+   * @param {*} direction 
+   * @returns 
+   */
   interactWithTile(tile, direction) {
     // empty tile
     if (tile == null) {
       this.murphy.GotoDirection(direction);
       return;
     }
-    if (tile instanceof Wall || tile instanceof Chip) {
+    if (tile instanceof Wall || tile instanceof Chip || tile instanceof Exit || tile instanceof Terminal) {
       return;
     }
-    if (tile instanceof Exit) {
-      this.tryExitLevel();
-      return;
-    }
-    if (tile instanceof Terminal) {
-      this.DetonateYellowBombs();
+    if (tile instanceof Port) {
+      this.HandlePort(tile, direction);
       return;
     }
     if (tile instanceof Zonk) {
@@ -547,11 +565,7 @@ class Game {
     if (tile instanceof YellowBomb) {
       this.HandleTilePushHorizotalOrVertical(tile, direction);
       return;
-    }
-    if (tile instanceof Port) {
-      this.HandlePort(tile, direction);
-      return;
-    }
+    } 
     this.murphy.GotoDirection(direction);
   }
 
@@ -582,13 +596,38 @@ class Game {
     this.isCompleted = true;
   }
 
+  isMurphyNearTile(tile) {
+    return Utils.manhattanDistance(this.murphy.Row, this.murphy.Col, tile.Row, tile.Col) <= 1;
+  }
+
+  isMurphyNearExitTile() {
+    for (let exitTile of this.exitTiles) {
+      if (this.isMurphyNearTile(exitTile)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  isMurphyNearTerminalTile() {
+    for (let terminalTile of this.terminalTiles) {
+      if (this.isMurphyNearTile(terminalTile)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   tryExitLevel() {
-    if (this.scoreBoard.requiredInfotrons <= 0) {
+    if (this.isMurphyNearExitTile() && this.scoreBoard.requiredInfotrons <= 0) {
       this.ExitLevel();
     }
   }
 
-  DetonateYellowBombs() {
+  detonateYellowBombs() {
+    if (!this.isMurphyNearTerminalTile()) {
+      return;
+    }
     if (this.yellowBombs.length == 0) {
       return;
     }

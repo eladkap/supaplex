@@ -68,7 +68,10 @@ function update() {
     levelCompleted();
   }
 
-  // check murphy eats elements (infotron, base, bug, red disk)
+  // Check Murphy interaction with Exit and Terminal
+
+
+  // Check Murphy interaction with edible elements (infotron, base, bug, red disk)
   if (!game.collectTile()) {
     Busted();
   }
@@ -325,6 +328,10 @@ function keyPressed() {
       game.moveMurphyToDirection('U');
     } else if (keyCode === DOWN_ARROW) {
       game.moveMurphyToDirection('D');
+    } else if (keyCode == CONTROL) {
+      game.detonateYellowBombs();
+    } else if (keyCode == ENTER) {
+      game.tryExitLevel();
     }
     // if (key == '1') {
     //   lerpSpeed = LERP_UNIT_SLOW;
