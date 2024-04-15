@@ -3,15 +3,14 @@ This class represents the most basic game element
 */
 
 class Tile {
-  /*
-  row: row index in the map
-  col: column index in the map
-  width: tile width in pixels
-  image: tile image
-  symbol: tile symbol
-  pos: x,y position in pixels
-  visible: true/false
-  */
+  /**
+   * 
+   * @param {Number} row tile row
+   * @param {Number} col tile column
+   * @param {Number} width tile width
+   * @param {Number} image tile image
+   * @param {Number} symbol tile symbol
+   */
   constructor(row, col, width, image, symbol) {
     this.row = row;
     this.col = col;
@@ -56,8 +55,12 @@ class Tile {
   //#endregion
 
   //#region Methods
+  /**
+   * Draw tile refer to a position
+   * 
+   * @param {Vector} refPos reference position
+   */
   Draw(refPos) {
-    /* Draw tile refer to refPos */
     if (this.visible && GFX_MODE == GFX_TILE_IMAGE_MODE && this.image != null) {
       image(
         this.image,
@@ -79,12 +82,6 @@ class Tile {
   }
 
   Update() {
-    // if (this.destroyed && frameCount % FPS == 0) {
-    //   this.time++;
-    //   if (this.time >= EXPLOSION_DURATION) {
-    //     this.visible = false;
-    //   }
-    // }
   }
 
   Move() {}
@@ -99,8 +96,13 @@ class Tile {
     this.visible = value;
   }
 
+  /**
+   * Set tile position on the map
+   * 
+   * @param {Number} row tile row 
+   * @param {Number} col tile column
+   */
   SetPosition(row, col) {
-    /* Set tile position according to its row and column position in the map */
     this.row = row;
     this.col = col;
     let x = MAP_POS_X + col * this.width;
@@ -108,20 +110,28 @@ class Tile {
     this.pos.set(x, y);
   }
 
+  /**
+   * Set tile random position
+   */
   SetRandomPosition() {
     let row = int(random(0, MAP_COLS));
     let col = int(random(0, MAP_ROWS));
     this.SetPosition(row, col);
   }
 
+  /**
+   * Update tile position
+   */
   UpdatePosition() {
-    /* Update x,y position according to its current row and column position */
     this.pos.set(
       MAP_POS_X + this.col * this.width,
       MAP_POS_Y + this.row * this.width
     );
   }
 
+  /**
+   * Destroy tile and exchange it to explosion
+   */
   destroy() {
     this.destroyed = true;
     this.image = tileImages['explosion'];

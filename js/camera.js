@@ -3,11 +3,12 @@ This class represents the game camera that tracking the player
 */
 
 class Camera {
-  /*
-  x: camera x position in pixels
-  y: camera y position in pixels
-  width: camera width in pixels
-  height: camera height in pixels
+ /**
+  * 
+  * @param {Number} x camera x position in pixels
+  * @param {Number} y camera y position in pixels
+  * @param {Number} width camera width in pixels
+  * @param {Number} height camera height in pixels
   */
   constructor(x, y, width, height) {
     this.pos = createVector(x, y);
@@ -16,18 +17,26 @@ class Camera {
     this.height = height;
   }
 
+  /**
+   * Get camera width
+   */
   get Width() {
-    /* Return camera width */
     return this.width;
   }
 
+  /**
+   * Get camera height
+   */
   get Height() {
-    /* Return camera height */
     return this.height;
   }
 
+  /**
+   * Update camera top-left position according to target element
+   * 
+   * @param {Tile} target target element
+   */
   Update(target) {
-    /* Update camera top-left position according to target element */
     let x = -target.pos.x + int(this.width / 2);
     let y = -target.pos.y + int(this.height / 2);
     x = Math.min(0, x);
